@@ -1,3 +1,5 @@
+import java.util.*; 
+
 public class Student{
 	private String name;
 	private int year; 
@@ -17,6 +19,10 @@ public class Student{
 		return this.year; 
 	}
 
-
+	public static void filter(List<Student> students) { 
+		for(Student s: students) { 
+			System.out.println(s.name + " "); 
+		} 
+	}
 
 }
