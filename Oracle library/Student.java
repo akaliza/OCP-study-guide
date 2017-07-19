@@ -19,10 +19,6 @@ public class Student{
 		return this.year; 
 	}
 
-	public static void filter(List<Student> students) { 
-		for(Student s: students) { 
-			System.out.println(s.name + " "); 
-		} 
-	}
+	
 
 }
