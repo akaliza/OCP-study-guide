@@ -1,5 +1,5 @@
 import java.util.*; 
-import java.util.function.Predicate;
+import java.util.stream.*;
 
 public class Ex03{
 	public static void main(String... args){
@@ -14,7 +14,11 @@ public class Ex03{
 		students.add(s2);
 		students.add(s3);
 		
-		double highestScore =  students.filter((Student s) -> s.getGradYear() == 2011).map((Student s) -> s.getScore()).max();
+		double highestScore =  
+			students.stream()
+			.filter((Student s) -> s.getGradYear() == 2011)
+			.map((Student s) -> s.getScore())
+			.max();
 
 		
 		System.out.println("Highest grade is " + highestScore);
