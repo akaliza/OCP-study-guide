@@ -9,5 +9,6 @@ public class AddData {
 		} finally {
 			if(service != null) service.shutdown();
 		}
+		System.out.println(Runtime.getRuntime().availableProcessors()); //4
 	}
 }
