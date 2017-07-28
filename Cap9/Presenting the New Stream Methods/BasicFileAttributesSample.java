@@ -5,7 +5,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class BasicFileAttributesSample {
 	
 	public static void main(String[] args) throws IOException {
-		Path path = Paths.get("/turtles/sea.txt");
+		Path path = Paths.get("c:\\sea.txt");
 		BasicFileAttributes data = Files.readAttributes(path,BasicFileAttributes.class);
 		System.out.println("Is path a directory? "+data.isDirectory());
 		System.out.println("Is path a regular file? "+data.isRegularFile());
