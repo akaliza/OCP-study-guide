@@ -1,9 +1,9 @@
 public enum AnimalClasses {
 	MAMMAL(true), FISH(Boolean.FALSE), BIRD(false),
-	REPTILE(false), AMPHIBIAN(false), INVERTEBRATE(false)
+	REPTILE(false), AMPHIBIAN(false), INVERTEBRATE(false) ; /*add semicolons */
 	boolean hasHair;
  
-	public AnimalClasses(boolean hasHair) {
+	/*public*/ private AnimalClasses(boolean hasHair) {
 		this.hasHair = hasHair;
 	}
  
