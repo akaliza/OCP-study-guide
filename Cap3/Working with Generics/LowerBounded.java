@@ -1,4 +1,5 @@
 import java.util.*; 
+import java.util.stream.*; 
 
 public class LowerBounded{
 	
@@ -8,7 +9,8 @@ public class LowerBounded{
 		List<Object> objects = new ArrayList<Object>(strings);
 		addSound(strings);
 		addSound(objects);
-		
+		strings.forEach(s -> System.out.println(s));
+		objects.forEach(s -> System.out.println(s));
 	}
 	
 	public static void addSound(List<? super String>list) {
