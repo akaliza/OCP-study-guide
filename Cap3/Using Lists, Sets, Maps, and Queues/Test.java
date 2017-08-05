@@ -2,7 +2,17 @@ import java.util.*;
 
 public class Test{
 	
+	public void set(){
+		
+	} 
+	
+	
 	public static void main(String... args){
+		
+		Test t = new Test();
+		t.set();
+		
+		
 		List<String> list = new ArrayList<>();
 		list.add("OH");
 		list.add("CO");
