@@ -6,12 +6,35 @@ public class Test{
 		
 	} 
 	
+	public void printHashMap(){
+		Map<String, String> map = new HashMap<>();
+		map.put("koala", "bamboo");
+		map.put("lion", "meat");
+		map.put("giraffe", "leaf");
+		String food = map.get("koala"); // bamboo
+		for (String key: map.keySet())
+			System.out.print(key + ","); // koala,giraffe,lion,
+		System.out.println(); 
+	}
+	
+	public void printTreeMap(){
+		Map<String, String> map = new TreeMap<>();
+		map.put("koala", "bamboo");
+		map.put("lion", "meat");
+		map.put("giraffe", "leaf");
+		String food = map.get("koala"); // bamboo
+		for (String key: map.keySet())
+			System.out.print(key + ","); // giraffe,koala,lion,
+		System.out.println();
+	}
+	
 	
 	public static void main(String... args){
 		
 		Test t = new Test();
 		t.set();
-		
+		t.printHashMap();
+		t.printTreeMap();
 		
 		List<String> list = new ArrayList<>();
 		list.add("OH");
