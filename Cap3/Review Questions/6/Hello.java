@@ -1,3 +1,4 @@
+//4
 public class Hello<T> {
 	T t;
 	public Hello(T t) { this.t = t; }
