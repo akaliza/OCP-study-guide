@@ -9,4 +9,5 @@ Oracle Certified Professional Java SE 8 Programmer Exam 1Z0-809 - S. G. Ganesh
 enthuware
 
 ## Schedule
+start -> July
 Exam -> December
