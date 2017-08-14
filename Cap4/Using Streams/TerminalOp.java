@@ -35,7 +35,9 @@ T reduce(T identity, BinaryOperator<T> accumulator)
 Optional<T> reduce(BinaryOperator<T> accumulator)
 <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator,BinaryOperator<U> combiner)
 ------------------------------------------------------------
-
+<R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator,
+BiConsumer<R, R> combiner)
+<R,A> R collect(Collector<? super T, A,R> collector)
 */
 
 
@@ -99,8 +101,43 @@ public class TerminalOp{
 		String word2 = stream2.reduce("PREFIX", String::concat);
 		System.out.println(word2); // PREFIXwolf
 		
+		Stream<Integer> stream3 = Stream.of(3, 5, 6);
+		System.out.println(stream3.reduce(1, (a, b) -> a*b));
+		
+		BinaryOperator<Integer> op = (a, b) -> a * b;
+		Stream<Integer> empty = Stream.empty();
+		Stream<Integer> oneElement = Stream.of(3);
+		Stream<Integer> threeElements = Stream.of(3, 5, 6);
+		empty.reduce(op).ifPresent(System.out::println); // no output
+		oneElement.reduce(op).ifPresent(System.out::println); // 3
+		threeElements.reduce(op).ifPresent(System.out::println); // 90
+		
+		BinaryOperator<Integer> op2 = (a, b) -> a * b;
+		Stream<Integer> stream4 = Stream.of(3, 5, 6);
+		System.out.println(stream4.reduce(1, op2, op2)); // 90
+
 		System.out.println();		
 		
+	}
+	
+	public void collect(){
+		
+		Stream<String> stream = Stream.of("w", "o", "l", "f");
+		TreeSet<String> set = stream.collect(TreeSet::new, TreeSet::add,TreeSet::addAll);
+		System.out.println(set); // [f, l, o, w]
+		
+		/*--make the same---*/
+		Stream<String> stream2 = Stream.of("w", "o", "l", "f");
+		TreeSet<String> set2 = stream2.collect(Collectors.toCollection(TreeSet::new));
+		System.out.println(set2); // [f, l, o, w]
+		
+		/*-Make the same, but not sorted--*/
+		Stream<String> stream3 = Stream.of("w", "o", "l", "f");
+		Set<String> set3 = stream3.collect(Collectors.toSet());
+		System.out.println(set3); // [f, w, l, o]
+
+		
+		System.out.println();
 	}
 	
 	public static void main(String...args){
@@ -111,5 +148,6 @@ public class TerminalOp{
 			op.allMatchAndanyMatchAndnoneMatch();
 			op.forEach();
 			op.reduce();
+			op.collect();
 	}
 }
