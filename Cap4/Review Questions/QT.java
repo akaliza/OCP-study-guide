@@ -30,13 +30,13 @@ public class QT{
 	private static  void q6(){
 		Stream<String> s1 = Stream.generate(() -> "meow");
 		Stream<String> s2 = Stream.generate(() -> "meow");
-		//Stream<String> s3 = Stream.generate(() -> "meow");
-		//Stream<String> s4 = Stream.generate(() -> "meow");
+		Stream<String> s3 = Stream.generate(() -> "meow");
+		Stream<String> s4 = Stream.generate(() -> "meow");
 		Stream<String> s5 = Stream.generate(() -> "meow");
 		boolean match1 = s1.allMatch(String::isEmpty);    //false
 		boolean match2 = s2.anyMatch(String::isEmpty);  // the code hangs
-		//boolean match3 = s3.findAny(String::isEmpty);   // ERRO
-		//boolean match4 = s4.findFirst(String::isEmpty); // ERRO
+		//boolean match3 = s3.findAny(String::isEmpty);   // ERROR Not take a predicate param and return boolean 
+		//boolean match4 = s4.findFirst(String::isEmpty); // ERROR Not take a predicate param and return boolean
 		boolean match5 = s5.noneMatch(String::isEmpty); // the code hangs 
 		System.out.println(match1);
 		System.out.println(match2);
@@ -92,13 +92,51 @@ public class QT{
 		if (opt.isPresent()) System.out.println(opt.getAsLong());
 	}
 	
+	private static void q10(){
+		System.out.print(
+			Stream.iterate(1, x -> ++x)
+				.limit(5)
+				.map(x -> "" + x)
+				.collect(Collectors.joining())
+			);
+	}
+	
+	private static void q13(){
+		List<Integer> l1 = Arrays.asList(1, 2, 3);
+		List<Integer> l2 = Arrays.asList(4, 5, 6);
+		List<Integer> l3 = Arrays.asList();
+		Stream.of(l1, l2, l3)
+		//	.map(x -> x + 1)
+		//	.flatMap(x -> x.stream())
+			.forEach(System.out::print);
+	}
+		
+	private static void q14(){
+		Stream<Integer> s = Stream.of(1);
+		IntStream is = s.mapToInt(x -> x);
+		//DoubleStream ds = s.mapToDouble(x -> x);
+		//Stream<Integer> s2 = ds.mapToInt(x -> x);
+		//s2.forEach(System.out::print);
+	}
+	
+	private static void q16(){
+		Stream<String> s = Stream.empty();
+		Stream<String> s2 = Stream.empty();
+		Map<Boolean, List<String>> p = s.collect(
+		Collectors.partitioningBy(b -> b.startsWith("c")));
+		Map<Boolean, List<String>> g = s2.collect(
+		Collectors.groupingBy(b -> b.startsWith("c")));
+		System.out.println(p + " " + g);
+	}
+		
+	private static void q18(){	
+		DoubleStream s = DoubleStream.of(1.2, 2.4);
+		s.peek(System.out::println).filter(x -> x > 2).count();
+		//1.2,2.4
+	}
+	
 	public static void main(String...args){
-		//q1();
-		//Q2(); The code hangs
-		//Q3(); Exception
-		//Q6();
-		//q7();
-		q9();
+		q18();
 	}
 }
 
