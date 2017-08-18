@@ -58,7 +58,7 @@ public class QT{
 		long hours = ChronoUnit.HOURS.between(dateTime1, dateTime2);   //1?  
 		int clock1 = dateTime1.getHour(); //1
 		int clock2 = dateTime2.getHour(); //3
-		System.out.println(hours + "," + clock1 + "," + clock2); // 2,1,3  
+		System.out.println(dateTime1 + "," + dateTime2 + " --- " + hours + "," + clock1 + "," + clock2); // 2,1,3  
 	}
 	private static void q14(){
 		ZoneId zone = ZoneId.of("US/Eastern");
@@ -69,16 +69,26 @@ public class QT{
 	}
 	
 	private static void q15(){
-		String m1 = Duration.of(1, ChronoUnit.MINUTES).toString(); 60
-		String m2 = Duration.ofMinutes(1).toString(); 60 
-		String s = Duration.of(60, ChronoUnit.SECONDS).toString();  1000ms
-		String d = Duration.ofDays(1).toString(); 000
+		String m1 = Duration.of(1, ChronoUnit.MINUTES).toString(); //PT1M
+		String m2 = Duration.ofMinutes(1).toString(); //PT1M 
+		String s = Duration.of(60, ChronoUnit.SECONDS).toString();  //PT1M
+		String d = Duration.ofDays(1).toString(); //PT24H
 		String p = Period.ofDays(1).toString(); //P1D
-		System.out.println( );
+		System.out.println( m1 + " " + m2 + " " + s + " " + d + " " + p + " " );
+	}
+	
+	private static void q16(){
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		LocalDateTime dateTime = LocalDateTime.now();
+		ZoneId zoneId = ZoneId.systemDefault();
+		ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, zoneId);
+		long epochSeconds = 0;
+		//Instant instant = ;
 	}
 	
 	public static void main(String...args){
-		q15();
+		q13();
 		
 		
 
