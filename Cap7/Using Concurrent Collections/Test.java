@@ -14,7 +14,7 @@ public class Test{
 		} catch (InterruptedException e) {
 			// Handle interruption
 		}
-		*/
+		
 		try {
 			BlockingDeque<Integer> blockingDeque = new LinkedBlockingDeque<>();
 			blockingDeque.offer(91);
@@ -27,6 +27,14 @@ public class Test{
 			System.out.println(blockingDeque.pollLast(1, TimeUnit.SECONDS));
 		} catch (InterruptedException e) {
 			// Handle interruption
+		}*/
+		List<Integer> list = new CopyOnWriteArrayList<>(Arrays.asList(4,3,52));
+		for(Integer item: list) {
+			System.out.print(item+" ");
+			list.add(9);
 		}
+		System.out.println();
+		System.out.println("Size: "+list.size());
+
 	}
 }

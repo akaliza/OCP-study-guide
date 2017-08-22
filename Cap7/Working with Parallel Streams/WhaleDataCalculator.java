@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 public class WhaleDataCalculator {
 	
 	public int processRecord(int input) {
