@@ -25,10 +25,31 @@ public class QT{
 			System.out.println(bufferedReader.readLine());
 		}
 	}
+	
+	public static String pullBytes(InputStream is, int count) throws IOException{
+		is.mark(count);
+		final StringBuilder sb = new StringBuilder();
+		for(int i=0; i<count; i++)
+			sb.append((char)is.read());
+		is.reset();
+		is.skip(1);
+		sb.append((char)is.read());
+		return sb.toString();
+	}
 
 	
 	public static void main(String[] args){
-		
+		int i = 3; 
+	    try{
+		   InputStream is = new FileInputStream("C://test.txt");
+		    BufferedInputStream bis = new BufferedInputStream(is);
+		   System.out.println(is.markSupported());
+		   System.out.println(bis.markSupported());
+		  
+		   System.out.println(pullBytes(bis,i));
+		}catch(IOException e ){
+			e.printStackTrace();
+		}
 	}
 	
 }
