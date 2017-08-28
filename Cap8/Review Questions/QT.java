@@ -1,6 +1,11 @@
 import java.io.*;
 
-public class QT{
+interface Q1{}
+interface Q2{}
+class Q4{}
+class Q5{}
+
+public class QT extends Q4 implements Q1,Q2{
 	
 	private static void q5() throws IOException{
 		String line;
