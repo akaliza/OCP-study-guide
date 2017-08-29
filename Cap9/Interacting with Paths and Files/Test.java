@@ -1,4 +1,5 @@
 import java.nio.file.*;
+import java.io.*;
 public class Test {
 	public static void printPathInformation(Path path) {
 		System.out.println("Path is Absolute? " + path.isAbsolute());
@@ -54,16 +55,21 @@ public class Test {
 		System.out.println(path3.resolve(relativePath).normalize()); // "E:|user|home"
 	}
 	
+	public static void realPath() throws IOException{
+		System.out.println(Paths.get(".").toRealPath());
+	}
 	
 	
 	
 	
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws IOException{
 		//printPathInformation(Paths.get("/test.txt"));
 		//Path path = Paths.get("/mammal/carnivore/raccoon.image");
 		//subpath(path);
 		//relativize();
 		//resolve();
-		normalize();
+		//normalize();
+		realPath();
 	}
 }
