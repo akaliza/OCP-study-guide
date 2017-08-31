@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.*;
-
+import java.io.*;
 
 public class QT {
 	public static final String VERSION = "001"; 
@@ -43,9 +43,16 @@ public class QT {
 		System.out.println(path1.resolve(path2)); // pets|..|cat.txt|.|dog.txt 
 		System.out.println(path2.resolve(path1)); // pets|..|cat.txt 
 	} 
+	public static void q18() throws IOException{
+		Path path1 = Paths.get("/lizard/./").resolve(Paths.get("walking.txt"));
+		Path path2 = new File("/lizard/././actions/../walking.txt").toPath();
+		System.out.print(Files.isSameFile(path1,path2));
+		System.out.print(" "+path1.equals(path2));
+		System.out.print(" "+path1.normalize().equals(path2.normalize()));
+	} 
 	
 	public static void main(String[] args) throws IOException {
-		q8(); 
+		q18(); 
 		
 	}
 }
