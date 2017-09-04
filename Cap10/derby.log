@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Sep 04 11:24:35 BRT 2017:
+ Inicializando o Derby versão The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instância a816c00e-015e-4d47-57ae-000000bd1228
+no diretório de banco de dados C:\Users\rafael.possenti\Desktop\git\OCP-study-guide\Cap10\zoo 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_144-b01
+user.dir=C:\Users\rafael.possenti\Desktop\git\OCP-study-guide\Cap10
+os.name=Windows 7
+os.arch=x86
+os.version=6.1
+derby.system.home=null
+Carregador de classe do banco de dados iniciado - derby.database.classpath=''
