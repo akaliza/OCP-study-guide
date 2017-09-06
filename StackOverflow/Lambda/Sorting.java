@@ -68,6 +68,20 @@ public class Sorting{
 		
 		
 		people.forEach(s -> System.out.println(s.toString()));
+		
+		
+		
+		Map<String, Integer> map = new HashMap();  // ... or any other Map class
+		map.put("Green",5);
+		map.put("yellow",2);
+		map.put("red",8);
+		
+		map = map.entrySet()
+			.stream()
+			.sorted(Map.Entry.<String, Integer>comparingByValue())
+			.collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue(),
+									 (k, v) -> k, LinkedHashMap::new));
+		System.out.println(map);				  
         
 	}
 		
