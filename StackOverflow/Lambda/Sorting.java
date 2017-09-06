@@ -21,7 +21,7 @@ class Person{
 	
 	@Override
 	public String toString(){
-		return this.name;
+		return ("NAME: " + this.name + " ID: "+ this.id ) ;
 	}
 	
 	
@@ -33,9 +33,14 @@ public class Sorting{
 		
 		Person p1 = new Person(1,"Arthur");
 		Person p2 = new Person(2,"Adrian");
+		Person p3 = new Person(3,"Adrian");
+		Person p4 = new Person(4,"Michael");
 		
-		List<Person> people = Arrays.asList(p1,p2);
 		
+		List<Person> people = Arrays.asList(p1,p2,p3,p4);
+
+		//1 - Note that Collections.sort(...) only works on collections that are subtypes of List.
+		/* old way, before java8 
 		Collections.sort(
 			people,
 			new Comparator<Person>() {
@@ -43,9 +48,27 @@ public class Sorting{
 					return p1.getName().compareTo(p2.getName());
 				}
 			});
+		*/ 
+		
+		Collections.sort(
+			people, 
+			(pe1, pe2) -> pe1.getName().compareTo(pe2.getName())
+			);
+		
+		//method references  
+		Collections.sort(
+			people,
+			Comparator.comparing(Person::getName)
+			);
+		
+		//thenComparing method		
+		Collections.sort(
+			people, 
+			Comparator.comparing(Person::getName).thenComparing(Person::getId));	
+		
 		
 		people.forEach(s -> System.out.println(s.toString()));
-        /*https://stackoverflow.com/documentation/java/91/lambda-expressions#t=201708241216302789188*/
+        
 	}
 		
 }
