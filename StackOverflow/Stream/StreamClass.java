@@ -25,5 +25,17 @@ public class StreamClass{
 		
 		/*https://stackoverflow.com/documentation/java/88/streams#t=201709061901349079757*/
 		 
+		 
+		List<Integer> integerList = Arrays.asList(0, 1, 2, 3, 42);  
+		// sequential 
+		long howManyOddNumbers = integerList.stream()
+									.filter(e -> (e % 2) == 1)
+                                    .count(); 
+		System.out.println(howManyOddNumbers); // Output: 2
+		// parallel
+		long howManyOddNumbersParallel = integerList.parallelStream()
+											.filter(e -> (e % 2) == 1)
+                                            .count();
+		System.out.println(howManyOddNumbersParallel); // Output: 2
 	}
 }
