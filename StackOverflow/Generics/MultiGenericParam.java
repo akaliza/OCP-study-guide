@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class MultiGenericParam<T, S> {
     private T firstParam;
     private S secondParam;
