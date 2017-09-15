@@ -8,4 +8,10 @@ public class Crate<T> {
 	public void packCrate(T contents) {
 		this.contents = contents;
 	}
+	
+	public static <T> Crate<T> ship(T t) {
+		System.out.println("Preparing " + t);
+		return new Crate<T>();
+	}
+
 }
