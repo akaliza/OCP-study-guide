@@ -6,7 +6,7 @@ public class LowerBounded{
 	public static void main(String[] args){
 		List<String> strings = new ArrayList<String>();
 		strings.add("tweet");
-		List<Object> objects = new ArrayList<>(strings);
+		List<Object> objects = new ArrayList<Object>(strings);
 		addSound(strings);
 		addSound(objects);
 		strings.forEach(s -> System.out.println(s));
