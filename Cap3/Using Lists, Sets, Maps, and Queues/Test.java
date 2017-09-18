@@ -54,7 +54,7 @@ public class Test{
 		System.out.println(queue.poll()); // 4
 		System.out.println(queue.peek()); // null
 		
-		
+		//Queue<Integer> stack = new ArrayDeque<>(); does not compile 
 		ArrayDeque<Integer> stack = new ArrayDeque<>();
 		stack.push(10);
 		stack.push(4);
