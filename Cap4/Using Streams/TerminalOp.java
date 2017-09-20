@@ -73,6 +73,10 @@ public class TerminalOp{
 		List<String> list = Arrays.asList("monkey", "2", "chimp");
 		Stream<String> infinite = Stream.generate(() -> "chimp");
 		Predicate<String> pred = x -> Character.isLetter(x.charAt(0));
+		
+		System.out.println(list.stream().anyMatch(x -> Character.isLetter( x.charAt(0) )));  // true
+		System.out.println(list.stream().allMatch(x -> Character.isLetter( x.charAt(0) )));  // true
+		
 		System.out.println(list.stream().anyMatch(pred));  // true
 		System.out.println(list.stream().allMatch(pred));  // false
 		System.out.println(list.stream().noneMatch(pred)); // false
@@ -142,12 +146,12 @@ public class TerminalOp{
 	
 	public static void main(String...args){
 			TerminalOp op = new TerminalOp(); 
-			op.count();
-			op.minMax();
-			op.findAnyAndfindFirst();
+			//op.count();
+			//op.minMax();
+			//op.findAnyAndfindFirst();
 			op.allMatchAndanyMatchAndnoneMatch();
-			op.forEach();
-			op.reduce();
-			op.collect();
+			//op.forEach();
+			//op.reduce();
+			//op.collect();
 	}
 }
