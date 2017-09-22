@@ -31,6 +31,12 @@ LongStream		 LongFunction  LongToDouble		   LongToInt	   LongUnary
 public class WorkPrim{
 	
 		public static void doubleStream(){
+			
+			double d1 = 1.0;
+			DoubleToIntFunction f1 = x -> 1;
+			int a = f1.applyAsInt(d1);
+			
+			
 			DoubleStream oneValue = DoubleStream. of (3.14);
 			DoubleStream varargs = DoubleStream. of (1.0, 1.1, 1.2);
 			oneValue.forEach(System.out::println);
@@ -58,7 +64,7 @@ public class WorkPrim{
 			rangeClosed.forEach(System.out::println);
 			
 			Stream<String> objStream = Stream.of("penguin", "fish");
-			IntStream intStream = objStream.mapToInt(s -> s.length())
+			IntStream intStream = objStream.mapToInt(s -> s.length());
 			
 			
 			
