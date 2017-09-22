@@ -106,7 +106,7 @@ public class TerminalOp{
 		System.out.println(word2); // PREFIXwolf
 		
 		Stream<Integer> stream3 = Stream.of(3, 5, 6);
-		System.out.println(stream3.reduce(1, (a, b) -> a*b));
+		System.out.println(stream3.reduce(2, (a, b) -> a*b));
 		
 		BinaryOperator<Integer> op = (a, b) -> a * b;
 		Stream<Integer> empty = Stream.empty();
@@ -149,9 +149,9 @@ public class TerminalOp{
 			//op.count();
 			//op.minMax();
 			//op.findAnyAndfindFirst();
-			op.allMatchAndanyMatchAndnoneMatch();
+			//op.allMatchAndanyMatchAndnoneMatch();
 			//op.forEach();
-			//op.reduce();
+			op.reduce();
 			//op.collect();
 	}
 }

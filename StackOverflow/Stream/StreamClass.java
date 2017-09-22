@@ -23,6 +23,14 @@ public class StreamClass{
            .sorted()
            .forEach(System.out::println); /*Terminal*/ 
 		
+		Stream<String> fruitStream9 = Stream.of("apple", "banana", "pear", "kiwi", "orange");
+		fruitStream9.filter(s -> s.contains("a"))
+           .map(s -> s.length())
+           .sorted()
+           .forEach(System.out::println); /*Terminal*/ 
+		
+		
+		
 		/*https://stackoverflow.com/documentation/java/88/streams#t=201709061901349079757*/
 		 
 		 
