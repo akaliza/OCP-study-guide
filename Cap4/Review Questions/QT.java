@@ -5,8 +5,9 @@ import java.util.function.*;
 public class QT{
 	
 	private static void q1(){
-		Stream<String> stream = Stream.iterate("", (s) -> s + "1");
-		System.out.println(stream.limit(2).map(x -> x + "2"));		
+		Stream<String> stream = Stream.iterate("", (s) -> s + "1"); //The first element (position 0) in the Stream will be the provided seed 
+		System.out.println(stream.limit(2).map(x -> x + "2")); //reference
+		//stream.limit(2).map(x -> x + "2").forEach(System.out::print);	//1=> "" -> "" + "2" = "2"; 2=> "1" -> "1" + "2" = "12" 
 		System.out.println();
 	}
 	
@@ -136,7 +137,7 @@ public class QT{
 	}
 	
 	public static void main(String...args){
-		q18();
+		q1();
 	}
 }
 
