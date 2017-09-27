@@ -40,6 +40,7 @@ public class QT{
 		//boolean match4 = s4.findFirst(String::isEmpty); // ERROR Not take a predicate param and return boolean
 		boolean match5 = s5.noneMatch(String::isEmpty); // the code hangs 
 		System.out.println(match1);
+		
 		System.out.println(match2);
 		//System.out.println(match3);
 		//System.out.println(match4);
@@ -66,7 +67,7 @@ public class QT{
 	private static List<String> q7Call(List<String> list) {
 		/**ERRO 
 		return list.stream()
-			.compare((a, b) -> b.compareTo(a))
+			.compare((a, b) -> b.compareTo(a)) 
 			.collect(Collectors.toList());  
 		return list.stream()
 			.compare((a, b) -> b.compareTo(a))
@@ -82,15 +83,16 @@ public class QT{
 			.sorted((a, b) -> b.compareTo(a))
 			.collect();*/
 		return list.stream()
-			.sorted((a, b) -> b.compareTo(a))
+			.sorted((a, b) -> b.compareTo(a)) //Stream<T> sorted(Comparator<? super T> comparator)
 			.collect(Collectors.toList());
 			
 	}
 	
 	private static void q9(){
-		LongStream ls = LongStream.of(1, 2, 3);
+		LongStream ls = LongStream.of(1, 2, 3);	
 		OptionalLong opt = ls.map(n -> n * 10).filter(n -> n < 5).findFirst();
 		if (opt.isPresent()) System.out.println(opt.getAsLong());
+		opt.ifPresent(System.out::println);
 	}
 	
 	private static void q10(){
@@ -137,7 +139,7 @@ public class QT{
 	}
 	
 	public static void main(String...args){
-		q1();
+		q9();
 	}
 }
 
