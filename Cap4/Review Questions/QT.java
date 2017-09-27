@@ -95,31 +95,32 @@ public class QT{
 		opt.ifPresent(System.out::println);
 	}
 	
-	private static void q10(){
+	private static void q11(){
 		System.out.print(
-			Stream.iterate(1, x -> ++x)
+			Stream.iterate(1, x -> ++x) //case x++ = 11111 
 				.limit(5)
-				.map(x -> "" + x)
+				.map(x -> "" + x) //convert Integer to String
 				.collect(Collectors.joining())
 			);
 	}
+	
 	
 	private static void q13(){
 		List<Integer> l1 = Arrays.asList(1, 2, 3);
 		List<Integer> l2 = Arrays.asList(4, 5, 6);
 		List<Integer> l3 = Arrays.asList();
 		Stream.of(l1, l2, l3)
-		//	.map(x -> x + 1)
-		//	.flatMap(x -> x.stream())
+			.flatMap(x -> x.stream())
+			.map(x -> x + 1)
 			.forEach(System.out::print);
 	}
 		
 	private static void q14(){
 		Stream<Integer> s = Stream.of(1);
-		IntStream is = s.mapToInt(x -> x);
-		//DoubleStream ds = s.mapToDouble(x -> x);
-		//Stream<Integer> s2 = ds.mapToInt(x -> x);
-		//s2.forEach(System.out::print);
+		//IntStream is 	= s.mapToInt(x -> x);
+		DoubleStream ds = s.mapToDouble(x -> x);
+		Stream<Integer> s2 =  ds.mapToObj(x -> (int) x); //mapToObj and the cast 
+		s2.forEach(System.out::print);
 	}
 	
 	private static void q16(){
@@ -139,7 +140,7 @@ public class QT{
 	}
 	
 	public static void main(String...args){
-		q9();
+		q14();
 	}
 }
 
