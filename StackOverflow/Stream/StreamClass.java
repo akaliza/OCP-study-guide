@@ -1,6 +1,27 @@
 import java.util.*;
 import java.util.stream.*;
 
+class Person{
+	private String name; 
+	private String surname; 
+	
+	public Person(String n, String s){
+		this.name = n;
+		this.surname = s;
+	}
+	
+	
+	public String getName(){
+		return this.name; 
+	} 
+	
+	public String getSurname(){
+		return this.surname; 
+	}
+	
+	
+}
+
 public class StreamClass{
 	
 	public static void main(String...args){
@@ -45,5 +66,33 @@ public class StreamClass{
 											.filter(e -> (e % 2) == 1)
                                             .count();
 		System.out.println(howManyOddNumbersParallel); // Output: 2
+		
+		
+		List<Person> people = Arrays.asList(
+			new Person("Sam", "Rossi"),
+			new Person("Sam", "Verdi"),
+			new Person("John", "Bianchi"),
+			new Person("John", "Rossi"),
+			new Person("John", "Verdi"));
+		
+		Map<String, List<String>> map = people.stream()
+        .collect(
+                // function mapping input elements to keys
+                Collectors.groupingBy(Person::getName, 
+                // function mapping input elements to values,
+                // how to store values
+                Collectors.mapping(Person::getSurname, Collectors.toList()))
+        );
+		
+		 System.out.println(map);
+
+// map = {John=[Bianchi, Rossi, Verdi], Sam=[Rossi, Verdi]}
+		
+		
+		
+		
+		
+		
+		
 	}
 }
