@@ -140,8 +140,6 @@ public class QT{
 	}
 	
 	public static void main(String...args){
-		q14();
+		q16();
 	}
 }
-
-
