@@ -83,12 +83,14 @@ public class StreamClass{
                 // how to store values
                 Collectors.mapping(Person::getSurname, Collectors.toList()))
         );
-		
-		 System.out.println(map);
+		// map = {John=[Bianchi, Rossi, Verdi], Sam=[Rossi, Verdi]}	
+		System.out.println(map);
 
-// map = {John=[Bianchi, Rossi, Verdi], Sam=[Rossi, Verdi]}
-		
-		
+		Stream<String> s2 = Stream.of("TAD","ABC","At");
+		Map<Boolean, List<String>> map2 = s2.
+		collect(Collectors.partitioningBy( s -> s.startsWith("A")));
+		System.out.println(map2);
+
 		
 		
 		
