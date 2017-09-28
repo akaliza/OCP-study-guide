@@ -90,7 +90,18 @@ public class StreamClass{
 		Map<Boolean, List<String>> map2 = s2.
 		collect(Collectors.partitioningBy( s -> s.startsWith("A")));
 		System.out.println(map2);
-
+		
+		
+		List<String> data = new ArrayList<>();
+		data.add("Sydney");
+		data.add("London");
+		data.add("New York");
+		data.add("Amsterdam");
+		data.add("Mumbai");
+		data.add("California");
+		System.out.println(data);
+		List<String> sortedData = data.stream().sorted().collect(Collectors.toList());
+		System.out.println(sortedData);
 		
 		
 		
