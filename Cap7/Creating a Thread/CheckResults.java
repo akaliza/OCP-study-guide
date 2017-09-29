@@ -7,9 +7,9 @@ public class CheckResults {
 		new Thread(() -> { for(int i=0; i<500; i++) CheckResults.counter++; }).start();
 		
 		while(CheckResults.counter<100) {
-			System.out.println("Not reached yet");
+			System.out.println("Not reached yet : " + CheckResults.counter);
 			Thread.sleep(1000); // 1 SECOND
 		}
-		System.out.println("Reached!");
+		System.out.println("Reached! " + CheckResults.counter);
 	}
 }
