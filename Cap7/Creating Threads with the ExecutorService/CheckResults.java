@@ -8,9 +8,9 @@ public class CheckResults {
 			try {
 				service = Executors.newSingleThreadExecutor();
 				Future<?> result = service.submit(() -> {
-					for(int i=0; i<500; i++) CheckResults.counter++;
+					for(int i=0; i<500; i++) System.out.print("|" + CheckResults.counter++ + "|");
 				});
-				result.get(10, TimeUnit.SECONDS);
+				result.get(10, TimeUnit.MILLISECONDS );
 				System.out.println("Reached!");
 			} catch (TimeoutException e) {
 				System.out.println("Not reached in time");
