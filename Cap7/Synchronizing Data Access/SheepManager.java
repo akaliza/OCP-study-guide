@@ -8,6 +8,8 @@ public class SheepManager {
 		//System.out.print((++sheepCount)+" ");
 		synchronized(this) {
 			System.out.print(sheepCount.incrementAndGet()+" ");
+			if(sheepCount.get() == 5)
+			    System.out.print(" <CP> ");			
 		}
 	}
 
