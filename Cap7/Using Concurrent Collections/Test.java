@@ -27,7 +27,8 @@ public class Test{
 			System.out.println(blockingDeque.pollLast(1, TimeUnit.SECONDS));
 		} catch (InterruptedException e) {
 			// Handle interruption
-		}*/
+		}
+		
 		List<Integer> list = new CopyOnWriteArrayList<>(Arrays.asList(4,3,52));
 		for(Integer item: list) {
 			System.out.print(item+" ");
@@ -35,6 +36,29 @@ public class Test{
 		}
 		System.out.println();
 		System.out.println("Size: "+list.size());
+		*/
 
+			
+		Map<String,Integer> map = new ConcurrentHashMap<>();
+		map.put("zebra", 52);
+		map.put("elephant", 10);
+		System.out.println(map.get("elephant"));
+
+		Queue<Integer> queue = new ConcurrentLinkedQueue<>();
+		queue.offer(31);
+		System.out.println(queue.peek());
+		System.out.println(queue.poll());
+
+		Deque<Integer> deque = new ConcurrentLinkedDeque<>();
+		deque.offer(10);
+		deque.push(4);
+		System.out.println(deque.peek());
+		System.out.println(deque.pop());
+
+		Map<String, Object> foodData = new ConcurrentHashMap<>();
+		foodData.put("penguin", 1);
+		foodData.put("flamingo", 2);
+		for(String key: foodData.keySet())
+			foodData.remove(key);
 	}
 }
