@@ -5,6 +5,16 @@ public class Test{
 	
 	public static void main(String...args){
 		
+		List<Integer> list = new CopyOnWriteArrayList<>(Arrays.asList(4,3,52));
+		for(Integer item: list) {
+			System.out.print(item + " ");
+			list.add(9);
+		}
+		System.out.println();
+		System.out.println("Size: " + list.size());
+		System.out.println("List: " + list);
+		
+		
 		try {
 			BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>();
 			blockingQueue.offer(39);
@@ -29,16 +39,6 @@ public class Test{
 			// Handle interruption
 		}
 		
-		/*
-		List<Integer> list = new CopyOnWriteArrayList<>(Arrays.asList(4,3,52));
-		for(Integer item: list) {
-			System.out.print(item+" ");
-			list.add(9);
-		}
-		System.out.println();
-		System.out.println("Size: "+list.size());
-		*/
-
 			
 		Map<String,Integer> map = new ConcurrentHashMap<>();
 		map.put("zebra", 52);
