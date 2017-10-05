@@ -5,9 +5,22 @@ public class Parallel {
 	
 	public static void main(String[] args) {
 											  
+			System.out.println(Arrays.asList("w","o","l","f")
+				.stream()
+				.reduce("X",(a,b) -> a.concat(b) /*String::concat*/ ));		//Xwolf					  
+			
+			System.out.println(Arrays.asList("w","o","l","f")
+				.parallelStream()
+				.reduce("X",(a,b) -> a.concat(b) /*String::concat*/ ));		//XwXoXlXf
+			
 			System.out.println(Arrays.asList(1,2,3,4,5,6)
 									.stream()
 									.reduce(0,(a,b) -> (a-b))); //1-2=-1;-1-3=-4;-4-4=-8;-8-5=-13;-13-6=-21
+			
+			System.out.println(Arrays.asList(1,2,3,4,5,6)
+									.parallelStream()
+									.reduce(0,(a,b) -> (a-b))); //3
+									
 			System.out.println();
 			
 			Stream<Integer> stream = Arrays.asList(1,2,3,4,5,6).stream();
@@ -34,7 +47,9 @@ public class Parallel {
 				.parallelStream()
 				.map(s -> {System.out.println(s); return s.toUpperCase();})
 				.forEach(System.out::println);
-
-					
+			
+			
+			System.out.println(Arrays.asList(1,2,3,4,5,6).stream().findAny().get()); //without get return Optional[1]
+			System.out.println(Arrays.asList(1,2,3,4,5,6).parallelStream().findAny().get());			
 	}
 }
