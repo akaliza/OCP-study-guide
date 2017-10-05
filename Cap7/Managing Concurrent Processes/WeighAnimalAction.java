@@ -10,18 +10,19 @@ public class WeighAnimalAction extends RecursiveAction {
 		this.end = end;
 		this.weights = weights;
 	}
-
+	
+	@Override 
 	protected void compute() {
-		if(end-start <= 3)
-			for(int i=start; i<end; i++) {
+		if(end-start <= 3) // 1°= 10-0 <=3:ELSE | 2°= 5-0 <= 3:ELSE | 10-5 <=3:ELSE   | 5-2 <=3 IF 
+			for(int i=start; i<end; i++) { 
 				weights[i] = (double)new Random().nextInt(100);
 				System.out.println("Animal Weighed: "+i);
 			}
 		else {
-			int middle = start+((end-start)/2);
-			System.out.println("[start="+start+",middle="+middle+",end="+end+"]");
-			invokeAll(new WeighAnimalAction(weights,start,middle),
-			new WeighAnimalAction(weights,middle,end));
+			int middle = start+((end-start)/2); //1°=5 2°=2 3°=7  
+			System.out.println("[start="+start+",middle="+middle+",end="+end+"]"); // 0 5 10 | 0 2 5 | 5 7 10    
+			invokeAll(new WeighAnimalAction(weights,start,middle), // x,0,5
+					  new WeighAnimalAction(weights,middle,end));  // x,5,10		
 		}
 	}
 	
