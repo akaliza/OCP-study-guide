@@ -1,4 +1,4 @@
-import java.util.*;
+	import java.util.*;
 import java.util.concurrent.*;
 
 public class WeighAnimalTask extends RecursiveTask<Double> {
@@ -22,7 +22,7 @@ public class WeighAnimalTask extends RecursiveTask<Double> {
 			}
 			return sum;
 		} else {
-			int middle = start+((end-start)/2);
+			int middle = start+((end-start)/2); //5
 			System.out.println("[start="+start+",middle="+middle+",end="+end+"]");
 			RecursiveTask<Double> otherTask = new WeighAnimalTask(weights,start,middle);
 			otherTask.fork();
