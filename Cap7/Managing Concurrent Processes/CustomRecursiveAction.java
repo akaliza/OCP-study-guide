@@ -39,4 +39,10 @@ public class CustomRecursiveAction extends RecursiveAction {
 		logger.info("This result - (" + result + ") - was processed by " + Thread.currentThread().getName());
 	}
 	
+	public static void main(String... args){
+		CustomRecursiveAction customRecursiveAction = new CustomRecursiveAction("novo");
+		forkJoinPool.execute(customRecursiveAction);
+		customRecursiveTask.join();
+	}
+	
 }
