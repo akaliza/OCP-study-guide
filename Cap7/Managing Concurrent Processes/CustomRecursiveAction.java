@@ -40,9 +40,10 @@ public class CustomRecursiveAction extends RecursiveAction {
 	}
 	
 	public static void main(String... args){
-		CustomRecursiveAction customRecursiveAction = new CustomRecursiveAction("novo");
+		CustomRecursiveAction customRecursiveAction = new CustomRecursiveAction("nova execução da Thread");
+		ForkJoinPool forkJoinPool = new ForkJoinPool();
 		forkJoinPool.execute(customRecursiveAction);
-		customRecursiveTask.join();
+		customRecursiveAction.join();
 	}
 	
 }
