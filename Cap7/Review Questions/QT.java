@@ -4,8 +4,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class QT{
-	/*
-	private static void q1(){
+	
+	private static void q3(){
 		ExecutorService service = Executors.newSingleThreadScheduledExecutor();
 		service.scheduleWithFixedDelay(() -> { // w1 --does not compile
 			System.out.println("Open Zoo");
@@ -14,7 +14,7 @@ public class QT{
 		Future<?> result = service.submit(() -> System.out.println("Wake Staff")); // w3
 		System.out.println(result.get()); // w4
 	}
-	*/	
+			
 	private static void q2(){
 		AtomicLong value1 = new AtomicLong(0);
 		final long[] value2 = {0};
