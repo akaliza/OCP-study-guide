@@ -5,7 +5,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class QT{
 	
-	private static void q3(){
+	private static void q3() throws Exception{
+		/*
 		ExecutorService service = Executors.newSingleThreadScheduledExecutor();
 		service.scheduleWithFixedDelay(() -> { // w1 --does not compile
 			System.out.println("Open Zoo");
@@ -13,8 +14,27 @@ public class QT{
 		}, 0, 1, TimeUnit.MINUTES);
 		Future<?> result = service.submit(() -> System.out.println("Wake Staff")); // w3
 		System.out.println(result.get()); // w4
+		*/
+		
+		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+		service.scheduleWithFixedDelay(() -> { // w1 --does not compile
+			System.out.println("Open Zoo");
+			return; // --does not compile w2
+		}, 0, 1, TimeUnit.MINUTES);
+		Future<?> result = service.submit(() -> System.out.println("Wake Staff")); // w3
+		System.out.println(result.get()); // w4
 	}
 			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+	/*		
 	private static void q2(){
 		AtomicLong value1 = new AtomicLong(0);
 		final long[] value2 = {0};
@@ -53,9 +73,9 @@ public class QT{
 				    (c1, c2) -> c1.length() + c2.length(), // q2
 					(s1, s2) -> s1 + s2)); // q3
 	}
-	
-	public static void main(String...args){
-		q10();
+	*/
+	public static void main(String...args) throws Exception{
+		q3();
 	}
 }
 
