@@ -33,17 +33,28 @@ public class QT{
 		System.out.println(value1+" "+value2[0]);
 	}
 	
-	/*
+	
 	private static void q7(){
+		int count;
 		List<Integer> l1 = Arrays.asList(1,2,3);
 		List<Integer> l2 = new CopyOnWriteArrayList<>(l1);
 		Set<Integer>  s3 = new ConcurrentSkipListSet<>();
 		s3.addAll(l1);
+		/*The CopyOnWriteArrrayList class is designed to preserve the original list on iteration */
 		for(Integer item: l2) l2.add(4); // x1
-		for(Integer item: s3) s3.add(5); // x2
-		System.out.println(l1.size()+" "+l2.size()+" "+s3.size());
+		
+		/*he second loop executes exactly four times, since elements in a set are unique and 5 can be added only once.*/
+		for(Integer item: s3) s3.add(5); // x2 
+		
+		System.out.println(l1.size()+" "+l2.size()+" "+s3.size()); //3 6 4  
+		
+		/**The ConcurrentSkipListSet class allows modifications while iterating,
+			so the second loop above generate an infinite loop.
+		count = 4;
+		for(Integer item: s3){ count++; s3.add(count);} // x2
+		*/
 	}
-	
+	/*
 	private static void q8(){
 		Integer i1 = Arrays.asList(1,2,3,4,5).stream().findAny().get(); //1  
 		synchronized(i1) { // y1
@@ -64,7 +75,7 @@ public class QT{
 	}
 	*/
 	public static void main(String...args) throws Exception{
-		q4();
+		q7();
 	}
 }
 
