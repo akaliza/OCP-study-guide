@@ -17,34 +17,23 @@ public class QT{
 		*/
 		
 		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-		service.scheduleWithFixedDelay(() -> { // w1 --does not compile
+		service.scheduleWithFixedDelay(() -> { // w1 --does not compile because it is assigned to an ExecutorService.
 			System.out.println("Open Zoo");
-			return; // --does not compile w2
+			return; // --does not compile because scheduleWithFixedDelay()supports only Runnable(return void)
 		}, 0, 1, TimeUnit.MINUTES);
 		Future<?> result = service.submit(() -> System.out.println("Wake Staff")); // w3
 		System.out.println(result.get()); // w4
-	}
+	}			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-	/*		
-	private static void q2(){
+	private static void q4(){
 		AtomicLong value1 = new AtomicLong(0);
 		final long[] value2 = {0};
-		IntStream.iterate(1, i -> 1).limit(100).parallel()
-			.forEach(i -> value1.incrementAndGet());
-		IntStream.iterate(1, i -> 1).limit(100).parallel()
-			.forEach(i -> ++value2[0]);
+		IntStream.iterate(1, i -> 1).limit(100).parallel().forEach(i -> value1.incrementAndGet()); //100
+		IntStream.iterate(1, i -> 1).limit(100).parallel().forEach(i -> ++value2[0]); //undefined
 		System.out.println(value1+" "+value2[0]);
 	}
 	
+	/*
 	private static void q7(){
 		List<Integer> l1 = Arrays.asList(1,2,3);
 		List<Integer> l2 = new CopyOnWriteArrayList<>(l1);
@@ -75,7 +64,7 @@ public class QT{
 	}
 	*/
 	public static void main(String...args) throws Exception{
-		q3();
+		q4();
 	}
 }
 
