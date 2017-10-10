@@ -66,17 +66,28 @@ public class QT{
 		}
 	}
 	
-	/*
+	
 	private static void q10(){
+		/* https://coderanch.com/t/671281/certification/Streams */
+		/*
+		<U> U reduce(U identity,
+             BiFunction<U,? super T,U> accumulator,
+             BinaryOperator<U> combiner)
+		
+		<U> U reduce(U identity,
+			BiFunction<Integer,? super String, Integer> accumulator,
+			BinaryOperator<U> combiner)
+			
+		*/	 
 		System.out.println(Arrays.asList("duck","chicken","flamingo","pelican")
-			.parallelStream().parallel() // q1
+			.parallelStream().parallel() // q1 OK 
 			.reduce(0,
-				    (c1, c2) -> c1.length() + c2.length(), // q2
+				    (c1, c2) -> c1 /*.length()*/ + c2.length() , // q2 
 					(s1, s2) -> s1 + s2)); // q3
 	}
-	*/
+	
 	public static void main(String...args) throws Exception{
-		q8();
+		q10();
 	}
 }
 
