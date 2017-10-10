@@ -79,11 +79,18 @@ public class QT{
 			BinaryOperator<U> combiner)
 			
 		*/	 
+		/*
 		System.out.println(Arrays.asList("duck","chicken","flamingo","pelican")
 			.parallelStream().parallel() // q1 OK 
 			.reduce(0,
-				    (c1, c2) -> c1 /*.length()*/ + c2.length() , // q2 
-					(s1, s2) -> s1 + s2)); // q3
+				    (c1, c2) -> c1 /*.length() + c2.length(), // q2 
+					(s1, s2) -> s1 + s2) ); // q3
+		*/
+					
+		System.out.println(Arrays.asList("duck","chicken","flamingo","pelican")
+			.parallelStream().parallel() // q1 OK 
+			.reduce(0,(i1, s2) -> i1 + s2.length(),
+			 Integer::sum));
 	}
 	
 	public static void main(String...args) throws Exception{
