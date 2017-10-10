@@ -54,18 +54,19 @@ public class QT{
 		for(Integer item: s3){ count++; s3.add(count);} // x2
 		*/
 	}
-	/*
+	
 	private static void q8(){
 		Integer i1 = Arrays.asList(1,2,3,4,5).stream().findAny().get(); //1  
 		synchronized(i1) { // y1
 			Integer i2 = Arrays.asList(6,7,8,9,10)
 				.parallelStream()
 				.sorted() // y2
-				.findAny().get(); // y3
+				.findAny().get(); // y3 can be anything, because is parallelStream()
 			System.out.println(i1+" "+i2);
 		}
 	}
-
+	
+	/*
 	private static void q10(){
 		System.out.println(Arrays.asList("duck","chicken","flamingo","pelican")
 			.parallelStream().parallel() // q1
@@ -75,7 +76,7 @@ public class QT{
 	}
 	*/
 	public static void main(String...args) throws Exception{
-		q7();
+		q8();
 	}
 }
 
