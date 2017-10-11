@@ -122,8 +122,17 @@ public class QT{
 		System.out.println(data.get(false).size()+" "+data.get(true).size());
 	}
 	
+	//addAndPrintItems(new LinkedBlockingDeque<Integer>());
+	public static void addAndPrintItems(BlockingDeque<Integer> deque) throws InterruptedException{
+		deque.offer(103); //103
+		deque.offerFirst(20, 1, TimeUnit.SECONDS);  //20,103
+		deque.offerLast(85, 7, TimeUnit.HOURS); //20,103,85
+		System.out.print(deque.pollFirst(200, TimeUnit.NANOSECONDS)); //20
+		System.out.print(" "+deque.pollLast(1, TimeUnit.MINUTES)); //85
+	}
+	
 	public static void main(String...args) throws Exception{
-		q13();
+		
 	}
 }
 
