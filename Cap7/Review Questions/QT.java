@@ -113,8 +113,17 @@ public class QT{
 		f2.get();
 	} 
 	
+	private static void q13(){
+		Stream<String> cats = Stream.of("leopard","lynx","ocelot","puma").parallel();
+		Stream<String> bears = Stream.of("panda","grizzly","polar").parallel();
+		ConcurrentMap<Boolean, List<String>> data = Stream.of(cats,bears)
+			.flatMap(s -> s) // the stream created by flatMap() is a new stream that is not parallel by default
+			.collect(Collectors.groupingByConcurrent(s -> !s.startsWith("p")));
+		System.out.println(data.get(false).size()+" "+data.get(true).size());
+	}
+	
 	public static void main(String...args) throws Exception{
-		q11();
+		q13();
 	}
 }
 
