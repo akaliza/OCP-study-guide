@@ -20,6 +20,14 @@ public class StockRoomTracker {
 		IntStream.iterate(1, i -> 1)
 			.limit(9)
 			.parallel()
-			.forEach(i -> await(cb)); // j3 
+			.forEach(i -> await(cb)); // j3
+		
+		/*		
+		ExecutorService service = null;
+		service = Executors.newFixedThreadPool(10);
+		for(int i=0; i<10; i++)
+			service.submit(() -> await(cb));
+		*/
+			
 	}
 }
