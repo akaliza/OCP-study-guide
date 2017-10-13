@@ -55,6 +55,22 @@ public class IntroStream{
 		}
 		
 		System.out.println("#####");
+		
+		
+		InputStream is = new BufferedInputStream(new FileInputStream("alfa.txt"));
+		System.out.print ((char)is.read());
+		if(is.markSupported()) {
+			is.mark(100);
+			System.out.print((char)is.read());
+			System.out.print((char)is.read());
+			is.reset();
+		}else{
+			System.out.println("");
+		}
+		System.out.print((char)is.read());
+		System.out.print((char)is.read());
+		System.out.print((char)is.read());
+		
 		/*
 		try (ObjectInputStream objectStream = new ObjectInputStream(
 											  new BufferedInputStream(
