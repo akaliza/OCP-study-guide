@@ -57,19 +57,29 @@ public class IntroStream{
 		System.out.println("#####");
 		
 		
-		InputStream is = new BufferedInputStream(new FileInputStream("alfa.txt"));
-		System.out.print ((char)is.read());
+		InputStream is = new BufferedInputStream(new FileInputStream("alfa.txt")); //ABCD
+		System.out.print ((char)is.read()); //A
 		if(is.markSupported()) {
-			is.mark(100);
-			System.out.print((char)is.read());
-			System.out.print((char)is.read());
-			is.reset();
-		}else{
-			System.out.println("");
+			is.mark(100); 
+			System.out.print((char)is.read()); //B 
+			System.out.print((char)is.read()); //C 
+			is.reset(); //- then call reset and return to the B
 		}
-		System.out.print((char)is.read());
-		System.out.print((char)is.read());
-		System.out.print((char)is.read());
+		System.out.print((char)is.read()); //B
+		System.out.print((char)is.read()); //C
+		System.out.print((char)is.read()); //D 
+		
+		System.out.println();
+		
+		InputStream isa = new BufferedInputStream(new FileInputStream("animals.txt")); //TIGERS
+		System.out.print ((char)isa.read()); //T
+		isa.skip(2); // skip IG
+		isa.read(); // don't put E
+		System.out.print((char)isa.read()); //R
+		System.out.print((char)isa.read()); //S
+
+		
+		
 		
 		/*
 		try (ObjectInputStream objectStream = new ObjectInputStream(
