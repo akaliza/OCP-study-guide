@@ -11,9 +11,15 @@ public class Animal implements Serializable {
 		this.type = type;
 	}
 	
-	public String getName() { return name; }
-	public int getAge() { return age; }
-	public char getType() { return type; }
+	public String getName() { 
+		return name; 
+	}
+	public int getAge() { 
+		return age; 
+	}
+	public char getType() { 
+		return type; 
+	}
 	public String toString() {
 		return "Animal [name=" + name + ", age=" + age + ", type=" + type + "]";
 	}
