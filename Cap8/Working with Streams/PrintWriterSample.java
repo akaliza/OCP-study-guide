@@ -11,7 +11,7 @@ public class PrintWriterSample {
 			out.print(1/3.0);
 			out.println('C');
 			out.format("It has rained 10.12 inches this year");
-			out.println();
+			out.println(); 
 			out.printf("It may rain 21.2 more inches this year");
 		}
 	}
