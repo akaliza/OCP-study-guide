@@ -76,6 +76,7 @@ public class Test {
 		//resolve();
 		//normalize();
 		//realPath();
-		getName();
+		//getName();
+		System.out.println(Paths.get(".").toRealPath());
 	}
 }
