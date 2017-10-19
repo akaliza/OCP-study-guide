@@ -59,8 +59,13 @@ public class Test {
 		System.out.println(Paths.get(".").toRealPath());
 	}
 	
-	
-	
+	public static void getName() throws IOException{
+		Path path = Paths.get("/land/hippo/harry.happy");
+		System.out.println("The Path Name is: " + path);
+		for(int i=0; i < path.getNameCount(); i++) {
+			System.out.println(" Element "+i+" is: "+path.getName(i));
+		}
+	}
 	
 	
 	public static void main(String[] args) throws IOException{
@@ -70,6 +75,7 @@ public class Test {
 		//relativize();
 		//resolve();
 		//normalize();
-		realPath();
+		//realPath();
+		getName();
 	}
 }
