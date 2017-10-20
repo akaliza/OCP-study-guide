@@ -67,6 +67,13 @@ public class Test {
 		}
 	}
 	
+	public static void moveNonEmptyDir() throws IOException{
+		Path path 		 = Paths.get("C:/temp/animal");
+		Path destination = Paths.get("C:/animal_new");
+		
+		Files.move(path, destination);
+
+	}
 	
 	public static void main(String[] args) throws IOException{
 		//printPathInformation(Paths.get("/test.txt"));
@@ -76,6 +83,7 @@ public class Test {
 		//resolve();
 		//normalize();
 		//realPath();
-		getName();
+		//getName();
+		moveNonEmptyDir();
 	}
 }
