@@ -85,5 +85,6 @@ public class Test {
 		//realPath();
 		//getName();
 		moveNonEmptyDir();
+		//System.out.println(Paths.get(".").toRealPath());
 	}
 }
