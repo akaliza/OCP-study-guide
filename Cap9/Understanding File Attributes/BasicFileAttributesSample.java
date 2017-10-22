@@ -17,5 +17,9 @@ public class BasicFileAttributesSample {
 		System.out.println("Last modified date/time: "+data.lastModifiedTime());
 		System.out.println("Last accessed date/time: "+data.lastAccessTime());
 		System.out.println("Unique file identifier (if available): "+ data.fileKey());
+		
+		
+		
+		
 }
 }

@@ -8,6 +8,9 @@ public class Test {
 		
 		IntStream rangeClosed = IntStream.rangeClosed(1, 5);
 		rangeClosed.forEach(System.out::println);
+		
+		Stream<String> objStream = Stream.of("penguin", "fish");
+		IntStream intStream = objStream.mapToInt(s -> s.length());
 
 	}
 }
