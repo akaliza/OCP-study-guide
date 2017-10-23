@@ -6,14 +6,16 @@ import java.io.*;
 public class QT {
 	public static final String VERSION = "001"; 
 	
-	public static void q1(){
-		Path path2 = Paths.get("/lion");
-		Path path  = Paths.get("/user/.././root","../kodiacbear.txt"); // changes Path.get for Paths.get
-		path.normalize().relativize(path2);  //change for a variable of Path type;
-		System.out.println(path); // |user|..|.|root|..|kodiacbear.txt
-		Path path3 = path.normalize().relativize(path2);
-		System.out.println(path3); //..lion
+	public static void q1() throws IOException {
+		Path path = Paths.get("/user/.././root","../kodiacbear.txt"); // / /user/.././root/../kodiacbear.txt  //PATHS
+		Path path2 = Paths.get("../lion");
+		path.normalize().relativize(path2);  // ../lion  //path instead of " /lion on the argument"
+		System.out.println(path); // 
+
 	}
+	
+	
+	
 	
 	public static void q3() throws IOException{
 		Path path = Paths.get("sloth.schedule");
@@ -28,6 +30,15 @@ public class QT {
 	Path path = Paths.get("/zoo/animals/bear/koala/food.txt");
 	System.out.println(path.subpath(1,3).getName(1)); 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public static void q6() throws IOException{
 		Path path = Paths.get("/animals");
@@ -52,7 +63,7 @@ public class QT {
 	} 
 	
 	public static void main(String[] args) throws IOException {
-		q18(); 
+		q1(); 
 		
 	}
 }
