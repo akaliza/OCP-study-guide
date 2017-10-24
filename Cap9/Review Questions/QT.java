@@ -7,11 +7,12 @@ public class QT {
 	public static final String VERSION = "001"; 
 	
 	public static void q1() throws IOException {
-		Path path = Paths.get("/user/.././root","../kodiacbear.txt"); // / /user/.././root/../kodiacbear.txt  //PATHS
-		Path path2 = Paths.get("../lion");
-		path.normalize().relativize(path2);  // ../lion  //path instead of " /lion on the argument"
-		System.out.println(path); // 
-
+		Path path  = Paths.get("/user/.././root","../kodiacbear.txt");  //PATHS
+		Path path2 = Paths.get("/lion");
+		Path path3 = path.normalize().relativize(path2);   //path instead of String
+		System.out.println(path);  // \\user\\..\\.\\root\\..\\kodiacbear.txt
+		System.out.println(path.normalize()); // \\kodiacbear.txt
+		System.out.println(path3); //..\\lion
 	}
 	
 	
