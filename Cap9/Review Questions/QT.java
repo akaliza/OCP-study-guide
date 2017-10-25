@@ -39,24 +39,11 @@ public class QT {
 			.findFirst().isPresent(); // w2
 		System.out.println(myBoolean ? "No Sub-directory": "Has Sub-directory");
 		
-		Stream<Boolean> stream = Files.find(path, 10,
+		Stream<Path> stream = Files.find(path, 10,
 			(p,a) -> a.isDirectory() && !path.equals(p) );
 		System.out.println(stream);
 		
 	} 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public static void q8() throws IOException{
 		Path path1 = Paths.get("/pets/../cat.txt");
@@ -64,6 +51,26 @@ public class QT {
 		System.out.println(path1.resolve(path2)); // pets|..|cat.txt|.|dog.txt 
 		System.out.println(path2.resolve(path1)); // pets|..|cat.txt 
 	} 
+	
+	public static void q13() throws IOException{
+		Path path = Paths.get("/monkeys");
+		Files.find(path, 0, (p,a) -> a.isSymbolicLink()).map(p -> p.toString()) // y1
+			.collect(Collectors.toList()) // y2
+			.stream() // y3
+			.filter(x -> x.toString().endsWith(".txt")) // y4
+			.forEach(System.out::println);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void q18() throws IOException{
 		Path path1 = Paths.get("/lizard/./").resolve(Paths.get("walking.txt"));
 		Path path2 = new File("/lizard/././actions/../walking.txt").toPath();
@@ -73,7 +80,7 @@ public class QT {
 	} 
 	
 	public static void main(String[] args) throws IOException {
-		q6(); 
+		q13(); 
 		
 	}
 }
