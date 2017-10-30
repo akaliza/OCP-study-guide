@@ -1,0 +1,66 @@
+1 - OK 
+B. Compiles fine, and when run, it prints the following: red: 0 green: 0 blue: 0
+
+2 - OK 
+C. T he program prints the following: Base:print
+
+3 - ERRADO
+A. T his program prints the following: 3
+
+
+4 - OK 
+A. Compiler error: cannot find symbol
+
+5 - ERRADO| acertou o problema erro o erro apresentado
+B. Compiles fine, and when run, crashes with the exception
+MultipleClassInheritanceException
+
+6 - OK 
+D. int
+
+7 - OK 
+B. Public and protected both can be used
+
+
+8 - OK 
+A. finalize() method
+B. clone() method
+
+9 - OK 
+C. Compiles fine, and when run, it prints the following: The color is: 101010
+
+10 - OK 
+A. Compiler error: attempting to assign weaker access privileges; toString was
+public in Object
+
+
+
+class Base {}
+class DeriOne extends Base {}
+class DeriTwo extends Base {}
+class ArrayStore {
+public static void main(String []args) {
+   Base [] baseArr = new DeriOne[3];
+   baseArr[0] = new DeriOne();  
+   baseArr[2] = new DeriTwo(); ---->>> ERRO
+   System.out.println(baseArr.length);
+}
+}
+
+
+3. C. This program throws an ArrayStoreException
+The variable baseArr is of type Base[], and it points to an array of type DeriOne.
+However, in the statement baseArr[2] = new DeriTwo(), an object of type DeriTwo
+is assigned to the type DeriOne, which does not share a parent-child inheritance
+relationship-they only have a common parent, which is Base. Hence, this assignment
+results in an ArrayStoreException.
+
+
+5. A. Compiler error: ‘{’ expected – cannot extend two classes
+Java does not support multiple class inheritance. Since ColoredRectangle
+and RoundedRectangle are classes, it results in a compiler error when
+ColoredRoundedRectangle class attempts to extend these two classes. Note that it is
+acceptable for a class to be empty.
+
+
+
