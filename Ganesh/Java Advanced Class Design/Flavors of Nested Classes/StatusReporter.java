@@ -1,4 +1,9 @@
 class StatusReporter {
+	
+	/*You can pass only final variables to a local inner class. 
+	If you don't declare a variable that a local inner
+	class accesses, the compiler will treat it as effectively final.*/
+	
 	// important to note that the argument "color" is declared final
 	static Shape.Color getDescriptiveColor(final Shape.Color color) {
 		// local class DescriptiveColor that extends Shape.Color class
