@@ -1,0 +1,43 @@
+1 - OK
+D. You can create an instance of a concrete subclass of an abstract class but
+cannot create an instance of an abstract class itself
+
+2 - OK
+B. Compiler error: illegal combination of modifiers abstract and final
+
+3 - OK 
+A. Compiler error: the method Color() is undefined for the type Shape
+// = new Shape().new Color();
+
+4 - OK 
+C. R uns and prints this output:
+
+5 - ERRADO( coloquei a) 
+
+C. Compiler error: cannot instantiate the type EnumTest.PrinterType
+You cannot instantiate an enum type using new.
+
+6 - ERRADO (coloquei a )
+B. No, this enum definition is incorrect and will result in compile error(s)
+You need to define enum elements first before any other attribute in an enum class. In
+other words, this enum definition will compile cleanly if you interchange the statements
+marked with “#1” and “#2” within comments in this code.
+
+
+7 - OK 
+D. T his program prints: be idle
+
+8 - OK 
+C. T his code will produce a compiler error: enum types must not be local
+An enum can only be defined inside of a top-level class or interface and not within a
+method.
+
+9 - OK 
+
+C. T he program prints: DerivedInterface’s foo
+
+10 - OK 
+D. T his program compiles without errors, and when run, it prints 100 in console
+
+
+
