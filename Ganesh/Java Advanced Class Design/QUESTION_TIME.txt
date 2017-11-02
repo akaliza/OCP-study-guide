@@ -12,7 +12,7 @@ A. Compiler error: the method Color() is undefined for the type Shape
 4 - OK 
 C. R uns and prints this output:
 
-5 - ERRADO( coloquei a) 
+5 - ERRADO( coloquei a ) 
 
 C. Compiler error: cannot instantiate the type EnumTest.PrinterType
 You cannot instantiate an enum type using new.
@@ -21,7 +21,7 @@ You cannot instantiate an enum type using new.
 B. No, this enum definition is incorrect and will result in compile error(s)
 You need to define enum elements first before any other attribute in an enum class. In
 other words, this enum definition will compile cleanly if you interchange the statements
-marked with ì#1î and ì#2î within comments in this code.
+marked with ‚Äú#1‚Äù and ‚Äú#2‚Äù within comments in this code.
 
 
 7 - OK 
@@ -34,7 +34,7 @@ method.
 
 9 - OK 
 
-C. T he program prints: DerivedInterfaceís foo
+C. T he program prints: DerivedInterface‚Äôs foo
 
 10 - OK 
 D. T his program compiles without errors, and when run, it prints 100 in console
