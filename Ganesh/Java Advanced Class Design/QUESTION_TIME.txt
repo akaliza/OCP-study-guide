@@ -12,12 +12,12 @@ A. Compiler error: the method Color() is undefined for the type Shape
 4 - OK 
 C. R uns and prints this output:
 
-5 - ERRADO( coloquei a ) 
+5 - ERRADO( coloquei a) 
 
 C. Compiler error: cannot instantiate the type EnumTest.PrinterType
 You cannot instantiate an enum type using new.
 
-6 - ERRADO (coloquei a )
+6 - ERRADO (coloquei a)
 B. No, this enum definition is incorrect and will result in compile error(s)
 You need to define enum elements first before any other attribute in an enum class. In
 other words, this enum definition will compile cleanly if you interchange the statements
