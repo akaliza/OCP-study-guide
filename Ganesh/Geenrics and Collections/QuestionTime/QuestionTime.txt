@@ -9,6 +9,13 @@ Second type:class java.util.LinkedList
 3- OK 
 C. When executed, the program prints the following: Brazil China India Russia
 
+When null is passed as a second argument to the Arrays.sort() method, it means
+that the default Comparable (i.e., natural ordering for the elements) should be used.
+The default Comparator results in sorting the elements in ascending order. The
+program does not result in a NullPointerException or any other exceptions or a
+compiler error.
+
+
 4- ERRADO - (coloquei C) 
 "abracadabra".chars().distinct().peek(ch -> System.out.printf("%c ", ch)).
 sorted();
@@ -44,8 +51,27 @@ https://docs.oracle.com/javase/7/docs/api/java/util/ArrayDeque.html
 $ java DequeTest - The removed element is: 1
 B. When executed, this program prints the following: “The removed element is: 1”
 
+The remove() method is equivalent to the removeFirst() method, which removes
+the first element (head of the queue) of the Deque object.
+
 
 9- ERRADO (coloquei A)
 C. I t results in a compilation error
 
-5/9
+It looks like the setError() method in StrLastError is overriding setError()
+in the LastError class. However, it is not the case. At the time of compilation, the
+knowledge of type S is not available. Therefore, the compiler records the signatures of
+these two methods as setError(String) in superclass and setError(S_extends_
+CharSequence) in subclass—treating them as overloaded methods (not overridden). In
+this case, when the call to setError() is found, the compiler finds both the overloaded
+methods matching, resulting in the ambiguous method call error. Here is the error
+message
+Test.java:22: error: reference to setError is ambiguous, both method setError(T)
+in LastError and method setError(S) in StrLastError match
+err.setError("Last error");
+^
+where T and S are type-variables:
+T extends Object declared in class LastError. S extends CharSequence declared in
+class StrLastError.
+
+6*/9
