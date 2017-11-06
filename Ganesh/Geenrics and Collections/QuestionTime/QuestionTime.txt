@@ -6,26 +6,46 @@ A. I t prints the following:
 First type: class java.util.LinkedList
 Second type:class java.util.LinkedList
 
-3-
+3- OK 
 C. When executed, the program prints the following: Brazil China India Russia
 
+4- ERRADO - (coloquei C) 
+"abracadabra".chars().distinct().peek(ch -> System.out.printf("%c ", ch)).
+sorted();
+
+D. T his program terminates normally without printing any output in the console
 
 
-4-
-5-
-6-
-7-
-8-
-9-
-10-
-11-
-12-
-13-
-14-
-15-
-16-
-17-
-18-
-19-
-20-
+5- OK 
+IntStream.rangeClosed(1, 1).forEach(System.out::println);
 
+A. I t prints: 1
+
+
+6- OK
+import java.util.stream.DoubleStream;
+public class DoubleUse {
+public static void main(String []args) {
+DoubleStream nums = DoubleStream.of(1.0, 2.0, 3.0).map(i -> -i); // #1
+System.out.printf("count = %d, sum = %f", nums.count(), nums.sum());
+}
+}
+
+D. T his program crashes by throwing a java.lang.IllegalStateException
+
+7- ERRADO (inseri C-falta de atenção)
+
+B. T his program prints: "aaaeaa"
+
+8- ERRADO (coloquei D) 
+https://docs.oracle.com/javase/7/docs/api/java/util/Deque.html
+https://docs.oracle.com/javase/7/docs/api/java/util/ArrayDeque.html
+
+$ java DequeTest - The removed element is: 1
+B. When executed, this program prints the following: “The removed element is: 1”
+
+
+9- ERRADO (coloquei A)
+C. I t results in a compilation error
+
+5/9
