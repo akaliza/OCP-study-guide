@@ -1,0 +1,31 @@
+1- OK 
+C. I t results in a compiler error
+
+2- OK
+A. I t prints the following:
+First type: class java.util.LinkedList
+Second type:class java.util.LinkedList
+
+3-
+C. When executed, the program prints the following: Brazil China India Russia
+
+
+
+4-
+5-
+6-
+7-
+8-
+9-
+10-
+11-
+12-
+13-
+14-
+15-
+16-
+17-
+18-
+19-
+20-
+
