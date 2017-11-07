@@ -1,4 +1,4 @@
-1. 
+1. OK
 B. java.util.function.Consumer<T>
 C. java.util.function.Supplier<T>
 D. java.util.function.Predicate<T>
@@ -15,14 +15,33 @@ public class PredicateTest {
 C. T his program prints: false
 
 
-3-
+3- ERRADO (Coloquei A) - compila: Function<Integer, Integer> negate = (i -> -i), square = (i -> i * i), negateSquare = negate.compose(square);
+
+B. T his program prints: -100
+
+4- OK 
+
+C. Function<String, Integer>
 
 
+5- OK
+import java.util.function.BiFunction;
+public class StringCompare {
+   public static void main(String args[]){ 
+      BiFunction<String, String, Boolean> compareString = (x, y) -> x.equals(y);
+      System.out.println(compareString.apply("Java8","Java8")); // #1
+   }
+}
 
-4-
-5-
-6-
-7-
-8-
-9-
-10-
+B. T his program prints: true
+
+
+6- OK
+
+B. The get() method in java.util.function.Supplier<T> interface
+
+7- ERRADO (Coloquei A ) - ""::contains compila 
+D. T his program prints: doesn’t contain
+
+8- ERRADO (Coloquei B) - retorna void consumer- OK
+D. T his program prints: v
