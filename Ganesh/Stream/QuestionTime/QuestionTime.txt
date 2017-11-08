@@ -1,0 +1,48 @@
+1 - errado(coloquei D - o peek funciona somente quando se tem um operação terminal)
+
+D. This code segment terminates normally without printing any output in the
+console.
+A stream pipeline is lazily evaluated. Since there is no terminal operation provided (such as
+count(), forEach(), reduce(), or collect()), this pipeline is not evaluated and hence the
+peek() method does not print any output to the console. --
+
+
+2 - ERRADO (coloquei C)
+E. T his program crashes by throwing java.lang.IllegalStateException
+
+A stream once used–i.e., once “consumed”–cannot be used again. In this program,
+anyMatch() is a terminal operation. Hence, once anyMatch() is called, the stream
+in temperatures is considered “used” or “consumed”. Hence, calling findAny()
+terminal operation on temperatures results in the program throwing java.lang.
+IllegalStateException.
+
+3 errado (Coloquei D- The allMatch() method returns true for an empty stream)
+F. This program prints: true
+
+The predicate str -> str.length() > 5 returns false for all the elements because the
+length of each string is 2. Hence, the filter() method results in an empty stream and the
+peek() method does not print anything. The allMatch() method returns true for an empty
+stream and does not evalute the given predicate. Hence this program prints true.
+
+
+4 OK
+
+C. T his program prints: mo miny meeny eeny
+
+5 - errado
+D. T his program prints: 6
+
+Data and calculation methods such as sum() and average() are not available in the
+Stream<T> interface; they are available only in the primitive type versions IntStream,
+LongStream, and DoubleStream. To create an IntStream, one solution is to use mapToInt()
+method instead of map() method in this program. If mapToInt() were used, this program
+would compile without errors, and when executed, it will print 6 to the console.
+
+A. Compiler error: Cannot find symbol “sum” in interface Stream<Integer>
+
+6- OK 
+C. T his program results in a compiler error in line marked with comment #3
+
+7- OK 
+A. T his program prints: EENY MEENY dummy
+
