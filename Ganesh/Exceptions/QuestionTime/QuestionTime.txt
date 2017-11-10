@@ -1,0 +1,151 @@
+1 - ACD
+
+
+B.
+public void foo() throws AccessDeniedException {
+throw new AccessDeniedException("");
+}
+
+C.
+public void foo() throws FileSystemException, RuntimeException {
+throw new NullPointerException();
+}
+
+
+---
+1. Options B and C
+In option A and D, the throws clause declares to throw exceptions IOException and
+Exception respectively, which are more general than the FileSystemException,
+so they are not compatible with the base method definition. In option B, the foo()
+method declares to throw AccessDeniedException, which is more specific than
+FileSystemException, so it is compatible with the base definition of the foo()
+method. In option C, the throws clause declares to throw FileSystemException, which
+is the same as in the base definition of the foo() method. Additionally it declares to
+throw RuntimeException, which is not a checked exception, so the definition of the
+foo() method is compatible with the base definition of the foo() method.
+
+
+
+
+
+
+
+
+
+
+
+2 -  ERRADO - inseri A
+
+B. class java.lang.IllegalStateException
+
+2. B. class java.lang.IllegalStateException
+In the expression new RuntimeException(oob);, the exception object oob is already
+chained to the RuntimeException object. The method initCause() cannot be
+called on an exception object that already has an exception object chained during
+the constructor call. Hence, the call re.initCause(oob); results in initCause()
+throwing an IllegalStateException.
+
+
+
+3 - ERRADO - inseri A 
+
+D. T his program fails with compiler error(s)
+
+3. D. This program fails with compiler error(s)
+The foo() method catches ArrayIndexOutOfBoundsException and chains it to an
+Exception object. However, since Exception is a checked exception, it must
+be declared in the throws clause of foo(). Hence this program results in this
+compiler error:
+ExceptionTest.java:6: error: unreported exception Exception; must be caught or
+declared to be thrown
+throw new Exception(oob);
+^
+1 error
+
+
+4 - inseri A - falta atenção. 
+
+4. D. This program fails with compiler error(s)
+For multi-catch blocks, the single pipe (|) symbol needs to be used and not double pipe
+(||), as provided in this program. Hence this program will fail with compiler error(s).
+
+
+5,1 - OK
+C. catch (AccountExpiredException | AccountNotFoundException
+exception)
+
+5.1. C. catch (AccountExpiredException | AccountNotFoundException exception)
+For A and B, the base type handler is provided with the derived type handler, hence the
+multi-catch is incorrect. For D, the exception name exception1 is redundant and will
+result in a syntax error. C is the correct option and this will compile fine without errors.
+
+
+5,2 - errado - coloquei D 
+
+A. I n the handler of AccountNotFoundException
+
+5.2. A. In the handler of AccountNotFoundException
+In this code, the created type of the exception is AccountNotFoundException. Though
+the exception object is stored in the variable of type LoginException and then typecasted
+to Exception, the dynamic type of the exception remains the same, which is
+AccountNotFoundException. When looking for a catch handler, the Java runtime looks
+for the exact handler based on the dynamic type of the object. Since it is available
+immediately as the first handler, this exactly matching catch handler got executed.
+
+
+
+
+6 - inseri C 
+
+6. B. The program prints the following: CustomSQLException
+The exception thrown is CustomSQLException object from the overridden foo method
+in DeriClass. Note that SQLException is a checked exception since it extends the
+Exception class. Inside the BaseClass, the foo method lists SQLException in its throws
+clause. In the DeriClass, the overridden foo method lists CustomSQLException
+in its throws clause: it is acceptable to have a more restrictive exception throws
+clause in a derived class. Hence, the given program compiles successfully and prints
+CustomSQLException.
+
+
+7
+A. T he program prints the following: in catch -> in finally -> after everything
+
+7. D. The program prints the following: in catch -> in finally ->
+The statement println("after throw -> "); will never be executed since the
+line marked with the comment LINE A throws an exception. The catch handles
+ArithmeticException, so println("in catch -> "); will be executed.
+Following that, there is a return statement, so the function returns. But before
+the function returns, the finally statement should be called, hence the statement
+println("in finally -> "); will get executed. So, the statement println("after
+everything"); will never get executed.
+
+
+8
+A. T his program terminates normally without throwing any exceptions
+
+8. A. This program terminates normally without throwing any exceptions
+The try-with-resources statement internally expands to call the close() method in the
+finally block. If the resource is explicitly closed in the try block, then calling close()
+again does not have any effect. From the description of the close() method in the
+AutoCloseable interface: “Closes this stream and releases any system resources
+associated with it. If the stream is already closed, then invoking this method has no
+effect.”
+
+9
+C. P rints "Exception"
+9. F. Does not print any output on the console
+By default, assertions are disabled. If -ea (or the -enableassertions option to enable
+assertions), then the program would have printed "Error" since the exception thrown
+in the case of assertion failure is java.lang.AssertionError, which is derived from
+the Error class.
+
+10
+B. java.io.FileNotFoundException
+
+
+
+10. B. java.io.FileNotFoundException
+If both the try block and finally block throw exceptions, the exception thrown
+from the try block will be ignored. Hence, the method thrower() throws
+a FileNotFoundException. The dynamic type of the variable throwable is
+FileNotFoundException, so the program prints that type name.
