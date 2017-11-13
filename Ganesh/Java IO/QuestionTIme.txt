@@ -1,0 +1,68 @@
+1 - errado coloquei A 
+OutputStream os = new FileOutputStream("log.txt");
+System.setErr(new PrintStream(os)); // SET SYSTEM.ERR
+System.err.println("Error");
+
+
+D. This code segment redirects the System.err to the log.txt file and will write
+the text “Error” to that file.
+
+
+Note that you can redirect the System.err programmatically using the setErr()
+method. System.err is of type PrintStream, and the System.setErr() method takes a
+PrintStream as an argument. Once the error stream is set, all writes to System.err will
+be redirected to it. Hence, this program will create log.txt with the text “Error” in it.
+
+
+2 - OK
+B. BufferedReader br =
+new BufferedReader(new InputStreamReader(System.in));
+String str = br.readLine();
+
+
+3 - errado coloquei C 
+console.printf("%d %1$x %1$o", 16);
+
+D. This program prints: 16 10 20
+
+In the format specifier, “1$” refers to first argument, which is 16 in this printf statement.
+Hence “%1$x” prints the hexadecimal value of 16, which is 10. Further, “%1$o” prints
+the octal value of 16, which is 20. Hence the output “16 10 20” from this program.
+
+4 - OK 
+D. Byte streams are meant for handling binary data that is not human-readable;
+character streams are meant for human-readable characters.
+
+5 - ERRADO - coloquei B(57)
+USPresident usPresident = new USPresident("Barack Obama", "2009 to --", 56);
+try (ObjectOutputStream oos =
+new ObjectOutputStream(new FileOutputStream("USPresident.data"))) {
+oos.writeObject(usPresident);
+usPresident.setTerm(57);
+oos.writeObject(usPresident);
+
+
+5. A. 56
+Yes, it will print 56 even though you changed the term using its setter to 57 and
+serialized again. At the time of serialization, JVM checks for the duplicate object; if an
+object is already serialized then JVM do not serialize the object again; instead, JVM
+stores a reference to the serialized object.
+
+
+6- OK 
+FileInputStream findings = new FileInputStream("log.txt");
+DataInputStream dataStream = new DataInputStream(findings);
+BufferedReader br = new BufferedReader(new InputStreamReader(dataStream));
+String line;
+while ((line = br.readLine()) != null) {
+System.out.println(line);
+}
+br.close();
+
+B. The br.close() statement will close the BufferedReader object and the
+underlying stream objects referred by findings and dataStream.
+
+C. The readLine() method invoked in the statement br.readLine() can throw
+an IOException; if this exception is thrown, br.close() will not be called,
+resulting in a resource leak.
+
