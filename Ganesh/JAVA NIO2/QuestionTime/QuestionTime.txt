@@ -1,0 +1,22 @@
+1 - errado(coloquei D)
+
+C. T he program gets into an infinite loop, printing “path element: directory”
+forever.
+
+2 - errado(coloquei C (NIO2)) 
+
+B. src
+
+note that the root itself (in this case, D:\) is not considered an element in the path.
+
+3 - errado(coloquei C)
+
+B. T his program prints true.
+
+
+4 - OK 
+A. lines.limit(1).forEach(System.out::println);
+
+5-OK
+A. BiPredicate<Path, BasicFileAttributes> predicate = (path, attrs)
+-> true;
