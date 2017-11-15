@@ -1,0 +1,71 @@
+1-ERRADO (COLOQUEI C )
+
+
+1. D.
+class PingPong extends Thread {
+public void run() {
+System.out.println("ping");
+}
+public static void main(String []args) throws InterruptedException{
+Thread pingPong = new PingPong();
+pingPong.start();
+pingPong.join();
+System.out.println("pong");
+}
+}
+
+probelma da opção C: 
+Option c) The main thread and the worker thread execute independently without
+any coordination. (Note that it does not have a call to join() in the main method.)
+So, depending on which thread is scheduled first, you can get “ping pong” or “pong
+ping” printed.
+
+C.
+class PingPong extends Thread {
+public void run() {
+System.out.println("ping");
+}
+public static void main(String []args) {
+Thread pingPong = new PingPong();
+pingPong.start();
+System.out.println("pong");
+}
+}
+
+
+2 - OK
+B. Starvation
+
+
+3 - OK 
+A.
+class Sync {
+public synchronized void foo() {}
+}
+B.
+abstract class Sync {
+public synchronized void foo() {}
+}
+
+
+4
+D. It crashes throwing an AssertionError
+
+
+5- OK 
+C. import java.util.concurrent.Callable;
+class CallableTask implements Callable<Integer> {
+public Integer call() {
+System.out.println("In Callable.call()");
+return 0;
+}
+}
+
+
+6 - errado - coloquei A 
+
+C. The program does not compile and results in a compiler error in the line marked
+with comment LINE A.
+
+7
+C. T he overloaded submit() methods declared in the ExecutorService interface
