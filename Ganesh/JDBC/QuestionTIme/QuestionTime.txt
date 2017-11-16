@@ -1,0 +1,68 @@
+1-errado
+
+C. A driver manager ensures the atomic properties of a transaction.
+The other three options A, B, and D are true. A driver manager maintains a list of
+available data sources and their drivers. Given a database URL, the driver manager
+chooses an appropriate driver to communicate with the respective DBMS. Further, a
+driver manager manages multiple concurrent drivers connected to their respective
+data sources. However, it is not responsible for maintaining atomicity properties
+when performing transactions.
+
+
+2-OK
+c for(int i = 1; i <= numOfColumns; i++) {
+
+
+3-errado
+
+3. A. This program will print the following: SQLException.
+The statement while (resultSet.next()) is missing.
+
+
+4 - errado.
+
+The correct options are C and E.
+You can get an instance of PreparedStatement by calling the
+preparedStatement() method in the Connection interface. The Statement
+interface and its derived interfaces implement the AutoCloseable interface, so
+Statement objects can be used with the try-with-resources statement.
+The other three options A, B, and D are incorrect for the following reasons:
+A: Statement objects can be used for SQL queries that have no parameters. Only a
+CallableStatement can handle IN, OUT, and INOUT parameters.
+B: PreparedStatement is used for precompiled SQL statements. The
+CallableStatement type is used for stored procedures.
+D: CallableStatement implements the PreparedStatement interface.
+PreparedStatement in turn implements the Statement interface. Further, these
+three types are interfaces, not classes.
+
+
+5 - OK 
+
+B. Statement statement = connection.createStatement();
+
+6
+
+C. Replacing Stmt #1 with resultSet.moveToInsertRow(); and Stmt #2 with
+resultSet.insertRow(); will make the program work.
+You need to call the moveToInsertRow() method in order to insert a new row: this
+method prepares the resultset for creating a new row. Once the row is updated, you
+need to call insertRow() to insert the row into the resultset and the database.
+
+7. - OK 
+A. Calling absolute(1) on a ResultSet instance is equivalent to calling
+first(), and calling absolute(-1) is equivalent to calling last().
+
+
+
+8. - errado
+
+C. This program crashes by throwing a SQLException.
+The try-with-resources block is closed before the while statement executes.
+Calling resultSet.next() results in making a call on the closed ResultSet object.
+Hence, this program results in throwing a SQLException (“Operation not allowed
+after ResultSet closed”).
+
+
+---
+
+
