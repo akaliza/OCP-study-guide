@@ -12,7 +12,7 @@ public class FileCopy {
 		Path pathSource = Paths.get(args[0]);
 		Path pathDestination = Paths.get(args[1]);
 		try {
-			Files.copy(pathSource, pathDestination);
+			Files.copy(pathSource, pathDestination, StandardCopyOption.REPLACE_EXISTING);
 			System.out.println("Source file copied successfully");
 		} catch (IOException e) {
 			e.printStackTrace();
