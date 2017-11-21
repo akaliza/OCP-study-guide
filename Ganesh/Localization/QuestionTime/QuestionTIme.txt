@@ -1,0 +1,44 @@
+1
+E. Locale locale4 = Locale.ITALIAN;
+
+1. B. NumberFormat.getInstance(Locale.GERMANY);
+
+2-OK
+
+F. This program results in a compiler error at statement #4.
+
+3 - errado coloquei B
+
+E. The program prints the following: navi_PAN DORA.
+
+4
+
+B.
+from=von
+subject=betreff
+
+
+5 - errado coloquei A 
+
+Assume that you’ve the following resource bundles in your classpath:
+ResourceBundle.properties
+ResourceBundle_ar.properties
+ResourceBundle_en.properties
+ResourceBundle_it.properties
+ResourceBundle_it_IT_Rome.properties
+Also assume that the default locale is English (US), where the language code is en and
+country code is US. Which one of these five bundles will be loaded for the call
+loadResourceBundle("ResourceBundle", new Locale("fr", "CA", ""));?
+
+C. ResourceBundle_en.properties
+
+
+
+6 - OK 
+
+Which of the following is a correct override for extending the ListResourceBundle class?
+
+C. public Object[][] getContents() {
+return new Object[][] { { "MovieName", "Avatar" } };
+}
+
