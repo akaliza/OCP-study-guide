@@ -1,0 +1,62 @@
+1 - OK
+d) T his code segment does not print anything on the console
+
+2 - OK
+b) while( (ch = inputFile.read()) != -1) {
+
+3 - OK 
+
+a) Base
+Derived
+DeriDerived
+
+
+4 - OK
+
+d) T his code prints:
+	Awaiting
+	Awaiting
+	Awaiting
+	Let's play
+
+
+
+	final CyclicBarrier barrier = new CyclicBarrier(3, () -> System.out.println("Let's play"));
+	// LINE_ONE
+	Runnable r = () -> { // LINE_TWO
+		System.out.println("Awaiting");
+		try {
+			barrier.await();
+		} catch(Exception e) { /* ignore */ }
+	};
+	
+	Thread t1 = new Thread(r);
+	Thread t2 = new Thread(r);
+	Thread t3 = new Thread(r);
+	t1.start();
+	t2.start();	
+	t3.start();
+
+
+
+	
+
+5 - 
+class Point {
+private int x = 0, y;
+public Point(int x, int y) {
+this.x = x;
+this.y = y;
+}
+// DEFAULT_CTOR
+}
+
+
+c) private Point() {
+this(0, 0);
+}
+
+e) public Point() {
+this(x, 0);
+}
+
