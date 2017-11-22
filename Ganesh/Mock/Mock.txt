@@ -187,5 +187,42 @@ return new Object[][] { { "1", "Uno" }, { "2", "Duo" }, { "3", "Trie" }};
 ===============> 
 3/20 = 85% until here
 
+
+21-OK
+a) Iterable<T>
+
+
+22- OK 
+c) This program prints: 11
+
+
+23-
+a) Using java.lang.Math.random()
+
+
+24-OK
+d) LocalDate firstOct2015 = LocalDate.parse("01/10/2015",fromDateFormat);
+
+25-
+a) T he definition of asList1 will result in a compiler error
+
+26-
+
+27-
+
+28-
+
+29-
+
+30-
+
+
+
+
+
+
+
+
+
 424
 459

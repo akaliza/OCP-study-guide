@@ -1,10 +1,14 @@
-import java.util.stream.*;
+import java.util.stream.Stream;
 import java.util.Comparator; 
-import java.util.*;
- 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+
+
 class MockTest {
 	public static void main(String []args) {
-		  question18(); 
+		  question24(); 
 	}
 	
 	public static void question1(){
@@ -21,9 +25,18 @@ class MockTest {
 		Arrays.sort(brics, null);
 		Arrays.stream(brics).forEach(country -> System.out.print(country + " ")); // Brazil, China, India, Russia
 	}
-	
-	
+	//10/Jan/15
+	public static void question24(){
+		DateTimeFormatter fromDateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		LocalDate firstOct2015 = LocalDate.parse("01/10/2015",fromDateFormat);
+		DateTimeFormatter toDateFormat = DateTimeFormatter.ofPattern("dd/MMM/YY");
+		System.out.println(firstOct2015.format(toDateFormat));
+	}
+	/*
+	a) DateTimeFormatter firstOct2015 = DateTimeFormatter.parse("01/10/2015", fromDateFormat);
+	b) LocalTime firstOct2015 = LocalTime.parse("01/10/2015",fromDateFormat);
+	c) Period firstOct2015 = Period.parse("01/10/2015", fromDateFormat);
+	*/
 
-	
 	
 }
