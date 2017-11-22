@@ -41,7 +41,11 @@ d) T his code prints:
 
 	
 
+<<<<<<< HEAD
 5 - OK
+=======
+5 - OK 
+>>>>>>> refs/remotes/origin/master
 class Point {
 private int x = 0, y;
 public Point(int x, int y) {
@@ -56,7 +60,132 @@ c) private Point() {
 this(0, 0);
 }
 
-e) public Point() {
-this(x, 0);
+
+
+6- OK
+b) R emoving only Stmt-1 will make the program compilable and it will print the
+following: Base: Hello Derived
+
+c) R emoving only Stmt-2 will make the program compilable and it will print the
+following: Base Derived
+
+d) R emoving both Stmt-1 and Stmt-2 will make the program compilable and it
+will print the following: Base Derived
+
+
+7- ERRADO 
+d) T he program will compile without any error
+
+
+Statement #1 will result in a compiler error since the keyword protected is not
+allowed inside a method body. You cannot provide access specifiers (public,
+protected, or private) inside a method body.
+
+
+8- OK 
+c) int years = Period.between(joiningDate, now).getYears();
+
+9- OK 
+class Outer {
+  class Inner {  
+    public void print() {
+ 	System.out.println("Inner: print");
+    }
+  }
+}
+class Test {
+   public static void main(String []args) {
+   // Stmt#1
+   inner.print();
+   }
 }
 
+
+d) Outer.Inner inner = new Outer().new Inner();
+
+10- OK
+c) When executed, this program prints 10
+
+
+==============> 9/10
+
+11- OK 
+
+Base
+e) When executed, this program prints the following:
+yes, instance of AnEnum
+yes, instance of EnumBase
+yes, instance of Enum
+
+
+12- ok
+a) An enum can have private constructor
+c) An enum can have public methods and fields
+d) An enum can implement an interface
+
+
+13- errado - coloquei D
+
+c) T he program will report a compilation error at statement marked with the
+comment #3
+
+
+
+14- OK 
+c) Line marked with comment THREE will result in a compiler error
+
+15- OK 
+
+c) class X <T extends DI> { }
+
+16- errado coloquei D 
+
+c) A Factory class may use Singleton pattern
+A Factory class generates the desired type of objects on demand. Hence, it might
+be required that only one Factory object exists; in this case, Singleton can be
+employed in a Factory class.
+
+
+17- OK 
+class ClassA {}
+
+interface InterfaceB {}
+
+class ClassC {}
+
+class Test extends ClassA implements InterfaceB {
+   String msg;
+   ClassC classC;
+}
+Which one of the following statements is true?
+b) Class Test is related to ClassC with a composition relationship.
+
+
+
+18- OK 
+
+c) T he program prints the following: Brazil China India Russia
+
+
+
+
+19- OK
+b) class Q<T> {
+T mem;
+public Q(T arg) {
+mem = arg;
+}
+}
+
+
+20- OK 
+b) public Object[][] getContents() {
+return new Object[][] { { "1", "Uno" }, { "2", "Duo" }, { "3", "Trie" }};
+}
+
+
+===============> 
+3/20 = 85% until here
+
+424
+459

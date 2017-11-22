@@ -1,0 +1,26 @@
+1 - errado coloquei +1
+LocalDate babyDOB = LocalDate.of(2015, Month.FEBRUARY, 20);
+LocalDate now = LocalDate.of(2016, Month.APRIL, 10);
+System.out.println(Period.between(now, babyDOB).getYears()); // PERIOD_CALC
+
+D. T he code segment prints: -1
+Here are the arguments to the between() method in the Period class:
+Period between(LocalDate startDateInclusive, LocalDate
+endDateExclusive)
+The first argument is the start and the second argument is the end, and hence the
+call Period.between(now, babyDOB) results in -1 (not +1).
+
+
+ 
+2 - oK
+C. java.time.Instant class
+
+3-OK
+ D. T he code segment prints: +08:00
+
+4-OK
+E. T his code segment throws java.time.DateTimeException with the message
+"Invalid date 'FEBRUARY 31'"
+
+5-OK
+B. Friday
