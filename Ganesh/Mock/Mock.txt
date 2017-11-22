@@ -41,7 +41,7 @@ d) T his code prints:
 
 	
 
-5 - 
+5 - OK
 class Point {
 private int x = 0, y;
 public Point(int x, int y) {
