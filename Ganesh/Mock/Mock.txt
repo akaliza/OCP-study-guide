@@ -185,7 +185,7 @@ return new Object[][] { { "1", "Uno" }, { "2", "Duo" }, { "3", "Trie" }};
 
 
 ===============> 
-3/20 = 85% until here
+17/20 = 85% until here
 
 
 21-OK
@@ -196,27 +196,52 @@ a) Iterable<T>
 c) This program prints: 11
 
 
-23-
-a) Using java.lang.Math.random()
+23- errado- coloquei A
+b) Using java.util.concurrent.ThreadLocalRandom
 
 
 24-OK
 d) LocalDate firstOct2015 = LocalDate.parse("01/10/2015",fromDateFormat);
 
-25-
-a) T he definition of asList1 will result in a compiler error
+25- coloquei a - falta atenção
+b) T he definition of asList2 will result in a compiler error
 
-26-
+26-errado coloquei B 
 
-27-
+a) Integer apply = func.apply(10).apply(20);
 
-28-
-
-29-
-
-30-
+27-OK
+e) When run, this program will print the following: null {} {}
 
 
+28- OK 
+
+c) This code will print: Happy birthday!
+
+
+29- OK 
+a) Base<Number> b = new Base<Number>();
+f) Derived<Integer> b = new Derived<Integer>();
+
+
+30- errado - coloquei o Double 
+
+b) AtomicInteger
+c) AtomicLong
+
+===============> 
+23/30 = 77% until here
+
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
 
 
 
@@ -224,5 +249,6 @@ a) T he definition of asList1 will result in a compiler error
 
 
 
-424
-459
+
+428
+462
