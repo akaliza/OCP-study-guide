@@ -232,23 +232,119 @@ c) AtomicLong
 ===============> 
 23/30 = 77% until here
 
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
+31-ok
+b) T his program prints the following: false
+
+32-ok
+a) java.util.ResourceBundle is the base class and is an abstraction of
+resource bundles that contain locale-specific objects
+
+b) java.util.PropertyResourceBundle is a concrete subclass of java.util.
+ResourceBundle that manages resources for a locale using strings provided in
+the form of a property file
+
+d) java.util.ListResourceBundle defines the getKeys() method that returns
+enumeration of keys contained in the resource bundle
+
+33-errado faltou A 
+b) The Callable interface declares a single method call() that computes a
+result
+d) The CyclicBarrier class allows threads to wait for each other to reach a
+common barrier point
+
+
+a) The Executor interface declares a single method execute(Runnable command)
+that executes the given command at some time in the future
+
+34 - errado coloquei B
+
+c) This code segment prints the following output:
+In AutoCloseableImpl.close()
+In CloseableImpl.close()
+
+35-ok
+b) T his program prints: [1, 4, 9, 16, 25]
+
+
+36 - OK 
+d) T he compiler will report an error at statement marked with the comment #3
+
+37 - ok 
+d) When executed, this program does not print any output and terminates
+normally
+
+38 - ok
+a) -1
+
+39 - errado - coloquei A
+
+b) The program will result in creating the file World.txt with the contents “World!”
+in it.
+The method call skip(n) skips n bytes (i.e., moves the buffer pointer by n bytes).
+In this case, 6 bytes need to be skipped, so the string “Hello” is not copied in the
+while loop while reading and writing the file contents.
+
+
+40 - ok
+d) T his program works fine and copies srcFile to dstFile
+
+
+7/10
+===============> 
+30/40 = 75% until here
+
+
+41- OK 
+interface InterfaceTwo<T> {
+T foo();
+}
+b) InterfaceTwo<LocalDateTime> val = LocalDateTime::now;
+
+42-errado - coloquei e
+
+b) Locale locale2 = Locale.US;
+The static public final Locale US member in the Locale class is accessed
+using the expression Locale.US, as in option b).
+The other options will result in compiler error(s).
+
+43- errado - falta de atenção coloquei e (false)
+
+a) This code results in a compiler error in line marked with the comment LINE-1
+The functional interface Predicate<T> takes type T as the generic parameter that
+is not specified in LINE-1. This results in a compiler error because the lambda
+expression uses the method contains() in the call exam.contains(“OCP”).
+If Predicate<String> were specified (as in Predicate isOCPExam = exam ->
+exam.contains("OCP")), this code segment would compile without errors, and
+when executed will print “false”.
+
+
+44- ok a
+a) public static void main(String []files) {
+try (FileReader inputFile
+= new FileReader(new File(files[0]))) {
+//...
+}
+catch(IOException ioe) {}
+}
 
 
 
+45- ok 
+c) java.util.concurrent.CyclicBarrier
+
+3/5
+
+46-
+
+47-
+
+48-
+
+49-
+
+50-
 
 
 
-
-
-428
-462
+435
+464
