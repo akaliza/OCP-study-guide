@@ -289,7 +289,7 @@ while loop while reading and writing the file contents.
 d) T his program works fine and copies srcFile to dstFile
 
 
-7/10
+
 ===============> 
 30/40 = 75% until here
 
@@ -332,19 +332,65 @@ catch(IOException ioe) {}
 45- ok 
 c) java.util.concurrent.CyclicBarrier
 
-3/5
 
-46-
+46- OK 
+a) T his program prints the following: Uno
 
-47-
+47- errado - coloquei E 
 
-48-
+a) This code segment prints the following: 2 1
+This code segment modifies the underlying CopyOnWriteArrayList container
+object using the add() method. After adding the elements “2” and “1”, the iterator
+object is created. After creating this iterator object, two more elements are added,
+so internally a copy of the underlying container is created due to this modification
+to the container. But the iterator still refers to the original container that had two
+elements. So, this program results in printing 2 and 1. If a new iterator is created
+after adding these four elements, it will iterate over all those four elements.
 
-49-
 
-50-
+48- OK 
+d) T his code segment prints: true
+
+49- errado coloquei A 
+
+d) This code segment lists the files ending with suffix .java in the current directory
+The path “.” specifies the current directory. The pattern “*.{java}" matches file
+names with suffix .java.
 
 
+50- errado coloquei B
 
-435
-464
+e) This code segment prints the following: dir file.txt
+The name elements in a path object are identified based on the separators. Note:
+To iterate name elements of the Path object does not actually require that the
+corresponding files/directories must exist, so it will not result in throwing any
+exceptions.
+
+
+===============> 
+35/50 = 70% until here
+
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+
+437
+466
