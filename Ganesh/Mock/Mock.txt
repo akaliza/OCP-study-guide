@@ -371,26 +371,75 @@ exceptions.
 35/50 = 70% until here
 
 
-51
+51-OK
+c) Type erasure
 
-52
+52-OK
+c) It is okay for a thread to acquire lock on obj again, and such an attempt will
+succeed
 
-53
+53-errado coloquei A 
 
-54
-
-55
-
-56
-
-57
-
-58
-
-59
-
-60
+c) java.lang.Cloneable interface
 
 
-437
-466
+54-OK
+b) 1
+
+55-OK
+c)
+equals: false
+ordinals: true
+
+4/5
+
+56 - errado - coloquei A 
+
+b) This program will print any value between -5 to 5
+You have employed AtomicInteger, which provides a set of atomic methods
+such as incrementAndGet() and decrementAndGet(). Hence, you will always
+get 0 as the final value of counter. However, depending on thread scheduling, the
+intermediate counter values may be anywhere between -5 to +5, Hence the output
+of the program can range between -5 and +5.
+
+57-errado coloquei B
+
+d) Supplier<LocalDate> now = LocalDate::now;
+The now() method defined in LocalDate does not take any arguments and returns
+a LocalDate object. Hence, the signature of now() method matches that of the only
+abstract method in the Supplier interface: T get(). Hence, the method reference
+Local::now can be assigned to Supplier<LocalDate> and the statement
+compiles without any errors.
+Other options show improper use of method reference and they will result in
+compiler error(s).
+
+58-OK
+a) System.out.print(Pets.Parrot.ordinal());
+
+59 - OK
+
+a)
+file name:Test
+absolute path:D:\workspace\ch14-test\.\Test
+Normalized path:Test
+
+
+60 - errado coloquei B - falta atenção
+c) This code segment prints the following:
+olivea
+emma
+emma
+The method void mark(int limit) in BufferedReader marks the current
+position for resetting the stream to the marked position. The argument limit
+specifies the number of characters that may be read while still preserving the mark.
+This code segment marks the position after “olivea” is read, so after reading
+“emma,” when the marker is reset and the line is read again, it reads “emma”
+once again.
+
+
+===============> 
+42/60 = 70% until here
+
+
+441
+468
