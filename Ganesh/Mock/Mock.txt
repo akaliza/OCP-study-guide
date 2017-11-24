@@ -441,5 +441,124 @@ once again.
 42/60 = 70% until here
 
 
-441
-468
+61 - OK 
+abstract class Base {
+public abstract Number getValue();
+}
+
+b
+class Deri extends Base {
+public Integer getValue() {
+return new Integer(10);
+}
+}
+
+d
+class Deri extends Base {
+public java.util.concurrent.atomic.AtomicInteger getValue() {
+return new java.util.concurrent.atomic.AtomicInteger(10);
+}
+}
+
+62-OK
+a) AtomicBoolean
+c) AtomicReference<V>
+
+
+63 - errado/coloquei B - lembrar que pode ter menos exceptions no override. 
+
+d) When executed, the program prints “walk cannot fly”
+In order to override a method, it is not necessary for the overridden method to
+specify an exception. However, if the exception is specified, then the specified
+exception must be the same or a subclass of the specified exception in the method
+defined in the super class (or interface).
+
+
+64-errado coloquei  d) new Outer().Inner.text
+class Outer {
+	static class Inner {
+		public final String text = "Inner";
+	}
+}
+
+class InnerClassAccess {
+	public static void main(String []args) {		
+		System.out.println(/*CODE HERE*/);
+	}
+}
+
+
+
+a) new Outer.Inner().text
+The correct way to access fields of the static inner class is to use the inner class
+instance along with the outer class, so new Outer.Inner().text will do the job.
+
+65 - errado coloquei A 
+
+d) This code segment will create file1.txt and file3.txt directories in the root
+directory, and a file2.txt directory in the “subdir” directory in the root directory.
+The mkdirs() method creates a directory for the given name. Since the file names
+have / in them, the method creates directories in the root directory (or root path for
+the Windows drive based on the path in which you execute this program).
+
+
+66-OK
+a)
+private void readBook(Supplier<? extends Book> book) {
+book.get().read();
+}
+
+67-ok
+b) Stream.of(employees)
+.sorted(sortByFirstName.reversed().thenComparing(sortByLastName))
+.forEach(System.out::println);
+
+
+68-ok
+b) resultSet.updateRow();
+
+
+
+69-errado - coloquei E
+
+a) read; closing WriteDevice; closing ReadDevice; Caught exception;
+The read() method of ReadDevice throws an exception, and hence the write()
+method of WriteDevice is not called. The try-with-resources statement releases
+the resources in the reverse order from which they were acquired. Hence, the
+close() for WriteDevice is called first, followed by the call to the close() method
+for ReadDevice. Finally, the catch block prints “Caught exception;” to the console.
+
+
+70-ok
+a) Computation on source data is performed in a stream only when the terminal
+operation is initiated, i.e., streams are “lazy”
+
+b) Once a terminal operation is invoked on a stream, it is considered consumed
+and cannot be used again
+
+d) If the stream source is modified when the computation in the stream is being
+performed, then it may result in unpredictable or erroneous results
+
+
+===============> 
+48/70 = 69% until here
+
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+
+81
+82
+83
+84
+85
+
+447
+470
