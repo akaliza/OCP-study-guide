@@ -438,7 +438,7 @@ once again.
 
 
 ===============> 
-42/60 = 70% until here
+41/60 = 68% until here
 
 
 61 - OK 
@@ -541,7 +541,7 @@ performed, then it may result in unpredictable or erroneous results
 
 
 ===============> 
-48/70 = 69% until here
+47/70 = 67% until here
 
 71errado coloquei D 
 
@@ -606,14 +606,58 @@ public void close() throws IOException {
 
 
 ===============> 
-54/80 = 68% until here
+53/80 = 66% until here
 
 
-81
-82
-83
-84
-85
+81-OK
+a) 
+@FunctionalInterface
+interface Foo {
+void execute();
+}
 
-451
-474
+b) @FunctionalInterface
+interface Foo {
+void execute();
+boolean equals(Object arg0);
+}
+
+
+82-errado coloquei B 
+
+c) This program prints: [eeny, meeny, miny, mo]
+Stream.of() method takes a variable length argument list of type T and it returns
+a Stream<T>. The joining() method in Collectors class takes delimiter,
+prefix, and suffix as arguments:
+joining(CharSequence delimiter, CharSequence prefix, CharSequence
+suffix)
+Hence, the expression Collectors.joining(", ", "[", "]") joins the strings
+with commas and encloses the resulting string within ‘[‘ and ‘]’.
+
+
+
+83 - OK 
+
+f) This code throws SQLException
+The try-with-resources block is closed before the while statement executes. Hence,
+call resultSet.next() results in making a call on the closed ResultSet object,
+thereby throwing an SQLException.
+
+
+84-OK 
+c) return DriverManager.getConnection(url + database, userName,
+password);
+
+85-OK
+b) Stream<String> lines = Files.lines(path);
+
+===============> 
+57/85 = 67% until here
+
+
+ERRADAS: 
+7	13	16	23	25	26
+30	33	34	39	42	43
+47	49	50	53	56	57
+60 	63	64	65	69	71
+72	75	79	82 
