@@ -543,16 +543,71 @@ performed, then it may result in unpredictable or erroneous results
 ===============> 
 48/70 = 69% until here
 
-71
-72
-73
-74
-75
-76
-77
-78
-79
+71errado coloquei D 
+
+a) Integer max = integers.stream().max((i, j) -> i - j).get();
+
+Calling stream() method on a List<Integer> object results in a stream of type
+Stream<Integer>. The max() method takes a Comparator as the argument that is
+provided by the lambda expression (i, j) -> i - j. The max() method returns
+an Optional<Integer> and the get() method returns an Integer value.
+Why other options are wrong:
+• Option b) The max() method in Stream requires a Comparator to be passed as the
+argument
+• Option c) There is no max() method in List<Integer>
+• Option d) The mapToInt() method returns an IntStream, but the max() method
+returns an OptionalInt and hence it cannot be assigned to Integer (as required
+in this context)
+
+
+72-errado coloquei B
+
+d) This program will result in a compiler error in line marked with NULL
+The ifPresent() method for Optional takes a Consumer as the argument and
+returns void. Hence, it is not possible to chain the orElse() method after calling
+the ifPresent() method.
+
+
+73-OK
+d) T his code will print foo:bar:baz::qux:norf:
+
+74-ok
+b) T his program prints: 2015-03-01
+
+75-errado coloque A 
+
+d) This code segment throws java.lang.UnsupportedOperationException
+The underlying List object returned by Arrays.asList() method is a fixed-size
+list and hence we cannot remove elements from that list. Hence calling removeIf()
+method on this list results in throwing an UnsupportedOperationException.
+
+
+76-OK
+a) Make data members x and y private
+
+
+77-OK
+d) T his code prints: sum of 1 to 5 is 15
+
+
+78-OK
+c) T his program prints: 0
+
+79--errado-coloquei C
+
+b) int val = Integer.parseInt(integer);
+
 80
+d) class AResource implements AutoCloseable {
+public void close() throws IOException {
+// body of close to release the resource
+}
+}
+
+
+===============> 
+54/80 = 68% until here
+
 
 81
 82
@@ -560,5 +615,5 @@ performed, then it may result in unpredictable or erroneous results
 84
 85
 
-447
-470
+451
+474
