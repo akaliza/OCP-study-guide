@@ -1,4 +1,15 @@
-What classes can a non-static nested class extend ?
-(Provided that the class to be extended is visible and is not final.)
+1 - When you create an anonymous class for an interface, it extends from Object. 
+    But if you make an anonymous class from another class then it extends from that class. For example, consider the following class:
+
+7 - Which of the following statements are true?
+Classes declared as members of top-level classes can be declared static.
+Anonymous classes cannot be declared static. >>- falta atenção
+
+Local classes CANNOT be declared static. -
+
+
+
+8 - What classes can a non-static nested class extend ?
+    (Provided that the class to be extended is visible and is not final.)
 
 -Any Class
