@@ -1,0 +1,4 @@
+What classes can a non-static nested class extend ?
+(Provided that the class to be extended is visible and is not final.)
+
+-Any Class
