@@ -1,7 +1,7 @@
-1 - When you create an anonymous class for an interface, it extends from Object. 
+ - When you create an anonymous class for an interface, it extends from Object. 
     But if you make an anonymous class from another class then it extends from that class. For example, consider the following class:
 
-7 - Which of the following statements are true?
+ - Which of the following statements are true?
 Classes declared as members of top-level classes can be declared static.
 Anonymous classes cannot be declared static. >>- falta atenção
 
@@ -9,7 +9,192 @@ Local classes CANNOT be declared static. -
 
 
 
-8 - What classes can a non-static nested class extend ?
+- What classes can a non-static nested class extend ?
     (Provided that the class to be extended is visible and is not final.)
 
--Any Class
+Any Class
+
+
+-Which of these statements concerning nested classes and interfaces are true?
+
+A static nested class can contain non-static member variables.
+A static nested interface can contain static member variables.
+For each instance of the outer class, there can exist many instances of a non-static inner class.
+
+ERRADOS:
+An instance of a static nested class has an inherent outer instance. (Because static nested class is a static class.)
+A static nested interface has an inherent outer instance associated with it. (A static nested interface is a static interface and so does not have an associated outer instance.)
+
+
+
+- Which of the following statements regarding inner classes are true ?
+
+A non static inner class may have static members. (If you make them final.)
+Anonymous inner classes cannot have any 'extends' or 'implements' clause.
+Anonymous inner classes cannot be static.
+
+ERRADOS 
+Anonymous inner classes can only be created for interfaces. (It can also be created for classes.)
+Anonymous inner classes can never have initialization parameters.(They can if they are for classes.)
+
+
+Non-static inner classes were not allowed to have static fields at all. This rule is now modified and as per the new rule inner classes are allowed to declare static final fields that are compile time constants as members. Example:
+
+public class Outer
+{
+   class Inner
+   {
+     static final  int k = 10;
+   }
+}
+
+
+
+-What is/are the name(s) of the interface(s) that can be implemented by a class so that it can execute in a separate thread without using any other framework classes?
+
+
+Callable interface is very similar to Runnable interface and is used with the classes of the Executor framework. It has one method with the following signature: V call() throws Exception  However, there is a fundamental difference between Runnable and Callable. The Thread class, which is resposible for the creation of a new thread and its execution, works only with Runnable (and not Callable).  Thus, if you want to create a class that can be executed in a separate thread without the use of any other framework classes, then you have to use Runnable. 
+
+Runnable
+
+
+-
+There are two ways to create a thread:  1. new MyClassThatExtendsThread().start(); //Here MyClassThatExtendsThread should extend Thread and override the run method.  2. new Thread(  new MyClassThatImplementsRunnable() ).start(); // MyClassThatImplementsRunnable should implement the interface Runnable.
+
+
+
+
+-
+CORRETA:
+A static nested class can contain a non - static inner class.
+
+ERRADOS: 
+Non-static nested classes cannot contain static members. (They can if the static variable is also made final.)
+Methods in all nested classes can be declared static. (Not in non-static inner classes.)
+
+-
+equals method:
+	It is reflexive: for any reference value x, x.equals(x) should return true.
+	It is symmetric: for any reference values x and y, x.equals(y) should return true if and only if y.equals(x) returns true.
+	It is transitive: for any reference values x, y, and z, if x.equals(y) returns true and y.equals(z) returns true, then x.equals(z) should return true.
+	It is consistent: for any reference values x and y, multiple invocations of x.equals(y) consistently return true or consistently return false, provided no information used in equals comparisons on the object is modified.
+For any non-null reference value x, x.equals(null) should return false.
+The equals method for class Object implements the most discriminating possible equivalence relation on objects; that is, for any reference values x and y, this method returns true if and only if x and y refer to the same object (x==y has the value true).
+Note that it is generally necessary to override the hashCode method whenever this method is overridden, so as to maintain the general contract for the hashCode method, which states that equal objects must have equal hash codes.
+
+
+
+-
+CORRETAS:
+Objects of static nested classes can be created without creating instances of their Outer classes.
+Anonymous classes cannot define constructors explicitly in Java code.
+Anonymous classes cannot be static.
+
+
+ERRADAS: 
+
+Non-static inner class cannot have static members. (They can have final fields but the static fields have to be final constants.)
+Member variables in any nested class cannot be declared final.(Nested classes can have final members (i.e. methods and fields))
+
+public class A  //This is a standard Top Level class. {   class X   {     static final int j = 10;  //compiles fine!   }   public static class B //This is a static nested class   {   } }
+
+
+
+-
+Which variables of the encapsulating class can an inner class access, if the inner class is defined in an instance method of the encapsulating class?
+
+
+public class TestClass
+{
+   static int si = 10;   int ii = 20;
+   public  void inner()
+   {
+      int ai = 30; //automatic variable
+      ai = 31;//ai is not effectively final anymore.
+      final int fai = 40; //automatic final variable
+      class Inner
+      {
+          public Inner()  {  System.out.println(si+"  "+ii+"   "+fai);  }
+      }
+      new Inner();
+   }
+   public static void main(String[] args){  new TestClass().inner();  }
+}
+
+
+-Which variables declared in the encapsulating class or in the method, can an inner class access if the inner class is defined in a static method of encapsulating class?
+
+public class TestClass
+{
+   static int si = 10;   int ii = 20;
+   public static void inner()
+   {
+      int ai = 30; //automatic variable
+      ai = 31; //ai is not effectively final anymore.
+      final int fai = 40; //automatic final variable
+      class Inner
+      {
+          public Inner()  {   System.out.println(si+"    "+fai);      }
+      }
+      new Inner();
+   }
+   public static void main(String[] args)   {     TestClass.inner();       }
+}
+
+
+-A JDBC driver implementation must provide implementation classes for which of the following interfaces?
+java.sql.Driver
+java.sql.Connection
+java.sql.Statement
+
+ERRADOS: 
+java.sql.DriverManager - This is provided by JDBC API itself.
+
+
+
+
+-Which statements concerning the relation between a non-static inner class and its outer class instances are true?
+CORRETAS :
+Member variables of the outer instance are always accessible to inner instances, regardless of their accessibility modifiers.
+More than one inner instance can be associated with the same outer instance.
+An inner class can extend its outer class.*
+
+-ERRADAS: 
+Member variables of the outer instance can always be referred to using only the variable name within the inner instance.
+(This is possible only if that variable is not shadowed by another variable in inner class.)
+A final outer class cannot have any inner classes. (There is no such rule.)
+
+
+-Which of these statements concerning the use of standard collection interfaces are true?
+
+CORRETA: 
+Some operations may throw an UnsupportedOperationException.
+(Some operations may throw an UnsupportedOperationException. This exception type is unchecked, and code calling these operations is not required to explicitly handle exceptions of this type.)
+
+ERRADOS:
+None of the standard collection classes are thread safe.(Vector and Hashtable are.)
+
+
+-Which interface would you use to represent a collection having non-unique objects in the order of insertion?
+LIST
+
+
+-An instance of java.time.Instant represents time elapsed since Java epoch.
+(java.time.Instant models a single instantaneous point on the time-line. This might be used to record event time-stamps in the application.  The range of an instant requires the storage of a number larger than a long. To achieve this, the class stores a long representing epoch-seconds and an int representing nanosecond-of-second, which will always be between 0 and 999,999,999. The epoch-seconds are measured from the standard Java epoch of 1970-01-01T00:00:00Z where instants after the epoch have positive values, and earlier instants have negative values. For both the epoch-second and nanosecond parts, a larger value is always later on the time-line than a smaller value.)
+
+-Which of the following classes are thread safe?
+java.util.Date
+java.time.Duration
+
+
+-Which of the following statements regarding java.util.HashSet is correct?
+CORRETA: 
+It allows null value to be stored.
+
+ERRADAS: 
+It keeps the elements in a sorted order.
+It allows duplicate elements because it is based on HashMap.
+(No Set (HashSet, TreeSet, or any other implementation of Set interface) allows duplicate elements.)
+It stores name-value pairs.
+(Only Maps store name-value pairs.)
+The order of elements seen while iterating through a HashSet always remains same.
