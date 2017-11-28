@@ -1,0 +1,77 @@
+-Member Inner Classes
+¦¦ Can be declared public, private, or protected or use default access
+¦¦ Can extend any class and implement interfaces
+¦¦ Can be abstract or final
+¦¦ Cannot declare static fields or methods *** can declare static fields only if they are FINAL.  ***
+¦¦ Can access members of the outer class including private members 
+¦¦ An inner class can extend its outer class.
+
+21: Outer outer = new Outer();
+22: Inner inner = outer.new Inner(); // create the inner class
+23: inner.go();
+
+
+1: public class A {
+2: private int x = 10;
+3: class B {
+4: private int x = 20;
+5: class C {
+6: private int x = 30;
+7: public void allTheX() {
+8: System.out.println(x); // 30
+9: System.out.println(this.x); // 30
+10: System.out.println(B.this.x); // 20
+11: System.out.println(A.this.x); // 10
+
+14: A a = new A();
+15: A.B b = a.new B();
+16: A.B.C c = b.new C();
+
+Just like any inner class, an inner interface can be private.
+
+
+-Local Inner Classes
+
+¦ They do not have an access specifier.
+¦ They cannot be declared static and cannot declare static fields or methods. *** can declare static fields only if they are FINAL.  ***
+¦ They have access to all fields and methods of the enclosing class.
+¦ They do not have access to local variables of a method unless those variables are final
+or effectively final. More on this shortly.
+
+
+-Anonymous Inner Classes
+
+¦ They do not have access to local variables of a method unless those variables are final
+or effectively final. More on this shortly.
+¦ Anonymous classes cannot define constructors explicitly in Java code.
+
+
+6: SaleTodayOnly sale = new SaleTodayOnly() {
+7: int dollarsOff() { return 3; }
+8: }; --> Pay special attention to the semicolon on line 8.
+
+When you create an anonymous class for an interface, it extends from Object. 
+But if you make an anonymous class from another class then it extends from that class.
+ 
+
+
+
+
+Static Nested Classes
+¦¦ The nesting creates a namespace because the enclosing class name must be used to refer
+to it.
+¦¦ It can be made private or use one of the other access modifiers to encapsulate it.
+¦¦ The enclosing class can refer to the fields and methods of the static nested class.
+¦¦ A static nested class can contain a non - static inner class.
+¦¦ can access All static variables and All final or effectively final static or automatic variables declared in the encapsulating class
+
+
+5: public static void main(String[] args) {
+6:    Nested nested = new Nested();
+
+
+import static bird.Toucan.Beak;
+
+
+
+
