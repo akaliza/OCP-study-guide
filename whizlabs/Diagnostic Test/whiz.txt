@@ -1,0 +1,19 @@
+8- JDBC allows us to write java applications with the following funtionalities: 
+	- Connect to a data source, like a database. 
+	- Send queries and update statements to the database
+	- Retrieve and process the results received form the database in answer to your query
+
+
+9-OK
+10 - jdbc:mysql://[host][:port]/[database][?property1][=value1]...
+
+1 - "jdbc:mysql://localhost:3306/whiz?"+"user=root&password=whizlabs"
+2 - "jdbc:mysql://:3306/whiz?user=root&password=whizlabs"
+3 - "jdbc:mysql://localhost:3306/whiz","root","whizlabs"
+
+11 -  Savepoints
+
+17 - A source might be an array, a Collection, a generator function, an I/O channel, etc.  - OK 
+
+19 - (k,v) -> System.out.println(v) -  Maps elements 
+
