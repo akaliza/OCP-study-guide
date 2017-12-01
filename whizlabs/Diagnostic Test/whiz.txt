@@ -17,3 +17,16 @@
 
 19 - (k,v) -> System.out.println(v) -  Maps elements 
 
+23 - Comparator<Integer> comp = Integer::compare         int compare (T o1, T o2)
+
+24 - stateful intermediate operation : sorted 
+
+Intermediate operations are further divided into stateless and stateful operation. 
+Stateless oeprations, such as filter and map, retain no state form previously seen element when 
+processing  a new element - each element can be processed independently of operations on other elements. 
+
+The stateful operations, sucj as distinct and sorted, may incorporate state from previously elements when 
+processing new elements.
+
+
+  
