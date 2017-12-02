@@ -29,4 +29,5 @@ The stateful operations, sucj as distinct and sorted, may incorporate state from
 processing new elements.
 
 
-  
+29 - Comparator.comparing(e -> e.intValue()); - pag 150 OCP oracle
+
