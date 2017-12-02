@@ -31,3 +31,12 @@ processing new elements.
 
 29 - Comparator.comparing(e -> e.intValue()); - pag 150 OCP oracle
 
+32 - A thread only can be in one of the five states: New, Runnable, Running, Waiting\sleeping\blocked or dead
+   - try to call start() in a dead thread will throw a runtime exception 
+   - stop make a thread dead state
+   - once start method is invoked on a thread  it enter in the Runnable state
+
+37 - Files.readAllLines(Paths.get(f.getAbsolutePath()));
+		
+	
+  
