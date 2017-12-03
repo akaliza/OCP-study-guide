@@ -37,6 +37,10 @@ processing new elements.
    - once start method is invoked on a thread  it enter in the Runnable state
 
 37 - Files.readAllLines(Paths.get(f.getAbsolutePath()));
-		
+
+60 - default method defined in the Consumer: 
+void			accept(T t) 	
+default Consumer<T>	andThen(Consumer<? super T> after)
 	
+63-
   

@@ -12,7 +12,7 @@ public class Whiz38{
 	public static void main(String[] args){
 		try{
 		//public static List<String> readAllLines(Path path) throws IOException	
-		List<String> stream = Files.readAllLines(Paths.get("input.txt"));
+		Stream<String> stream = Files.readAllLines(Paths.get("input.txt")); // List<String>
 		stream.stream().skip(1).forEach(System.out::print);
 		}catch(IOException io){}
 		
