@@ -42,5 +42,58 @@ processing new elements.
 void			accept(T t) 	
 default Consumer<T>	andThen(Consumer<? super T> after)
 	
-63-
+65- valide primitive variation of inbuilt functional interface: BooleanSupplier
+BooleanSupplier is the primitive version of the Supplier
+
+67 - BiFunction<Double,Double,String> fun = (d,i) -> d+i.toString();
   
+68 - DoubleSupplier -> getAsDouble();
+
+69 - double applyAsDouble(double left, double right)
+   - java.util.function.DoubleBinaryOperator Interface 
+	
+70 - java.util.ListResourceBundle is an abstract class
+
+71 - 
+SRBundel_de
+SRBundel_fr
+SRBundel
+
+Local loc = new Locale("de","fr"); //country/language
+
+start search _de_fr then only _de
+
+
+ 
+72 - 
+SRBundel
+SRBundel_de
+SRBundel_fr
+
+Local loc = new Locale("de","FR");
+ResourceBundle rb = ResourceBundle.getBoundle("SRBundel",loc);
+
+>>SRBundel_de
+
+
+1 - bundleName + "_" + localLanguage + "_" localeCountry + "_" localeVariant
+2 - bundleName + "_" + localLanguage + "_" localeCountry 
+3 - bundleName + "_" + localLanguage 
+4 - bundleName + "_" + defaultLanguage + "_" defaultCountry + "_" defaultVariant 
+5 - bundleName + "_" + defaultLanguage + "_" defaultCountry 
+6 - bundleName + "_" + defaultLanguage
+7 - bundleName 
+
+80 - Only LocalDate, LocalTime and LocalDateTime classes include method now
+
+83 - method truncatedTo of Instant 
+
+84 - Instant  
+    instant now = instant.now();	
+    ZoneDateTime zid = ZoneDateTime.of(now,ZoneId.Of("Canada/Atlantic")); >>error
+
+85 - UnaryOperator 
+	- extends java.util.function.Function;
+	- represents an operation on a single operand that produces a result of the 
+	  same type as its operand
+	- it has static method called identity
