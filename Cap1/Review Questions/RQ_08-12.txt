@@ -1,0 +1,42 @@
+548-
+
+1-a - overload of method equals
+2-a
+3-C
+4-C
+5-A. If a.equals(b) is true, a.hashCode() == b.hashCode() is always true. 
+  D. If a.equals(b) is false, a.hashCode() == b.hashCode() can sometimes be true.
+6-B
+7-E
+8-C. Line 4 generates a compiler error. *** if the variable is static final it will run. 
+9-B. 
+10-C
+11-D. import static my.sports.Football.*;
+
+12-E
+13-B. 
+
+14- --errado
+   E. l instanceof Chipmunk does not compile.  
+   F. r instanceof Chipmunk does not compile. --- Runnable is an interface
+
+
+
+15-B. If equals(null) is called, the method should return false.
+   E. If equals() is passed the wrong type, the method should return false.
+
+16-E. Outer.Inner in = new Outer().new Inner();
+17-B. Compiler error on line 3.
+C. Compiler error on line 5.
+
+18-G. The code does not compile. 
+
+19-A. public void toddle() {}
+C. public final void toddle() {}
+20-C. walk,toddle,
+21-A. @Override public boolean equals(Object o) { return false; }
+C. @Override public int hashCode() { return 42; }
+E. @Override public void play() { }
+
+
+20/21 = 95%

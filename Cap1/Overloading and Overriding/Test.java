@@ -3,6 +3,10 @@ public class Test{
 		
 	}
 	
+	public String ac(){
+		return "a";
+	} 
+	
 	public Object a(int a) throws Exception{
 		return "a";
 	}
@@ -11,6 +15,10 @@ public class Test{
 class ta extends Test{
 	public static void ad(){
 		
+	}
+	
+	private String ac(int b){
+		return "b";
 	}
 	
 	//@Override

@@ -12,7 +12,7 @@ public class Main{
 		
 		Season s1 = Season.valueOf("SUMMER"); // SUMMER
 		//Season s2 = Season.valueOf("summer"); // exception
-		
+		*/
 		Season summer = Season.SUMMER;
 		switch (summer) {
 			case WINTER:
@@ -24,7 +24,7 @@ public class Main{
 			default:
 				System.out.println("Is it summer yet?");
 		}
-		*/
+		
 		
 		Season2 s = Season2.SUMMER;
 		System.out.println(Season2.SUMMER); // SUMMER

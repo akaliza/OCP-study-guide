@@ -1,0 +1,121 @@
+95
+
+
+1-A. A design principle is focused on solving a specific commonly occurring problem.
+C. Design principles are often applied throughout an application, whereas design patterns
+are applied to solve specific problems.
+E. Design principles and design patterns tend to produce code that is easier to maintain
+and easier for other developers to read.
+
+--errado
+Option A is incorrect as a design pattern is focused on solving a specific commonly
+occurring problem.
+
+
+2-E. The code will not compile because of line 8.
+
+
+3-A. Climb
+D. MountainClimb
+
+4-
+A. () -> ""
+D. (Camel c) -> {return;}
+
+5-
+B. Requires constructor of singleton class to be private.
+E. Ensures that there is only one instance of an object in memory.
+F. Requires a public static method to retrieve the instance of the singleton.
+
+6-A. match
+
+7-C. Mark name final and private.
+E. Replace the getFriends() method with methods that do not give the caller direct
+access to the List<Seal> friends
+G. Make a copy of the List<Seal> friends in the constructor.
+H. Mark the Seal class final.
+
+8-
+C. They enable classes to have multiple inheritance.
+F. All members of an interface are public. 
+
+
+9-D. Change the access modifier of cheetahManager from public to private.
+E. Mark cheetahManager final.
+
+--errado
+9. D, F. A is incorrect, as there are definitely some problems with the singleton implementation.
+B and C are incorrect, as naming of the instance variable and access method are not
+required as part of the pattern. The public modifier on the cheetahManager instance
+means that any class can access or even replace the instance, which breaks the singleton
+pattern; hence D is required to fix the implementation. E is incorrect, as marking the
+instance final would prevent lazy instantiation and as the code would not compile. F is
+also required, since without this step two threads could create two distinct instances of the
+singleton at the same time, which would violate the singleton pattern.
+
+
+10-D. The code will not compile because of line 8.
+
+11-A. caller((e) -> "Poof");
+F. caller((e) -> { String f = ""; return "Poof"; });
+
+12-D. Compiler error on line x2.
+--errado
+12. C. The functional interface takes two int parameters. The code on line x1 attempts to use
+them as if one is an Object, resulting in a compiler error making C the correct answer. It
+also tries to return String even though the data type for the functional interface method is
+boolean. It is tricky to use types in a lambda when they are implicitly specified. Remember
+to check the interface for the real type.
+
+
+13-B. All of the instance variables marked private and final.
+C. They don’t define any setter methods.
+E. They prevent methods from being overridden.
+
+14-A. Frog
+B. TurtleFrog
+D. CanHop
+E. Object
+
+
+
+15-
+B. If a method takes a class that is the superclass of three different object references, then
+any of those objects may be passed as a parameter to the method.****
+C. A reference to an object may be cast to a superclass of the object without an explicit cast.
+
+16-F. The code will not compile because of lines 3 and 4.
+
+17-B. boolean instance variables are accessed with is or get.
+C. All instance variables are marked private.
+F. The first letter of the any getter/setter, after the get, set, or is prefix, must be
+uppercase.
+
+18-A. Inheritance supports access to protected variables.
+B. Object composition tends to promote greater code reuse than inheritance.
+D. Object composition supports method overriding at runtime.
+E. Object composition requires a class variable to be declared public or accessible from a
+public method to be used by a class in a different package.
+
+--errado
+18. A, B, E. A is correct, and it is one of the reasons to prefer class inheritance over object
+composition. B is also correct, since object composition tends to lead to classes that are
+easier to reference, as they don’t require knowledge of any parent classes. C is incorrect, as
+inheritance tends to use the is-a principle, whereas object composition relies on the has-a
+principle. D is incorrect, as this is a statement about inheritance, not object composition.
+E is correct, as object composition has no notion of inheritance and variables must be
+exposed publically if they are to be used by other classes in different packages. F is incorrect,
+as neither are always the right answer. There are situations where inheritance is more
+appropriate, and situations where object composition is more appropriate.
+
+
+19-
+B. Manage a reusable cache of objects.
+D. Manage write access to a log file.
+E. Provide central access to application configuration data.
+
+20-
+A. It compiles without issue.
+
+
+16/20 = 80%
