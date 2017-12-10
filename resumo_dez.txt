@@ -144,3 +144,160 @@ System.out.println(lemur3.age);
 the object being cast is not actually an instance of that class.
 
 cap3
+
+for methods: 
+3: public static <T> void sink(T t) { }
+4: public static <T> T identity(T t) { return t; }
+5: public static T noGood(T t) { return t; } // DOES NOT COMPILE
+
+call:
+Box.<String>ship("package");
+Box.<String[]>ship(args);
+
+
+3: java.util.List numbers = new java.util.ArrayList();
+4: numbers.add(5);
+5: int result = numbers.get(0); // DOES NOT COMPILE
+
+The good news is that unboxing fails with a compiler error rather than a runtime error.
+On line 3, we create a raw list. On line 4, we try to add an int to the list. This works
+because Java automatically autoboxes to an Integer. On line 5, we have a problem. Since
+we aren’t using generics, Java doesn’t know that the list contains an Integer. It just knows
+that we have an Object. And an Object can’t be unboxed into an int.
+
+
+wildcard 	?
+upper bound	? extends type
+lower bound 	? super type
+
+
+
+We can’t write List<Object> l = new ArrayList<String>(); because Java is trying to
+protect us from a runtime exception. You might think this would mean that we can’t write
+Object[] o = new String[0];. That isn’t the case. This code does compile:
+Integer[] numbers = { new Integer(42)};
+Object[] objects = numbers;
+objects[0] = "forty two"; // throws ArrayStoreException
+Although the code does compile, it throws an exception at runtime.
+
+
+upper bounded:
+ArrayList<Number> list = new ArrayList<Integer>(); // DOES NOT COMPILE
+List<? extends Number> list = new ArrayList<Integer>();
+
+<B extends A> B method3(List<B> list) {
+return new B(); // DOES NOT COMPILE
+}
+method3() does not compile. <B extends A> says that you want to use B as a type
+parameter just for this method and that it needs to extend the A class. Coincidentally, B
+is also the name of a class. It isn’t a coincidence. It’s an evil trick. Within the scope of the
+method, B can represent classes A, B, or C, because all extend the A class. Since B no longer
+refers to the B class in the method, you can’t instantiate it.
+
+
+<X> void method5(List<X super B> list) { // DOES NOT COMPILE
+}
+method5() does not compile because it tries to mix a method-specific type parameter
+with a wildcard. A wildcard must have a ? in it.
+
+
+[] List: A list is an ordered collection of elements that allows duplicate entries. Elements
+in a list can be accessed by an int index.
+[] Set: A set is a collection that does not allow duplicate entries.
+[] Queue: A queue is a collection that orders its elements in a specific order for processing.
+A typical queue processes its elements in a first-in, first-out order, but other orderings
+are possible.
+[] Map: A map is a collection that maps keys to values, with no duplicate keys allowed.
+The elements in a map are key/value pairs.
+
+
+boolean add(E element)
+
+boolean remove(Object object)
+boolean remove(int index) //overload
+Since calling remove() with an int uses the index, an index that doesn’t
+exist will throw an exception.
+
+boolean isEmpty()
+
+int size()
+
+void clear()
+
+boolean contains(Object object)
+This method calls equals() on each element of the ArrayList
+
+-----------------
+
+>>List
+
+ArrayList
+
+LinkedList(implements both List and Queue)
+The main benefits of a LinkedList are that you can access, add, and remove from the
+beginning and end of the list in constant time.
+
+Vector (is thread-safe)
+
+Stack
+is a data structure where you add and remove elements from the top of the stack. 
+If you need a stack, use an ArrayDeque instead.
+
+
+void add(E element)
+void add(int index, E element)
+E get(int index)
+int indexOf(Object o) -1 	return the first matching index, -1 if not found 
+int lastIndexOf(Object o)	return the last matching index, -1 if not found
+void remove(int index)
+E set(int index, E e)
+
+
+Iterator iter = list.iterator();
+while(iter.hasNext()) {
+String string = (String) iter.next();
+System.out.println(string);
+}
+
+or
+
+Iterator<String> iter = list.iterator();
+while(iter.hasNext()) {
+String string = iter.next();
+System.out.println(string);
+}
+
+-----------------
+
+
+>>Using the Set Interface
+
+HashSet
+The main benefit is that adding elements and checking if an element is in the set both
+have constant time. The tradeoff is that you lose the order in which you inserted the
+elements.
+
+TreeSet
+stores its elements in a sorted tree structure. TreeSet implements a special interface called NavigableSet, which
+lets you slice up the collection.
+
+
+The NavigableSet Interface
+Method 		Description
+E lower(E e) 	Returns greatest element that is < e,  or null if no such element
+E floor(E e) 	Returns greatest element that is <= e, or null if no such element
+E ceiling(E e) 	Returns smallest element that is >= e, or null if no such element
+E higher(E e) 	Returns smallest element that is > e,  or null if no such element
+
+36: NavigableSet<Integer> set = new TreeSet<>();
+37: for (int i = 1; i <= 20; i++) set.add(i);
+38: System.out.println(set.lower(10)); // 9
+39: System.out.println(set.floor(10)); // 10
+40: System.out.println(set.ceiling(20)); // 20
+41: System.out.println(set.higher(20)); // null
+
+
+------------------------------------------------
+
+>>Using the Queue Interface
+
