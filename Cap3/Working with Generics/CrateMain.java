@@ -7,7 +7,11 @@ public class CrateMain{
 		Crate<Elephant> crateForElephant = new Crate<>();
 		crateForElephant.packCrate(elephant);
 		Elephant inNewHome = crateForElephant.emptyCrate();
+		
 		Crate<Number> createSon = crateForElephant.ship(number);
+		
+		//without generics 
+		Crate crateRawType = new Crate();
 		
 	}
 }
