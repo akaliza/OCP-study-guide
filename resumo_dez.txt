@@ -1,0 +1,146 @@
+sub instanceof pai -> true
+
+class HeavyAnimal { }
+class Hippo extends HeavyAnimal { }
+class Elephant extends HeavyAnimal { }
+
+
+12: HeavyAnimal hippo = new Hippo();
+13: boolean b1 = hippo instanceof Hippo; // true
+14: boolean b2 = hippo instanceof HeavyAnimal; // true
+15: boolean b3 = hippo instanceof Elephant; // false
+
+
+30: Hippo anotherHippo = new Hippo();
+31: boolean b5 = anotherHippo instanceof Elephant; // DOES NOT COMPILE
+
+The compiler knows that there is no possible way for a Hippo
+variable reference to be an Elephant, since Hippo doesn’t extend Elephant directly or
+indirectly.
+
+
+
+public interface Mother {}
+class Hippo extends HeavyAnimal { }
+
+This code compiles:
+42: HeavyAnimal hippo = new Hippo();
+43: boolean b6 = hippo instanceof Mother;
+
+It so happens that Hippo does not implement Mother. The compiler allows the statement
+because there could later be a class such as this:
+class MotherHippo extends Hippo implements Mother { }
+
+
+
+
+Hashcode 
+- it can't use more variables than equals() method.
+- If equals() returns false when called with two objects, calling hashCode() on each of
+those objects does not have to return a different result.
+- If equals() returns true when called with two objects, calling hashCode() on each of
+those objects must return the same result.
+- Within the same program, the result of hashCode() must not change. This means that
+you shouldn’t include variables that change in figuring out the hash code.
+
+
+ENUMS
+
+public enum Season {
+   WINTER, SPRING, SUMMER, FALL
+}
+
+for(Season season: Season.values()) {
+   System.out.println(season.name() + " " + season.ordinal());
+}
+
+WINTER 0
+SPRING 1
+SUMMER 2
+FALL 3
+
+
+You can’t do is extend an enum.
+
+Season summer = Season.SUMMER;
+switch (summer) {
+	case Season.WINTER: <<---NAO COMPILA DESTA FORMA
+		System.out.println("Get out the sled!");
+		break;
+	case SUMMER: <<--- ASSIM COMPILA
+		System.out.println("Time for the pool!");
+		break;
+
+
+apenas aceita construtores privados
+
+somente chama o construtor no momento que carrega;
+
+public enum OnlyOne {
+ONCE (true);
+private OnlyOne(boolean b) {
+System. out .println("constructing");
+}
+public static void main(String[] args) {
+OnlyOne firstCall = OnlyOne. ONCE ; // prints constructing
+OnlyOne secondCall = OnlyOne. ONCE ; // doesn't print anything
+} }
+
+
+public enum Season3 {
+WINTER {
+public void printHours() { System.out.println("short hours"); }
+}, SUMMER {
+public void printHours() { System.out.println("long hours"); }
+}, SPRING, FALL;
+public void printHours() { System.out.println("default hours"); }
+}
+
+Inner classes 
+
+Inner classes can have the same variable names as outer classes. There is a special way of
+calling this to say which class you want to access:
+
+1: public class A {
+2: private int x = 10;
+3: class B {
+4: private int x = 20;
+5: class C {
+6: private int x = 30;
+7: public void allTheX() {
+8: System.out.println(x); // 30
+9: System.out.println(this.x); // 30
+10: System.out.println(B.this.x); // 20
+11: System.out.println(A.this.x); // 10
+
+
+cap2
+
+default method and static in interface only can be public 
+
+
+polymorphism: 
+If you use a variable to refer to an object, then only the methods or variables that are
+part of the variable’s reference type can be called without an explicit cast. For example, the
+following snippets of code will not compile
+
+
+1. The type of the object determines which properties exist within the object in memory.
+2. The type of the reference to the object determines which methods and variables are
+accessible to the Java program.
+
+CAST:
+
+Lemur lemur = new Lemur();
+Primate primate = lemur;
+Lemur lemur2 = primate; // DOES NOT COMPILE
+Lemur lemur3 = (Lemur)primate;
+System.out.println(lemur3.age);
+
+1. Casting an object from a subclass to a superclass doesn’t require an explicit cast.
+2. Casting an object from a superclass to a subclass requires an explicit cast.
+3. The compiler will not allow casts to unrelated types.
+4. Even when the code compiles without issue, an exception may be thrown at runtime if
+the object being cast is not actually an instance of that class.
+
+cap3
