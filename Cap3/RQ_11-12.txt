@@ -1,0 +1,159 @@
+1- C. HashMap
+
+-WRONG
+1. B. The answer needs to implement List because the scenario allows duplicates. Since you
+need a List, you can eliminate C, D, and E immediately. HashMap is a Map and HashSet is a
+Set. LinkedList is both a List and a Queue. You want a regular List. Option A, Arrays,
+is trying to distract you. It is a utility class rather than a Collection. An array is not a collection.
+By process of elimination, the answer is B.
+
+
+2- D. TreeMap
+
+3- E. Compiler error on line 7
+
+4- A. hello
+--WRONG
+4. E. Since we call push() rather than offer(), we are treating the ArrayDeque as a LIFO
+(last-in, first-out) stack. On line 7, we remove the last element added, which is "ola". On
+line 8, we look at the new last element ("hi"), but don’t remove it. Lines 9 and 10, we
+remove each element in turn until none are left. Note that we don’t use an Iterator to loop
+through the ArrayDeque. The order in which the elements are stored internally is not part
+of the API contract.
+
+
+5- 
+B. HashSet<? super ClassCastException> set = new HashSet<Exception>();
+C. List<String> list = new Vector<String>();
+F. Map<String, ? extends Number> hm = new HashMap<String, Integer>();
+
+6-C. hithere
+
+7-
+A. The code compiles successfully.
+D. The output is indeterminate.
+
+8-C. One
+
+ONE
+One
+one
+
+
+
+9-E. None of the above
+
+
+10-
+B. aab Abb 123
+
+-_WRONG - toLowerCase()
+10. A. The array is sorted using MyComparator, which sorts the elements in reverse alphabetical
+order in a case-insensitive fashion. Normally, numbers sort before letters. This code
+reverses that by calling the compareTo() method on b instead of a.
+
+
+11-B. 25
+
+-WRONG--->V get(Object key) , get don't have the overload by index. 
+11. A. Line 3 uses the diamond operator to create the map. Lines 5 and 7 use autoboxing to
+convert between the int primitive and the Integer wrapper class. The keys map to their
+squared value. 1 maps to 1, 2 maps to 4, 3 maps to 9, 4 maps to 16, and so on.
+
+12- 
+A. Helper.printException(new FileNotFoundException("A"));
+B. Helper.printException(new Exception("B"));
+D. Helper.<NullPointerException>printException(new NullPointerException
+("D"));
+
+13- 
+A. ArrayDeque<?> list = new ArrayDeque<String>();
+B. ArrayList<? super Date> list = new ArrayList<Date>();
+E. Vector<? extends Number> list = new Vector<Integer>();
+
+--WRONG - because ArrayDeque is a Queue and not a List.
+13. B, E. showSize() can take any type of List since it uses an unbounded wildcard. Option
+A is incorrect because it is a Queue and not a List. Option C is incorrect because the wildcard
+is not allowed to be on the right side of an assignment. Option D is incorrect because
+the generic types are not compatible. Option B is correct because a lower-bounded wildcard
+allows that same type to be the generic. Option E is correct because Integer is a subclass
+of Number. Vector is an old type of List. It isn’t common in new code, but you still need to
+know it for the exam and in case you encounter old code.
+
+
+
+14-
+D. [88. 55] [88, 55]
+ 
+-WRONG
+14. C. This question is hard because it defines both Comparable and Comparator on the same
+object. t1 doesn’t specify a Comparator so it uses the Comparable object’s compareTo()
+method. This sorts by the text instance variable. t2 did specify a Comparator when calling
+the constructor, so it uses the compare() method, which sorts by the int.
+
+
+15-
+D. The result is undefined.
+
+16-
+B. Comparator is in the java.util package.
+D. compare() is in the Comparator interface.
+F. compare() takes two method parameters.
+
+17-
+B. On line 1, fill in with <T>.
+D. On line 3, fill in with <>.
+
+18-
+A. A a1 = new A();
+B. A a2 = new B();
+
+
+19-
+A. If we fill in the blank with List, the output is [10].
+C. If we fill in the blank with Queue, the output is [10].
+
+---WRONG - Queue has only the remove by object method, so Java does autobox there
+
+19. A, D. A LinkedList implements both List and Queue. The List interface has a method to
+remove by index. Since this method exists, Java does not autobox to call the other method.
+Queue has only the remove by object method, so Java does autobox there. Since the number
+1 is not in the list, Java does not remove anything for the Queue.
+
+
+20-
+E. Compiler error on line 7.
+
+21- A. On line 6, fill in the blank with hasNext().
+F. On line 7, fill in the blank with next().
+
+22- 
+B. Add <T> after the static keyword.
+
+23- 
+B. Comparator interface
+E. removeIf method on a Collection
+
+24- 
+B. s -> System.out.println(s)
+C. (s) -> System.out.println(s)
+F. System.out::println
+
+--WRONG -  s is already defined as a local variable and therefore the lambda can’t redefine it.
+
+24. F. Choice A is incorrect because forEach takes a Consumer parameter, which requires one
+parameter. Choices B and C are close. The syntax for a lambda is correct. However, s is
+already defined as a local variable and therefore the lambda can’t redefine it. Choices D and
+E use incorrect syntax for a method reference. Choice F is correct.
+
+25-
+F. {1=13, 2=20, 3=3}
+
+
+
+
+
+17/25 = 68%
+
+
+170

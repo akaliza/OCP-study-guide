@@ -681,3 +681,221 @@ In a nutshell, computeIfPresent() calls the BiFunction if the requested key is f
 For computeIfAbsent(), the functional interface runs only when the key isn’t present or
 is null:
 
+Map<String, Integer> counts = new HashMap<>();
+counts.put("Jenny", 1);
+counts.computeIfPresent("Jenny", (k, v) -> null);
+counts.computeIfAbsent("Sam", k -> null);
+System.out.println(counts); // {}
+
+
+
+
+cap4
+
+Lambda expressions can access static variables, instance variables, effectively final
+method parameters, and effectively final local variables
+
+
+Functional Interfaces 	# Parameters 	Return Type 	Single Abstract Method
+=====================	============	===========	======================
+Supplier<T> 		0 		T 		get
+Consumer<T> 		1 (T) 		void 		accept
+BiConsumer<T, U> 	2 (T, U) 	void 		accept
+Predicate<T> 		1 (T) 		boolean 	test
+BiPredicate<T, U> 	2 (T, U) 	boolean 	test
+Function<T, R> 		1 (T) 		R 		apply
+BiFunction<T, U, R> 	2 (T, U) 	R 		apply
+UnaryOperator<T> 	1 (T) 		T 		apply
+BinaryOperator<T> 	2 (T, T) 	T 		apply
+
+
+@FunctionalInterface public class Supplier<T> {
+   public T get();
+}
+
+
+
+@FunctionalInterface public class Consumer<T> {
+void accept(T t);
+}
+@FunctionalInterface public class BiConsumer<T, U> {
+void accept(T t, U u);
+}
+
+
+
+@FunctionalInterface public class Predicate<T> {
+boolean test(T t);
+}
+@FunctionalInterface public class BiPredicate<T, U> {
+boolean test(T t, U u);
+}
+
+
+
+@FunctionalInterface public class Function<T, R> {
+R apply(T t);
+}
+@FunctionalInterface public class BiFunction<T, U, R> {
+R apply(T t, U u);
+}
+
+
+
+@FunctionalInterface public class UnaryOperator<T>  extends Function<T, T> { }
+@FunctionalInterface public class BinaryOperator<T> extends BiFunction<T, T, T> { }
+
+This means that method signatures look like this:
+
+T apply(T t);
+T apply(T t1, T t2);
+
+
+-----------
+
+Method 			When Optional Is Empty 				When Optional Contains a Value
+======================= ===========================================	==============================
+get() 			Throws an exception 				Returns value
+ifPresent(Consumer c) 	Does nothing 					Calls Consumer c with value
+isPresent() 		Returns false 					Returns true
+orElse(T other) 	Returns other parameter 			Returns value
+orElseGet(Supplier s) 	Returns result of calling Supplier 		Returns value
+orElseThrow(Supplier s) Throws exception createdby calling Supplier 	Returns value
+
+
+
+10: public static Optional<Double> average(int… scores) {
+11: if (scores.length == 0) return Optional.empty();
+12: int sum = 0;
+13: for (int score: scores) sum += score;
+14: return Optional.of((double) sum / scores.length);
+15: }
+
+
+20: Optional<Double> opt = average(90, 100);
+21: if (opt.isPresent())
+22: System.out.println(opt.get()); // 95.0
+
+
+26: Optional<Double> opt = average();
+27: System.out.println(opt.get()); // bad
+We’d get an exception since there is no value inside the Optional:
+java.util.NoSuchElementException: No value present
+
+
+Optional o = (value== null) ? Optional.empty(): Optional.of(value);
+
+Java provides a factory method to do the same thing:
+Optional o = Optional.ofNullable(value);
+
+
+Optional<Double> opt = average(90, 100);
+opt.ifPresent(System.out::println);
+
+
+30: Optional<Double> opt = average();
+31: System.out.println(opt.orElse(Double.NaN));
+32: System.out.println(opt.orElseGet(() -> Math.random()));
+33: System.out.println(opt.orElseThrow(() -> new IllegalStateException()));
+
+NaN
+0.49775932295380165
+Exception in thread "main" java.lang.IllegalStateException
+at optional.Average.lambda$3(Average.java:56)
+at optional.Average$$Lambda$5/455659002.get(Unknown Source)
+at java.util.Optional.orElseThrow(Optional.java:290)
+
+
+System.out.println(opt.orElseGet(
+() -> new IllegalStateException())); // DOES NOT COMPILE
+
+opt is an Optional<Double>. This means the Supplier must return a Double. Since this
+supplier returns an exception, the type does not match.
+
+-------------------------------------------------------------------
+
+
+1: Stream<String> empty = Stream.empty(); // count = 0
+2: Stream<Integer> singleElement = Stream.of(1); // count = 1
+3: Stream<Integer> fromArray = Stream.of(1, 2, 3); // count = 2 //varargs
+
+4: List<String> list = Arrays.asList("a", "b", "c");
+5: Stream<String> fromList = list.stream();
+6: Stream<String> fromListParallel = list.parallelStream();
+
+
+7: Stream<Double> randoms = Stream.generate(Math::random);
+8: Stream<Integer> oddNumbers = Stream.iterate(1, n -> n + 2);
+
+If you call randoms.forEach(System.out::println) , the program will
+print random numbers until you kill it.
+
+
+iterate() takes a seed or starting value as the fi rst
+parameter. This is the fi rst element that will be part of the stream. The other parameter is a
+lambda expression that gets passed the previous value and generates the next value. As with
+the random numbers example, it will keep on producing odd numbers as long as you need
+them.
+
+------------------
+Terminal Operations
+
+Method 			What Happens for Infinite Streams 	Return Value 	Reduction
+=================	===================================	=============	=========
+allMatch()		Sometimes terminates 			boolean 	No
+/anyMatch()
+/noneMatch()
+ 
+collect() 		Does not terminate 			Varies 		Yes
+
+count() 		Does not terminate 			long 		Yes
+
+findAny()		Terminates 				Optional<T> 	No
+/findFirst()
+
+forEach() 		Does not terminate 			void 		No
+
+min()/max() 		Does not terminate 			Optional<T> 	Yes
+
+reduce() 		Does not terminate 			Varies 		Yes
+
+
+
+
+long count()
+
+Stream<String> s = Stream.of("monkey", "gorilla", "bonobo");
+System.out.println(s.count()); // 3
+
+--
+
+Optional<T> min(<? super T> comparator)
+Optional<T> max(<? super T> comparator)
+
+Stream<String> s = Stream.of("monkey", "ape", "bonobo");
+Optional<String> min = s.min((s1, s2) -> s1.length()—s2.length());
+min.ifPresent(System.out::println); // ape
+
+Optional<?> minEmpty = Stream.empty().min((s1, s2) -> 0);
+System.out.println(minEmpty.isPresent()); // false
+
+Since the stream is empty, the comparator is never called and no value is present in the
+Optional.
+
+
+--
+
+Optional<T> findAny()
+Optional<T> findFirst()
+
+Stream<String> s = Stream.of("monkey", "gorilla", "bonobo");
+Stream<String> infinite = Stream.generate(() -> "chimp");
+s.findAny().ifPresent(System.out::println); // monkey
+infinite.findAny().ifPresent(System.out::println); // chimp
+
+If the stream is empty, they return an empty Optional.
+
+----
+
+allMatch() , anyMatch() and noneMatch()
+
