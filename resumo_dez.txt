@@ -1116,3 +1116,395 @@ step of the process is doing.
 
 ------------
 
+List<String> list = Arrays.asList("Toby", "Anna", "Leroy", "Alex");
+list.stream().filter(n -> n.length() == 4).sorted()
+.limit(2).forEach(System.out::println);
+
+
+-----------------------
+
+working with primitives
+
+Stream<Integer> stream = Stream.of(1, 2, 3);
+System.out.println(stream.reduce(0, (s, n) -> s + n));
+
+There is another way of doing that:
+
+Stream<Integer> stream = Stream.of(1, 2, 3);
+System.out.println(stream.mapToInt(x -> x).sum());
+
+This time, we converted our Stream<Integer> to an IntStream and asked the IntStream
+to calculate the sum for us. The primitive streams know how to perform certain common
+operations automatically.
+
+
+IntStream intStream = IntStream.of(1, 2, 3);
+OptionalDouble avg = intStream.average();
+System.out.println(avg.getAsDouble());
+
+[] IntStream: Used for the primitive types int, short, byte, and char
+[] LongStream: Used for the primitive type long
+[] DoubleStream: Used for the primitive types double and float
+
+
+DoubleStream empty = DoubleStream. empty ();
+
+
+DoubleStream random = DoubleStream. generate (Math::random);
+DoubleStream fractions = DoubleStream. iterate (.5, d -> d / 2);
+random.limit(3).forEach(System.out::println);
+System.out.println();
+fractions.limit(3).forEach(System.out::println);
+
+
+IntStream range = IntStream.range(1, 6);
+range.forEach(System.out::println); //1-5
+
+IntStream rangeClosed = IntStream.rangeClosed(1, 5);
+rangeClosed.forEach(System.out::println); //1-5
+
+
+
+Source Stream	To Create	To Create	To Create	To Create
+Class		Stream		DoubleStream	IntStream	LongStream
+=============	==============	===============	===============	================
+Stream		map		mapToDouble	mapToInt	mapToLong 
+DoubleStream	mapToObj	map		mapToInt	mapToLong
+IntStream	mapToObj	mapToDouble	map		mapToLong
+LongStream	mapToObj	mapTODouble	mapToInt	map
+
+
+
+Stream<String> objStream = Stream.of("penguin", "fish");
+IntStream intStream = objStream.mapToInt(s -> s.length());
+
+
+
+
+Source Stream	To Create	To Create		To Create		To Create
+Class		Stream		DoubleStream		IntStream		LongStream
+=============	==============	===============		===============		================
+Stream		Function	ToDoubleFunction	ToIntFunction		ToLongFunction
+DoubleStream	DoubleFunction	DoubleUnaryOperator	DoubleToIntFunction	DoubleToLongFunction
+IntStream	IntFunction	IntToDoubleFunction	IntUnaryOperator	IntToLongFunction
+LongStream	LongFunction	LongToDoubleFunction	LongToIntFunction	LongUnaryOperator
+
+
+-----------------
+
+IntStream stream = IntStream.rangeClosed(1,10);
+OptionalDouble optional = stream.average();
+
+
+optional.ifPresent(System.out::println);
+System.out.println(optional.getAsDouble());
+System.out.println(optional.orElseGet(() -> Double.NaN));
+
+
+orElseGet() takes a DoubleSupplier instead of a Supplier.
+
+
+				OptionalDouble 	OptionalInt 	OptionalLong
+==============================================================================
+Getting as a primitive		getAsDouble()	getAsInt()	getAsLong()
+orElseGet() parameter type	DoubleSupplier	IntSupplier	LongSupplier
+Return type of max()		OptionalDouble	OptionalInt	OptionalLong
+Return type of sum()		double		int		long
+Return type of avg()		OptionalDouble	OptionalDouble	OptionalDouble
+
+
+
+5: LongStream longs = LongStream.of(5, 10);
+6: long sum = longs.sum();
+7: System.out.println(sum); // 15
+8: DoubleStream doubles = DoubleStream.generate(() -> Math.PI);
+9: OptionalDouble min = doubles.min(); // runs infinitely
+
+---------------------------
+
+Summarizing Statistics
+
+private static int max(IntStream ints) {
+   OptionalInt optional = ints.max();
+   return optional.orElseThrow(RuntimeException::new);
+}
+
+
+We
+can’t run two terminal operations against the same stream. Luckily, this is a common problem
+and the primitive streams solve it for us with summary statistics. Statistic is just a big
+word for a number that was calculated from data:
+
+private static int range(IntStream ints) {
+   IntSummaryStatistics stats = ints.summaryStatistics();
+   if (stats.getCount() == 0) throw new RuntimeException();
+   return stats.getMax()—stats.getMin();
+}
+
+-----------------------------
+
+
+Functional Interfaces for boolean
+
+boolean getAsBoolean()
+
+12: BooleanSupplier b1 = () -> true;
+13: BooleanSupplier b2 = () -> Math.random() > .5;
+14: System.out.println(b1.getAsBoolean());
+15: System.out.println(b2.getAsBoolean());
+
+------------------------------
+
+Functional Interfaces for double, int, and long
+
+
+Functional Interfaces	# Parameters		Return Type	Single Abstract Method
+======================	====================	=============	=====================
+DoubleSupplier		0			double		getAsDouble
+IntSupplier					int		getAsInt
+LongSupplier					long		getAsLong
+
+DoubleConsumer		1(double)		void		accept
+IntConsumer		1(int)	
+LongConsumer		1(long)
+
+DoublePredicate		1(double)		boolean		test
+IntPredicate		1(int)
+LongPredicate		1(long)
+
+DoubleFunction<R>	1(double)		R		apply
+IntFunction<R>		1(int)
+LongFunction<R>		1(long)
+
+DoubleUnaryOperator	1(double)		double		applyAsDouble
+IntUnaryOperator	1(int)			int		applyAsInt
+LongUnaryOperator	1(long)			long		applyAsLong
+
+DoubleBinaryOperator	2(double, double)	double		applyAsDouble	
+IntBinaryOperator	2(int, int)		int		applyAsInt
+LongBinaryOperator	2(long,long)		long		applyAsLong
+
+
+
+There are a few things to notice that are different between Table 4.1 and Table 4.9:
+
+[] Generics are gone from some of the interfaces, since the type name tells us what primitive
+type is involved. In other cases, such as IntFunction, only the return type generic is needed.	
+
+[] The single abstract method is often, but not always, renamed to reflect the primitive
+type involved.
+
+[] BiConsumer, BiPredicate, and BiFunction are not in Table 4.9. The API designers
+stuck to the most common operations. For primitives, the functions with two different
+type parameters just aren’t used often.
+
+TABELA 4.10...Verificar se necessario
+
+
+===================================
+
+Working with Advanced Stream
+Pipeline Concepts
+
+
+Linking Streams to the Underlying Data
+
+25: List<String> cats = new ArrayList<>();
+26: cats.add("Annie");
+27: cats.add("Ripley");
+28: Stream<String> stream = cats.stream();
+29: cats.add("KC");
+30: System.out.println(stream.count()); //3
+
+
+Remember that streams are lazily evaluated. This
+means that the stream isn’t actually created on line 28. An object is created that knows
+where to look for the data when it is needed. On line 29, the List gets a new element. On
+line 30, the stream pipeline actually runs.
+
+
+Chaining Optionals
+
+private static void threeDigit(Optional<Integer> optional) {
+if (optional.isPresent()) { // outer if
+Integer num = optional.get();
+String string = "" + num;
+if (string.length() == 3) // inner if
+System.out.println(string);
+} }
+
+private static void threeDigit(Optional<Integer> optional) {
+optional.map(n -> "" + n) // part 1
+.filter(s -> s.length() == 3) // part 2
+.ifPresent(System.out::println); // part 3
+}
+
+Now suppose that we wanted to get an Optional<Integer> representing the length of
+the String contained in another Optional. Easy enough:
+Optional<Integer> result = optional.map(String::length);
+
+
+What if we had a helper method that did the logic of calculating something for us and it
+had the signature static Optional<Integer> calculator(String s)? Using map doesn’t
+work:
+
+Optional<Integer> result = optional.map(ChainingOptionals::calculator); // DOES NOT COMPILE
+
+The problem is that calculator returns Optional<Integer>. The map() method adds
+another Optional, giving us Optional<Optional<Integer>>. Well, that’s no good. The
+solution is to call flatMap() instead:
+
+Optional<Integer> result = optional.flatMap(ChainingOptionals::calculator);
+
+This one works because flatMap removes the unnecessary layer. In other words, it flattens
+the result. Chaining calls to flatMap() is useful when you want to transform one
+Optional type to another
+
+------------------------------
+
+Collecting Results
+
+
+Table 4 .11 - verificar tabela 4.11
+
+
+Collecting Using Basic Collectors
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+String result = ohMy.collect(Collectors.joining(", "));
+System.out.println(result); // lions, tigers, bears
+
+It is very important to pass the Collector to the collect method. It exists to help collect
+elements. A Collector doesn’t do anything on its own.
+Let’s try another one. What is the average length of the three animal names?
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Double result = ohMy.collect(Collectors.averagingInt(String::length));
+System.out.println(result); // 5.333333333333333
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+TreeSet<String> result = ohMy.filter(s -> s.startsWith("t")
+.collect(Collectors.toCollection(TreeSet::new));
+System.out.println(result); // [tigers]
+
+
+-----------------------
+
+Collecting into Maps
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<String, Integer> map = ohMy.collect(
+Collectors.toMap(s -> s, String::length));
+System.out.println(map); // {lions=5, bears=5, tigers=6}
+
+
+Returning the same value passed into a lambda is a common operation, so Java provides
+a method for it. You can rewrite s -> s as Function.identity(). It is not shorter and may
+or may not be clearer, so use your judgment on whether to use it.
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, String> map = ohMy.collect(Collectors.toMap(String::length, k -> k)); // BAD
+
+Running this gives an exception similar to the following:
+Exception in thread "main" java.lang.IllegalStateException: Duplicate key lions
+at java.util.stream.Collectors.lambda$throwingMerger$114(Collectors.java:133)
+at java.util.stream.Collectors$$Lambda$3/1044036744.apply(Unknown Source)
+
+What’s wrong? Two of the animal names are the same length.
+
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, String> map = ohMy.collect(Collectors.toMap(
+String::length, k -> k, (s1, s2) -> s1 + "," + s2));
+System.out.println(map); // {5=lions,bears, 6=tigers}
+System.out.println(map.getClass()); // class. java.util.HashMap
+
+
+It so happens that the Map returned is a HashMap. This behavior is not guaranteed.
+Suppose that we want to mandate that the code return a TreeMap instead. No problem. We
+would just add a constructor reference as a parameter:
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+TreeMap<Integer, String> map = ohMy.collect(Collectors.toMap(
+String::length, k -> k, (s1, s2) -> s1 + "," + s2, TreeMap::new));
+System.out.println(map); // // {5=lions,bears, 6=tigers}
+System.out.println(map.getClass()); // class. java.util.TreeMap
+
+---------------------------
+
+Collecting Using Grouping, Partitioning, and Mapping
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, List<String>> map = ohMy.collect(
+Collectors.groupingBy(String::length));
+System.out.println(map); // {5=[lions, bears], 6=[tigers]}
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, Set<String>> map = ohMy.collect(
+Collectors.groupingBy(String::length, Collectors.toSet()));
+System.out.println(map); // {5=[lions, bears], 6=[tigers]}
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+TreeMap<Integer, Set<String>> map = ohMy.collect(
+Collectors.groupingBy(String::length, TreeMap::new, Collectors.toSet()));
+System.out.println(map); // {5=[lions, bears], 6=[tigers]}
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+TreeMap<Integer, List<String>> map = ohMy.collect(
+Collectors.groupingBy(String::length, TreeMap::new, Collectors.toList()));
+System.out.println(map);
+
+
+Partitioning is a special case of grouping. With partitioning, there are only two possible
+groups—true and false. Partitioning is like splitting a list into two parts.
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Boolean, List<String>> map = ohMy.collect(
+Collectors.partitioningBy(s -> s.length() <= 5));
+System.out.println(map); // {false=[tigers], true=[lions, bears]}
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Boolean, List<String>> map = ohMy.collect(
+Collectors.partitioningBy(s -> s.length() <= 7));
+System.out.println(map); // {false=[], true=[lions, tigers, bears]}
+
+
+Notice that there are still two keys in the map—one for each boolean value. It so happens
+that one of the values is an empty list, but it is still there. As with groupingBy(), we
+can change the type of List to something else:
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Boolean, Set<String>> map = ohMy.collect(
+Collectors.partitioningBy(s -> s.length() <= 7, Collectors.toSet()));
+System.out.println(map);// {false=[], true=[lions, tigers, bears]}
+
+Unlike groupingBy(), we cannot change the type of Map that gets returned.
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, Long> map = ohMy.collect(Collectors.groupingBy(
+String::length, Collectors.counting()));
+System.out.println(map); // {5=2, 6=1}
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, Optional<Character>> map = ohMy.collect(
+Collectors.groupingBy(
+String::length,
+Collectors.mapping(s -> s.charAt(0),
+Collectors.minBy(Comparator.naturalOrder()))));
+System.out.println(map); // {5=Optional[b], 6=Optional[t]}
+
+
+Stream<String> ohMy = Stream.of("lions", "tigers", "bears");
+Map<Integer, Optional<Character>> map = ohMy.collect(
+groupingBy(
+String::length,
+mapping(s -> s.charAt(0),
+minBy(Comparator.naturalOrder()))));
+System.out.println(map); // {5=Optional[b], 6=Optional[t]}

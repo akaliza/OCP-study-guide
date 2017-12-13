@@ -1,0 +1,211 @@
+230
+
+1- 
+Stream<String> stream = Stream.iterate("", (s) -> s + "1"); //"""1"
+System.out.println(stream.limit(2).map(x -> x + "2")); //""+"2" + "1"+"2"
+
+- 1
+- 212
+B. 212
+
+
+--WRONG
+1. D. No terminal operation is called, so the stream never executes. The methods chain to
+create a stream that would contain “2” and “12.” The first line creates an infinite stream.
+The second line would get the first two elements from that infinite stream and map each
+element to add an extra character.
+
+
+
+
+2- ok
+
+Predicate<? super String> predicate = s -> s.startsWith("g");
+Stream<String> stream1 = Stream.generate(() -> "growl! ");
+Stream<String> stream2 = Stream.generate(() -> "growl! ");
+boolean b1 = stream1.anyMatch(predicate); //true 
+boolean b2 = stream2.allMatch(predicate); //hangs
+System.out.println(b1 + " " + b2);
+
+F. The code hangs.
+
+3-
+Predicate<? super String> predicate = s -> s.length() > 3;
+Stream<String> stream = Stream.iterate("-", (s) -> s + s); 
+boolean b1 = stream.noneMatch(predicate); //false
+boolean b2 = stream.anyMatch(predicate);  //true
+System.out.println(b1 + " " + b2);
+
+A. false true
+
+--wRONG - USED TERMINAL STREAM TWICE
+3. E. An infinite stream is generated where each element is twice as long as the previous
+one. b1 is set to false because Java finds an element that doesn’t match when it gets to
+the element of length 4. However, the next line tries to operate on the same stream. Since
+streams can be used only once, this throws an exception that the “stream has already been
+operated upon or closed.” If two different streams were used, the result would be option A.
+
+
+4-OK
+A. At most one terminal operation can exist in a stream pipeline.
+B. Terminal operations are a required part of the stream pipeline in order to get a result.
+
+
+5-
+A. collect()
+D. map()
+
+--WRONG
+A. collect()
+B. count()
+5. A, B. Options D and E are incorrect because they are intermediate operations and not terminal
+operations. While option F is a reduction, it is incorrect because it is available only
+on primitive streams such as IntStream. Option C is incorrect because it is not a reduction—
+it does not look at each element in the stream.
+
+
+
+
+6-
+E. noneMatch
+
+Stream<String> s = Stream.generate(() -> "meow");
+boolean match = s.________________(String::isEmpty);
+System.out.println(match);
+
+
+A. allMatch --HANGS
+B. anyMatch --HANGS
+C. findAny  --NOT
+D. findFirst --NOT
+E. noneMatch --HANGS
+
+ Option A is correct because it is safe to return false as soon as one element passes
+through the stream that doesn’t match.
+
+--WRONG
+6. A. Options C and D are incorrect because these methods do not take a Predicate
+parameter and do not return a boolean. Options B and E are incorrect because they cause
+the code to run infinitely. The stream has no way to know that a match won’t show up
+later. Option A is correct because it is safe to return false as soon as one element passes
+through the stream that doesn’t match.
+
+
+
+
+7-OK
+private static List<String> sort(List<String> list) {
+  List<String> copy = new ArrayList<>(list);
+  Collections.sort(copy, (a, b) -> b.compareTo(a));
+  return copy;
+}
+
+F. return list.stream()
+	.sorted((a, b) -> b.compareTo(a))
+	.collect(Collectors.toList());
+
+
+8-OK
+
+IntStream is = IntStream.empty();
+
+D. is.findAny() returns the type OptionalInt.
+E. is.sum() returns the type int.
+
+
+9-
+
+4: LongStream ls = LongStream.of(1, 2, 3);
+5: OptionalLong opt = ls.map(n -> n * 10).filter(n -> n < 5).findFirst();
+
+B. if (opt.isPresent()) System.out.println(opt.getAsLong());
+D. opt.ifPresent(System.out::println)
+
+10-
+Stream.generate(() -> "1")
+L: .filter(x -> x.length() > 1)
+N: .limit(10)
+O: .peek(System.out::println)
+M: .forEach(System.out::println)
+;
+
+F. N, M
+
+
+11-	        	
+System.out.print(
+Stream.iterate(1, x -> ++x) //12345
+      .limit(5)
+      .map(x -> "" + x) //12345
+      .collect(Collectors.joining()); 
+);
+
+B. Change map(x -> x) to map(x -> "" + x) .
+C. Change x -> x++ to x -> ++x.
+E. Wrap the entire line in a System.out.print statement.
+
+//12345
+
+
+12-
+6: ____________ x = String::new;
+7: ____________ y = (a, b) -> System.out.println();
+8: ____________ z = a -> a + a;
+
+F. Supplier<String> linha 6
+A. BiConsumer<String, String> linha 7 
+G. UnaryOperator<String> linha 8 
+
+13-
+
+List<Integer> l1 = Arrays.asList(1, 2, 3);
+List<Integer> l2 = Arrays.asList(4, 5, 6);
+List<Integer> l3 = Arrays.asList();
+Stream.of(l1, l2, l3)
+	.flatMap(x -> x.stream()) >>> Insert flatMap before map
+	.map(x -> x + 1)
+	.forEach(System.out::print);
+
+F. The code does not compile. 
+
+
+14-OK
+4: Stream<Integer> s = Stream.of(1);  //ok 
+5: IntStream is = s.mapToInt(x -> x); //ok
+6: DoubleStream ds = s.mapToDouble(x -> x); //ok 
+7: Stream<Integer> s2 = ds.mapToInt(x -> x); //mapToObj erro
+8: s2.forEach(System.out::print);
+
+D. Line 7 does not compile.
+Converting from a double to an int would require a cast inside the lambda.
+
+
+15- oK
+D. Map<Boolean, List<String>>
+E. Map<Boolean, Set<String>>
+
+16-ok
+C. {false=[], true=[]} {}
+
+17-ok
+UnaryOperator<Integer> u = x -> x * x;
+
+E. Function<Integer, Integer> f = x -> x*x;
+
+18-ok
+DoubleStream s = DoubleStream.of(1.2, 2.4);
+s.peek(System.out::println).filter(x -> x > 2).count();
+
+D. 1.2 and 2.4
+
+19-ok
+A. BooleanSupplier
+C. DoubleSupplier
+E. IntSupplier
+
+20-ok
+B. IntStream.range(1, 6)
+.forEach(System.out::println);
+
+
+16/20=80%
