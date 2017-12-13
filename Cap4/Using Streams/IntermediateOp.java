@@ -73,13 +73,13 @@ public class IntermediateOp{
 
 	public static void main(String...args){
 			IntermediateOp op = new IntermediateOp(); 
-			op.filter();
-			op.distinct(); 
+			//op.filter();
+			//op.distinct(); 
 			op.limitAndskip();
-			op.map();
-			op.flatMap();
-			op.sorted();
-			op.peek();
+			//op.map();
+			//op.flatMap();
+			//op.sorted();
+			//op.peek();
 			
 	}	
 }
