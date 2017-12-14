@@ -1508,3 +1508,329 @@ String::length,
 mapping(s -> s.charAt(0),
 minBy(Comparator.naturalOrder()))));
 System.out.println(map); // {5=Optional[b], 6=Optional[t]}
+
+
+
+
+Cap5
+LocalDate Contains just a date—no time and no time zone.
+LocalTime Contains just a time—no date and no time zone
+LocalDateTime Contains both a date and time but no time zone.
+ZonedDateTime Contains a date, time, and time zone.
+
+
+System.out.println(LocalDate.now());
+System.out.println(LocalTime.now());
+System.out.println(LocalDateTime.now());
+System.out.println(ZonedDateTime.now());
+
+
+2015–05–25
+09:13:07.768
+2015–05–25T09:13:07.768
+2015–05–25T09:13:07.769–04:00[America/New_York]
+
+
+Greenwich Mean Time(GMT) is a time zone in Europe that is used as time zone zero when
+discussing offsets.
+Coordinated Universal Time(UTC) uses the same time zone zero as GMT.
+
+2015–06–20T07:50+02:00[Europe/Paris] // GMT 2015–06–20 5:50
+2015–06–20T06:50+05:30[Asia/Kolkata] // GMT 2015–06–20 1:20
+
+2015–06–20T07:50 GMT-04:00 // GMT 2015–06–20 11:50
+2015–06–20T04:50 GMT-07:00 // GMT 2015–06–20 11:50
+
+2015–06–20T07:50–07:00[US/Pacific]   = 2015–06–20T14:50 
+2015–06–20T07:50+05:30[Asia/Kolkata] = 2015–06–20T2:20
+
+
+public static LocalDate of(int year, int month, int dayOfMonth)
+public static LocalDate of(int year, Month month, int dayOfMonth)
+
+public static LocalTime of(int hour, int minute)
+public static LocalTime of(int hour, int minute, int second)
+public static LocalTime of(int hour, int minute, int second, int nanos)
+
+
+public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute)
+public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second)
+public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanos)
+public static LocalDateTime of(int year, Month month, int dayOfMonth, int hour, int minute)
+public static LocalDateTime of(int year, Month month, int dayOfMonth, int hour, int minute, int second)
+public static LocalDateTime of(int year, Month month, int dayOfMonth, int hour, int minute, int second, int nanos)
+public static LocalDateTime of(LocalDate date, LocalTime time)
+
+
+ZoneId zone = ZoneId.of("US/Eastern");
+ZonedDateTime zoned1 = ZonedDateTime.of(2015, 1, 20, 6, 15, 30, 200, zone);
+ZonedDateTime zoned2 = ZonedDateTime.of(date1, time1, zone);
+ZonedDateTime zoned3 = ZonedDateTime.of(dateTime1, zone);
+
+public static ZonedDateTime of(int year, int month,int dayOfMonth, int hour, 
+			       int minute, int second, int nanos, ZoneId zone)
+public static ZonedDateTime of(LocalDate date, LocalTime time, ZoneId zone)
+public static ZonedDateTime of(LocalDateTime dateTime, ZoneId zone)
+
+Notice that there isn’t an option to pass in the Month enum. This seems like an oversight
+from the API creators and something that will be fixed in future versions of Java.
+
+
+ZoneId.getAvailableZoneIds().stream()
+	.filter(z -> z.contains("US") || z.contains("America"))
+	.sorted().forEach(System.out::println);
+
+
+LocalDate.of(2015, Month.JANUARY, 32) // throws DateTimeException
+
+
+12: LocalDate date = LocalDate.of(2014, Month.JANUARY, 20);
+13: System.out.println(date); // 2014–01–20
+14: date = date.plusDays(2);
+15: System.out.println(date); // 2014–01–22
+16: date = date.plusWeeks(1);
+17: System.out.println(date); // 2014–01–29
+18: date = date.plusMonths(1);
+19: System.out.println(date); // 2014–02–28
+20: date = date.plusYears(5);
+21: System.out.println(date); // 2019–02–28
+
+February 29 exists only in a leap year. Leap years are years that are a multiple
+of 4 or 400 but not other multiples of 100. For example, 2000 and 2016
+are leap years, but 2100 is not.
+
+
+Period annually = Period.ofYears(1); // every 1 year
+Period quarterly = Period.ofMonths(3); // every 3 months
+Period everyThreeWeeks = Period.ofWeeks(3); // every 3 weeks
+Period everyOtherDay = Period.ofDays(2); // every 2 days
+Period everyYearAndAWeek = Period.of(1, 0, 7); // every year and 7 days
+
+
+Period wrong = Period.ofYears(1).ofWeeks(1); // every week
+
+
+System.out.println(Period.of(0, 20, 47));//P20M47D
+System.out.println(Period.ofWeeks(3)); //P21D
+
+--------------------------
+
+Working with Durations
+For Duration, you can specify the number of days, hours, minutes, seconds, or nanoseconds
+
+Remember that a Period is output beginning with a P. Duration is output beginning with PT.
+
+Duration daily = Duration.ofDays(1); // PT24H
+Duration hourly = Duration.ofHours(1); // PT1H
+Duration everyMinute = Duration.ofMinutes(1); // PT1M
+Duration everyTenSeconds = Duration.ofSeconds(10); // PT10S
+Duration everyMilli = Duration.ofMillis(1); // PT0.001S
+Duration everyNano = Duration.ofNanos(1); // PT0.000000001S
+
+Duration includes another more generic factory method. It takes a number and a
+TemporalUnit. The idea is, say, something like “5 seconds.” However, TemporalUnit is an
+interface. At the moment, there is only one implementation named ChronoUnit.
+The previous example could be rewritten as this:
+
+Duration daily = Duration.of(1, ChronoUnit.DAYS);
+Duration hourly = Duration.of(1, ChronoUnit.HOURS);
+Duration everyMinute = Duration.of(1, ChronoUnit.MINUTES);
+Duration everyTenSeconds = Duration.of(10, ChronoUnit.SECONDS);
+Duration everyMilli = Duration.of(1, ChronoUnit.MILLIS);
+Duration everyNano = Duration.of(1, ChronoUnit.NANOS);
+
+ChronoUnit also includes some convenient units such as ChronoUnit.HALF_DAYS to represent
+12 hours.
+
+
+LocalTime one = LocalTime.of(5, 15);
+LocalTime two = LocalTime.of(6, 30);
+LocalDate date = LocalDate.of(2016, 1, 20);
+System.out.println(ChronoUnit.HOURS.between(one, two)); // 1
+System.out.println(ChronoUnit.MINUTES.between(one, two)); // 75
+System.out.println(ChronoUnit.MINUTES.between(one, date)); // DateTimeException
+
+
+7: LocalDate date = LocalDate.of(2015, 1, 20);
+8: LocalTime time = LocalTime.of(6, 15);
+9: LocalDateTime dateTime = LocalDateTime.of(date, time);
+10: Duration duration = Duration.ofHours(6);
+11: System.out.println(dateTime.plus(duration)); // 2015–01–20T12:15
+12: System.out.println(time.plus(duration)); // 12:15
+13: System.out.println(date.plus(duration)); // UnsupportedTemporalException
+
+
+7: LocalDate date = LocalDate.of(2015, 1, 20);
+8: LocalTime time = LocalTime.of(6, 15);
+9: LocalDateTime dateTime = LocalDateTime.of(date, time);
+10: Duration duration = Duration.ofHours(23);
+11: System.out.println(dateTime.plus(duration)); // 2015–01–21T05:15
+12: System.out.println(time.plus(duration)); // 05:15          
+13: System.out.println(date.plus(duration)); // UnsupportedTemporalException
+
+
+LocalDate date = LocalDate.of(2015, 5, 25);
+Period period = Period.ofDays(1);
+Duration days = Duration.ofDays(1);
+System.out.println(date.plus(period)); // 2015–05–26
+System.out.println(date.plus(days)); // Unsupported unit: Seconds
+
+
+			Can Use with Period? 	Can Use with Duration?
+LocalDate 		Yes 			No
+LocalDateTime 		Yes 			Yes
+LocalTime 		No 			Yes
+ZonedDateTime 		Yes 			Yes
+
+
+
+---------------------------------
+
+
+Working with Instants
+
+Instant now = Instant.now();
+// do something time consuming
+Instant later = Instant.now();
+
+Duration duration = Duration.between(now, later);
+System.out.println(duration.toMillis());
+
+
+LocalDate date = LocalDate.of(2015, 5, 25);
+LocalTime time = LocalTime.of(11, 55, 00);
+ZoneId zone = ZoneId.of("US/Eastern");
+ZonedDateTime zonedDateTime = ZonedDateTime.of(date, time, zone);
+Instant instant = zonedDateTime.toInstant(); // 2015–05–25T15:55:00Z
+System.out.println(zonedDateTime); // 2015–05–25T11:55–04:00[US/Eastern]
+System.out.println(instant); // 2015–05–25T15:55:00Z
+
+You cannot convert a LocalDateTime to an Instant. Remember that an Instant is a
+point in time. A LocalDateTime does not contain a time zone, and it is therefore not universally
+recognized around the world as the same moment in time.
+
+
+If you have the number of seconds since 1970, you can also create an Instant that way:
+
+Instant instant = Instant.ofEpochSecond(epochSeconds);
+System.out.println(instant); // 2015–05–25T15:55:00Z
+
+
+
+Instant nextDay = instant.plus(1, ChronoUnit.DAYS);
+System.out.println(nextDay); // 2015–05–26T15:55:00Z
+Instant nextHour = instant.plus(1, ChronoUnit.HOURS);
+System.out.println(nextHour); // 2015–05–25T16:55:00Z
+Instant nextWeek = instant.plus(1, ChronoUnit.WEEKS); // exception
+
+
+Instant nextDay = instant.plus(1, ChronoUnit.DAYS);
+System.out.println(nextDay); // 2015–05–26T15:55:00Z
+Instant nextHour = instant.plus(1, ChronoUnit.HOURS);
+System.out.println(nextHour); // 2015–05–25T16:55:00Z
+Instant nextWeek = instant.plus(1, ChronoUnit.WEEKS); // exception
+
+It’s weird that an Instant displays a year and month while preventing you from doing
+math with those fields. Unfortunately, you need to memorize this fact.
+
+
+------------------------------
+
+Accounting for Daylight Savings Time
+
+On March 13, 2016, we move our clocks forward an hour and jump from 2:00 a.m. to 3:00 a.m. 
+This means that there is no 2:30 a.m. that day. If we wanted to know the time an hour later than 1:30, 
+it would be 3:30.
+
+LocalDate date = LocalDate.of(2016, Month.MARCH, 13);
+LocalTime time = LocalTime.of(1, 30);
+ZoneId zone = ZoneId.of("US/Eastern");
+ZonedDateTime dateTime = ZonedDateTime.of(date, time, zone);
+System.out.println(dateTime); // 2016–03–13T01:30–05:00[US/Eastern]
+dateTime = dateTime.plusHours(1);
+System.out.println(dateTime); // 2016–03–13T03:30–04:00[US/Eastern]
+
+Notice that two things change in this example. The time jumps from 1:30 to 3:30. The
+UTC offset also changes. Remember when we calculated GMT time by subtracting the time
+zone from the time? You can see that we went from 6:30 GMT (1:30 minus -5:00) to 7:30
+GMT (3:30 minus -4:00). This shows that the time really did change by one hour from
+GMT’s point of view.
+
+
+Similarly in November, an hour after the initial 1:30 is also 1:30 because at 2:00 a.m.
+we repeat the hour.
+
+
+LocalDate date = LocalDate.of(2016, Month.NOVEMBER, 6);
+LocalTime time = LocalTime.of(1, 30);
+ZoneId zone = ZoneId.of("US/Eastern");
+ZonedDateTime dateTime = ZonedDateTime.of(date, time, zone);
+System.out.println(dateTime); // 2016–11–06T01:30–04:00[US/Eastern] //5:30GMT
+dateTime = dateTime.plusHours(1);
+System.out.println(dateTime); // 2016–11–06T01:30–05:00[US/Eastern] //6:30GMT
+dateTime = dateTime.plusHours(1);
+System.out.println(dateTime); // 2016–11–06T02:30–05:00[US/Eastern] //7:30GMT
+
+
+
+LocalDate date = LocalDate.of(2016, Month.MARCH, 13);
+LocalTime time = LocalTime.of(2, 30);
+ZoneId zone = ZoneId.of("US/Eastern");
+ZonedDateTime dateTime = ZonedDateTime.of(date, time, zone);
+System.out.println(dateTime); // 2016–03–13T03:30–04:00[US/Eastern]
+
+
+-----------------------------
+
+Reviewing the String class
+
+4: String s1 = "bunny";
+5: String s2 = "bunny";
+6: String s3 = new String("bunny");
+7: System.out.println(s1 == s2); // true
+8: System.out.println(s1 == s3); // false
+9: System.out.println(s1.equals(s3)); // true
+
+10: String s4 = "1" + 2 + 3;
+11: String s5 = 1 + 2 + "3";
+12: System.out.println(s4); // 123
+13: System.out.println(s5); // 33
+
+14: String s = "abcde ";
+15: System.out.println(s.trim().length()); // 5
+16: System.out.println(s.charAt(4)); // e
+17: System.out.println(s.indexOf('e')); // 4
+18: System.out.println(s.indexOf("de")); // 3
+19: System.out.println(s.substring(2, 4).toUpperCase()); // CD
+20: System.out.println(s.replace('a', '1')); // 1bcde
+21: System.out.println(s.contains("DE")); // false
+22: System.out.println(s.startsWith("a")); // true
+
+
+3: StringBuilder b = new StringBuilder();
+4: b.append(12345).append('-');
+5: System.out.println(b.length()); // 6
+6: System.out.println(b.indexOf("-")); // 5
+7: System.out.println(b.charAt(2)); // 3
+8:
+9: StringBuilder b2 = b.reverse();
+10: System.out.println(b.toString()); // -54321
+11: System.out.println(b == b2); // true
+
+
+12: StringBuilder s = new StringBuilder("abcde");
+13: s.insert(1, '-').delete(3, 4); //a-bcde -> a-bde   
+14: System.out.println(s); //a-bde
+15: System.out.println(s.substring(2, 4)); // bd
+
+
+Characteristic 	 String 	StringBuilder 	StringBuffer
+Immutable? 	 Yes 		No 		No
+Pooled? 	 Yes 		No 		No
+Thread-safe? 	 Yes 		No 		Yes
+Can change size? No 		Yes 		Yes
+
+------------------
+
+Adding Internationalization
+and Localization
