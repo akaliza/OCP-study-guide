@@ -1832,5 +1832,419 @@ Can change size? No 		Yes 		Yes
 
 ------------------
 
-Adding Internationalization
-and Localization
+Adding Internationalization and Localization
+
+java.util.Locale
+
+Locale locale = Locale.getDefault();
+System.out.println(locale);
+
+invalid Locales:
+US // can have a language without a country, but not the reverse
+enUS // missing underscore
+US_en // the country and language are reversed
+EN // language must be lowercase
+
+The corrected versions are en and en_US.
+
+
+There are three main ways of creating a Locale . 
+
+First, the Locale class provides constants for some of the most commonly used locales:
+
+System.out.println(Locale.GERMAN); // de
+System.out.println(Locale.GERMANY); // de_DE
+
+
+The other two main ways of creating a Locale are to use the constructors. 
+You can pass just a language or both a language and country:
+
+System.out.println(new Locale("fr")); // fr
+System.out.println(new Locale("hi", "IN")); // hi_IN
+
+================= NOT IN EXAM
+Locale l1 = new Locale.Builder()
+.setLanguage("en")
+.setRegion("US")
+.build();
+
+Locale l2 = new Locale.Builder()
+.setRegion("US")
+.setLanguage("en")
+.build();
+
+
+Locale l2 = new Locale.Builder() // bad but legal
+.setRegion("us")
+.setLanguage("EN")
+.build();
+
+==================
+
+System.out.println(Locale.getDefault()); // en_US
+Locale locale = new Locale("fr");
+Locale.setDefault(locale); // change the default
+System.out.println(Locale.getDefault()); // fr
+
+
+Locale us = new Locale("en", "US");
+Locale france = new Locale("fr", "FR");
+Locale englishCanada = new Locale("en", "CA");
+Locale frenchCanada = new Locale("fr", "CA");
+
+
+
+Zoo_en.properties
+   hello=Hello
+   open=The zoo is open.
+Zoo_fr.properties
+   hello=Bonjour
+   open=Le zoo est ouvert
+
+
+1: import java.util.*;
+2: public class ZooOpen {
+3:
+4: public static void main(String[] args) {
+5:    Locale us = new Locale("en", "US");
+6:    Locale france = new Locale("fr", "FR");
+8:    printProperties(us);
+9:    System.out.println();
+10:   printProperties(france);
+11: }
+12:
+13: public static void printProperties(Locale locale) {
+14:    ResourceBundle rb = ResourceBundle.getBundle("Zoo", locale);
+15:    System.out.println(rb.getString("hello"));
+16:    System.out.println(rb.getString("open"));
+17: }
+18: }
+
+
+The output is as follows:
+Hello
+The zoo is open.
+
+Bonjour
+Le zoo est ouvert
+
+
+
+Property File Format
+animal=dolphin
+animal:dolphin
+animal dolphin
+
+
+# one comment
+! another comment
+key = value\tafter tab
+long = abcdefghijklm\
+nopqrstuvwxyz
+
+Printing out these two properties in a program gives us this:
+
+value ? after tab
+abcdefghijklmnopqrstuvwxyz
+
+
+
+The ResourceBundle class provides a method to get a set of all keys:
+
+Locale us = new Locale("en", "US");
+ResourceBundle rb = ResourceBundle.getBundle("Zoo", us);
+Set<String> keys = rb.keySet();
+keys.stream()
+    .map(k -> k + " " + rb.getString(k))
+    .forEach(System.out::println);
+
+
+Properties props = new Properties();
+rb.keySet()
+  .stream()
+  .forEach(k -> props.put(k, rb.getString(k)));
+
+
+System.out.println(props.getProperty("notReallyAProperty"));
+System.out.println(props.getProperty("notReallyAProperty", "123"));
+
+The first line prints null, since that property doesn’t exist. The second prints 123, since
+the property wasn’t found. If a key were passed that actually existed, both would have
+returned it.
+
+
+Key Found? 			Yes 	No
+==========================	======	======
+getProperty("key") 		Value 	null
+getProperty("key", "default") 	Value 	"default"
+
+
+To implement a resource bundle in Java, you create a class with the same name that you
+would use for a property file. Only the extension is different. Since we have a Java object,
+the file must be a .java file rather than a .properties file. For example, the following class
+is equivalent to the property file that you saw in the last section:
+
+
+1: import java.util.*;
+2: public class Zoo_en extends ListResourceBundle {
+3: protected Object[][] getContents() {
+4: return new Object[][] {
+5: { "hello", "Hello" },
+6: { "open", "The zoo is open" } };
+7: } }
+
+
+There are two main advantages of using a Java class instead of a property file for a
+resource bundle:
+[] You can use a value type that is not a String.
+[] You can create the values of the properties at runtime.
+
+
+1: package resourcebundles;
+2: import java.util.*;
+3: public class Tax_en_US extends ListResourceBundle {
+4: protected Object[][] getContents() {
+5:    return new Object[][] { { "tax", new UsTaxCode() } };
+6: }
+7: public static void main(String[] args) {
+8:    ResourceBundle rb = ResourceBundle.getBundle(
+9:                        "resourcebundles.Tax", Locale.US);
+10: System.out.println(rb.getObject("tax"));
+11: }}
+
+Line 3 extends the ListResourceBundle so that we can define a resource bundle. This
+time, the class name specifies both the language code and country code. Lines 4–6 show
+the method to declare the key/value pairs. This time, the value is not a String. Lines 8–9
+show that a resource bundle can be in a package. We just specify the name of the package
+before the name of the class. Line 10 shows how to retrieve a non-String resource bundle.
+
+
+ResourceBundle.getBundle("name");
+ResourceBundle.getBundle("name", locale);
+
+
+The first one uses the default locale. You are likely to use this one in programs that you
+write. The exam either tells you what to assume as the default locale or uses the second
+approach.
+
+
+Table 5.7 Picking a resource bundle for French in France with default locale US English
+
+Step 		Looks for File 			Reason
+1 		Zoo_fr_FR.java 			The requested locale
+2 		Zoo_fr_FR.properties 		The requested locale
+3 		Zoo_fr.java 			The language we requested with no country
+4 		Zoo_fr.properties		The language we requested with no country
+5 		Zoo_en_US.java 			The default locale
+6 		Zoo_en_US.properties 		The default locale
+7 		Zoo_en.java 			The default language with no country 
+8 		Zoo_en.properties 		The default language with no country
+9		Zoo.java 			No locale at all—the default bundle
+10 		Zoo.properties 			No locale at all—the default bundle
+11		If still not found, throw
+		MissingResourceException.
+
+
+
+How many files do you think Java would need to look for to find the resource bundle
+with the code?
+
+Locale.setDefault(new Locale("hi"));
+ResourceBundle rb = ResourceBundle.getBundle("Zoo", new Locale("en"));
+
+
+The answer is six. They are listed here:
+1. Zoo_hi.java
+2. Zoo_hi.properties
+3. Zoo_en.java
+4. Zoo_en.properties
+5. Zoo.java
+6. Zoo.properties
+
+------------------------
+
+
+Zoo.properties
+   name=Vancouver Zoo
+
+Zoo_en.properties
+   hello=Hello
+   open=is open
+
+Zoo_en_CA.properties
+   visitor=Canada visitor
+
+Zoo_fr.properties
+   hello=Bonjour  
+   open=est ouvert
+
+Zoo_fr_CA.properties
+   visitor=Canada visiteur
+
+
+(a default locale of French Canada)
+
+2: Locale locale = new Locale("en", "CA");
+3: ResourceBundle rb = ResourceBundle.getBundle("Zoo", locale); 
+4: System.out.print(rb.getString("hello")); //Zoo_en.properties Hello
+5: System.out.print(". ");
+6: System.out.print(rb.getString("name")); //Zoo.properties Vancouver Zoo
+7: System.out.print(" ");
+8: System.out.print(rb.getString("open")); //Zoo_en.properties  is open
+9: System.out.print(" ");
+10: System.out.print(rb.getString("visitor")); //Zoo_en_CA.properties Canada visitor
+
+
+ 
+-----------------
+
+Formatting Numbers
+
+
+1: import java.text.*;
+2: import java.util.*;
+3:
+4: public class FormatNumbers {
+5: public static void main(String[] args) {
+6: int attendeesPerYear = 3_200_000;
+7: int attendeesPerMonth = attendeesPerYear / 12;
+8: NumberFormat us = NumberFormat.getInstance(Locale.US);
+9: System.out.println(us.format(attendeesPerMonth));
+10: NumberFormat g = NumberFormat.getInstance(Locale.GERMANY);
+11: System.out.println(g.format(attendeesPerMonth));
+12: NumberFormat ca = NumberFormat.getInstance(Locale.CANADA_FRENCH);
+13: System.out.println(ca.format(attendeesPerMonth));
+14: } }
+The output looks like this:
+266,666
+266.666
+266 666
+
+
+double price = 48;
+NumberFormat us = NumberFormat.getCurrencyInstance();
+System.out.println(us.format(price));
+When run with the default locale of en_US , the output is $48.00. Java automatically formats
+with two decimals and adds the dollar sign. This is convenient even if you don’t need
+to localize your program!
+
+
+Parsing
+
+The parse methods for the different types of formats throw the checked exception
+ParseException if they fail to parse.
+You can assume that exceptions are properly handled.
+If you see parsing logic inside a method, make sure that ParseException or Exception is
+handled or declared.
+
+NumberFormat en = NumberFormat.getInstance(Locale.US);
+NumberFormat fr = NumberFormat.getInstance(Locale.FRANCE);
+String s = "40.45";
+System.out.println(en.parse(s)); // 40.45
+System.out.println(fr.parse(s)); // 40
+
+In the United States, a dot is part of a number and the number is parsed how you might
+expect. France does not use a decimal point to separate numbers. Java parses it as a formatting
+character, and it stops looking at the rest of the number. The lesson is to make sure
+that you parse using the right locale!
+
+
+
+NumberFormat nf = NumberFormat.getInstance();
+String one = "456abc";
+String two = "-2.5165x10";
+String three = "x85.3";
+System.out.println(nf.parse(one)); // 456
+System.out.println(nf.parse(two)); // -2.5165
+System.out.println(nf.parse(three));// throws ParseException
+
+The first two lines parse correctly. There happen to be extra characters after the number,
+but that’s OK. The third parsing fails because there are no numbers at the beginning of
+the String. Java instead throws a java.text.ParseException.
+
+String amt = "$92,807.99";
+NumberFormat cf = NumberFormat.getCurrencyInstance();
+double value = (Double) cf.parse(amt);
+System.out.println(value); // 92807.99 
+
+The currency string "$92,807.99" contains a dollar sign and a comma. The parse
+method strips out the characters and converts the value to a number. The return value of
+parse is a Number object. Number is the parent class of all the java.lang wrapper classes, so
+the return value can be cast to its appropriate data type. The Number is cast to a Double and
+then automatically unboxed into a double.
+
+
+Formatting Dates and Times
+
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20);
+System.out.println(date.getDayOfWeek()); // MONDAY
+System.out.println(date.getMonth()); // JANUARY
+System.out.println(date.getYear()); // 2020
+System.out.println(date.getDayOfYear()); // 20
+
+
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20);
+LocalTime time = LocalTime.of(11, 12, 34);
+LocalDateTime dateTime = LocalDateTime.of(date, time);
+System.out.println(date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+System.out.println(time.format(DateTimeFormatter.ISO_LOCAL_TIME));
+System.out.println(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+2020–01–20
+11:12:34
+2020–01–20T11:12:34
+
+
+DateTimeFormatter shortDateTime = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+System.out.println(shortDateTime.format(dateTime)); // 1/20/20
+System.out.println(shortDateTime.format(date)); // 1/20/20
+System.out.println(shortDateTime.format(time)); // UnsupportedTemporalTypeException
+
+The last line throws an exception because a time cannot be formatted as a date
+
+
+The following statements print exactly the same thing as the previous code:
+
+DateTimeFormatter shortDateTime = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+System.out.println(dateTime.format(shortDateTime));
+System.out.println(date.format(shortDateTime));
+System.out.println(time.format(shortDateTime));
+
+
+
+Table 5.10 - vizualizar --
+
+
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20);
+LocalTime time = LocalTime.of(11, 12, 34);
+LocalDateTime dateTime = LocalDateTime.of(date, time);
+DateTimeFormatter shortF = DateTimeFormatter
+.ofLocalizedDateTime(FormatStyle.SHORT);
+DateTimeFormatter mediumF = DateTimeFormatter
+.ofLocalizedDateTime(FormatStyle.MEDIUM);
+System.out.println(shortF.format(dateTime)); // 1/20/20 11:12 AM
+System.out.println(mediumF.format(dateTime)); // Jan 20, 2020 11:12:34 AM
+
+
+DateTimeFormatter f = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm");
+System.out.println(dateTime.format(f)); // January 20, 2020, 11:12
+
+MMMM M represents the month. The more Ms you have, the more verbose the Java output. For
+example, M outputs 1, MM outputs 01, MMM outputs Jan, and MMMM outputs January.
+dd d represents the day in the month. As with month, the more ds you have, the more verbose
+the Java output. dd means to include the leading zero for a single-digit day.
+, Use , if you want to output a comma (this also appears after the year).
+yyyy y represents the year. yy outputs a two-digit year and yyyy outputs a four-digit year.
+hh h represents the hour. Use hh to include the leading zero if you’re outputting a single-digit hour.
+: Use : if you want to output a colon.
+mm m represents the minute omitting the leading zero if present. mm is more common and
+represents the minutes using two digits
+
+
+DateTimeFormatter f = DateTimeFormatter.ofPattern("MM dd yyyy");
+LocalDate date = LocalDate.parse("01 02 2015", f);
+LocalTime time = LocalTime.parse("11:22");
+System.out.println(date); // 2015–01–02
+System.out.println(time); // 11:22
+
+
