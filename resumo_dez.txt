@@ -2348,13 +2348,13 @@ try {
   throw new IOException();
 } catch (FileNotFoundException | IOException e) { } // DOES NOT COMPILE
 
-
+	
 LEGAL:
 
 try {
 // do some work
 } catch(RuntimeException e) {
-   e = new RuntimeException();
+   e = new RuntimeException(); //ONLY WHEN  class = subClass or Class 
 }
 
 ILEGAL:
@@ -2633,3 +2633,181 @@ java -ea:com.wiley.demos... -da:com.wiley.demos.TestColors my.programs.Main
 13: }}}
 
 
+CAP 7 : 
+
+The property of executing multiple threads and processes at the same time is referred to as concurrency
+
+A context switch is the process of storing a thread’s current state and later restoring the state of the thread to continue execution
+
+A thread priority is a numeric value associated with a thread that is taken into consideration by the thread scheduler when determining which threads should currently be executing.
+
+
+--Runnable
+
+@FunctionalInterface public interface Runnable {
+   void run();
+}
+
+
+
+The Runnable interface is commonly used to define the work a thread will execute,
+separate from the main application thread.
+
+Valid:
+() -> System.out.println("Hello World")
+() -> {int i=10; i++;}
+() -> {return;}
+() -> {}
+
+
+
+
+Invalid with Runnable: 
+
+() -> ""
+() -> 5
+() -> {return new Object();}
+
+
+Runnable before java7 (used yet): 
+
+public class CalculateAverage implements Runnable {
+   public void run() {
+     // Define work here
+   }
+}
+
+
+Creating a Thread
+
+[] Provide a Runnable object or lambda expression to the Thread constructor.
+[] Create a class that extends Thread and overrides the run() method.
+
+
+public class PrintData implements Runnable {
+   public void run() {
+      for(int i=0; i<3; i++)
+         System.out.println("Printing record: "+i);
+   }
+   public static void main(String[] args) {
+      (new Thread(new PrintData())).start();
+   }
+}
+
+
+public class ReadInventoryThread extends Thread {
+    public void run() {
+       System.out.println("Printing zoo inventory");
+    }
+    public static void main(String[] args) {
+       (new ReadInventoryThread()).start();
+    }
+}
+
+Anytime you create a Thread instance, make sure that you remember to start the task with the Thread.start() method. This starts the task in a separate operating system thread.
+
+
+public static void main(String[] args) {
+System.out.println("begin");
+(new ReadInventoryThread()).start();
+(new Thread(new PrintData())).start();
+(new ReadInventoryThread()).start();
+System.out.println("end");
+}
+
+The answer is that it is unknown until runtime. For example, the following is just one
+possible output:
+
+begin
+Printing zoo inventory
+Printing record: 0
+end
+Printing zoo inventory
+Printing record: 1
+Printing record: 2
+
+
+
+While the following code snippets will compile, none will actually execute a task on a separate processing thread. 
+Instead, the thread that made the call will be used to execute the task, causing the thread to wait until each run() method is complete before moving on to the next line.
+new PrintData().run();
+(new Thread(new PrintData())).run();
+(new ReadInventoryThread()).run();
+
+==============
+
+Polling with Sleep
+
+Polling is the process of intermittently checking data at some fixed interval.
+
+public class CheckResults throws InterruptedException{
+  private static int counter = 0;
+  public static void main(String[] args) {
+     new Thread(() -> { for(int i=0; i<500; i++) CheckResults.counter++; }).start();
+     while(CheckResults.counter<100) {
+        System.out.println("Not reached yet");
+	Thread.sleep(1000); // 1 SECOND
+     } 
+     System.out.println("Reached!");
+  }
+}
+
+=====
+
+Creating Threads with the ExecutorService
+
+import java.util.concurrent.*;
+public class ZooInfo {
+   public static void main(String[] args) {
+	ExecutorService service = null;
+	try {
+	   service = Executors.newSingleThreadExecutor();
+	   System.out.println("begin");
+	   service.execute(() -> System.out.println("Printing zoo inventory"));
+	   service.execute(() -> {for(int i=0; i<3; i++) System.out.println("Printing record: "+i);});
+	   service.execute(() -> System.out.println("Printing zoo inventory"));
+	   System.out.println("end");
+	} finally {
+	   if(service != null) service.shutdown();
+	}
+   }
+}
+
+
+begin
+Printing zoo inventory
+Printing record: 0
+Printing record: 1
+end
+Printing record: 2
+Printing zoo inventory
+
+With a single-thread executor, results are guaranteed to be executed in the order in which
+they are added to the executor service. Notice that the end text is output while our thread
+executor tasks are still running. This is because the main() method is still an independent
+thread from the ExecutorService, and it can perform tasks while the other thread is running.
+
+
+
+Shutting Down a Thread Executor
+
+Once you have finished using a thread executor, it is important that you call the
+shutdown() method. A thread executor creates a non-daemon thread on the first task that
+is executed, so failing to call shutdown() will result in your application never terminating.
+
+The shutdown process for a thread executor involves first rejecting any new tasks submitted to
+the thread executor while continuing to execute any previously submitted tasks. During this time,
+calling isShutdown() will return true, while isTerminated() will return false. If a new task is
+submitted to the thread executor while it is shutting down, a RejectedExecutionException will
+be thrown. Once all active tasks have been completed, isShutdown() and isTerminated() will
+both return true.
+
+What if you want to cancel all running
+and upcoming tasks? The ExecutorService provides a method called shutdownNow(), which
+attempts to stop all running tasks and discards any that have not been started yet. Lastly, shutdownNow()
+returns a List<Runnable> of tasks that were submitted to the thread executor but that were
+never started.
+
+=== 
+
+Submitting Tasks

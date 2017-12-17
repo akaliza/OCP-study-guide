@@ -53,6 +53,11 @@ E. Line 7 is an appropriate use of an assertion.
 B. IllegalStateException
 D. MissingResourceException
 
+
+java.text.ParseException --CHECKED EXCEPTION
+java.time.DateTimeException--UNCHECKED EXCEPTION
+
+
 11. B, D, E. You need to memorize the contents of Table 6.2 and Table 6.3 before the exam.
 
 
@@ -109,7 +114,6 @@ B. RuntimeException--WRONG
 the correct one. Choices C and E are allowed because they actually catch a SQLException.
 Choice D is not allowed because there is no IOException declared. Choice B is allowed
 because a method does not have to handle an exception if it declares it.
-
 
 
 
