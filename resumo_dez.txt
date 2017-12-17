@@ -2250,3 +2250,169 @@ System.out.println(time); // 11:22
 
 Cap 6 - Exceptions and Assertions
 
+ArithmeticException 
+	Thrown by the JVM when code attempts to divide by zero.
+ArrayIndexOutOfBoundsException 
+	Thrown by the JVM when code uses an illegal index to access an array.
+ClassCastException 
+	Thrown by the JVM when an attempt is made to cast an object to a subclass of which it is not an instance.
+IllegalArgumentException 
+	Thrown by the program to indicate that a method has been passed an illegal or inappropriate argument.
+NullPointerException 
+	Thrown by the JVM when there is a null reference where an object is required.
+NumberFormatException 
+	Thrown by the program when an attempt is made to convert a string to a numeric type, 
+	but the string doesn’t have an appropriate format.
+
+
+remember that IO, parsing, and SQL exceptions are checked. Anything else is a runtime
+exception unless the exam states otherwise
+
+
+java.text.ParseException 	Converting a String to a number. 	Checked 	Chapter 5
+
+
+
+10: public String getDataFromDatabase() throws SQLException {
+11: throw new UnsupportedOperationException();
+12: }
+
+
+
+1: class CannotSwimException extends Exception {}
+2: class DangerInTheWater extends RuntimeException {}
+3: class SharkInTheWaterException extends DangerInTheWater {}
+4: class Dolphin {
+5:    public void swim() throws CannotSwimException {
+6:    // logic here
+7:    }
+8: }
+
+
+
+public class CannotSwimException extends Exception {
+	public CannotSwimException() {
+   		super();
+	}
+	public CannotSwimException(Exception e) {
+		super(e);
+	}
+	public CannotSwimException(String message) {
+		super(message);
+	}
+}
+
+
+1
+Exception in thread "main" CannotSwimException
+at CannotSwimException.main(CannotSwimException.java:18)
+
+2
+Exception in thread "main" CannotSwimException: java.lang.RuntimeException
+at CannotSwimException.main(CannotSwimException.java:19)
+Caused by: java.lang.RuntimeException
+... 1 more
+
+3
+Exception in thread "main" CannotSwimException: broken fin
+at CannotSwimException.main(CannotSwimException.java:20)
+
+
+You can also print the stack trace on your own:
+
+try {
+   throw new CannotSwimException();
+} catch (CannotSwimException e) {
+   e.printStackTrace();
+}
+
+
+public static void main(String[] args) {
+try {
+   Path path = Paths.get("dolphinsBorn.txt");
+   String text = new String(Files.readAllBytes(path));
+   LocalDate date = LocalDate.parse(text);
+   System.out.println(date);
+} catch (DateTimeParseException | IOException e) { 
+   e.printStackTrace();
+   throw new RuntimeException(e);
+} 
+}
+
+
+catch(Exception1 e | Exception2 e | Exception3 e) // DOES NOT COMPILE
+catch(Exception1 e1 | Exception2 e2 | Exception3 e3) // DOES NOT COMPILE
+catch(Exception1 | Exception2 | Exception3 e)
+
+try {
+  throw new IOException();
+} catch (FileNotFoundException | IOException e) { } // DOES NOT COMPILE
+
+
+LEGAL:
+
+try {
+// do some work
+} catch(RuntimeException e) {
+   e = new RuntimeException();
+}
+
+ILEGAL:
+
+try {
+throw new IOException();
+} catch(IOException | RuntimeException e) {
+   e = new RuntimeException(); // DOES NOT COMPILE
+}
+
+
+11: public void doesNotCompile() { // METHOD DOES NOT COMPILE
+12: try {
+13: mightThrow();
+14: } catch (FileNotFoundException | IllegalStateException e) {
+15: } catch (InputMismatchException e | MissingResourceException e) {
+16: } catch (SQLException | ArrayIndexOutOfBoundsException e) {
+17: } catch (FileNotFoundException | IllegalArgumentException e) {
+18: } catch (Exception e) {
+19: } catch (IOException e) {
+20: }
+21: }
+22: private void mightThrow() throws DateTimeParseException, IOException { }
+
+[] Line 15 has an extra variable name. Remember that there can be only one exception
+variable per catch block.
+[] their subclasses. While this doesn’t have anything to do with multi-catch, you’ll see
+“regular” catch block problems mixed in with multi-catch.
+[] Line 17 cannot catch FileNotFoundException because that exception was already
+caught on line 15. You can’t list the same exception type more than once in the same
+try statement, just like with “regular” catch blocks.
+[] Line 16 cannot catch SQLException because nothing in the try statement can
+potentially throw one. Again, just like “regular” catch blocks, any runtime exception
+may be caught. However, only checked exceptions that have the potential to be thrown
+are allowed to be caught.
+
+
+30: public void newApproach(Path path1, Path path2) throws IOException {
+31: try (BufferedReader in = Files.newBufferedReader(path1);
+32: BufferedWriter out = Files.newBufferedWriter(path2)) {
+33: out.write(in.readLine());
+34: }
+35: }
+
+33: out.write(in.readLine());
+34: }
+35: }
+
+
+
+try-with-resources statement is still allowed to have catch and/or finally blocks.
+
+
+3: try (Scanner s = new Scanner(System.in)) {
+4:    s.nextLine();
+5: } catch(Exception e) {
+6:    s.nextInt(); // DOES NOT COMPILE
+7: } finally{
+8:    s.nextInt(); // DOES NOT COMPILE
+9: }
+
