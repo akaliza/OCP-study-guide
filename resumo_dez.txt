@@ -2416,3 +2416,115 @@ try-with-resources statement is still allowed to have catch and/or finally block
 8:    s.nextInt(); // DOES NOT COMPILE
 9: }
 
+
+
+
+public class Turkey {
+public static void main(String[] args) {
+try (Turkey t = new Turkey()) { // DOES NOT COMPILE
+System.out.println(t);
+}
+}
+}
+
+Java doesn’t allow this. It has no idea how to close a Turkey. Java informs us of this fact
+with a compiler error:
+The resource type Turkey does not implement java.lang.AutoCloseable
+
+
+
+1: public class TurkeyCage implements AutoCloseable {
+2: public void close() {
+3: System.out.println("Close gate");
+4: }
+5: public static void main(String[] args) {
+6: try (TurkeyCage t = new TurkeyCage()) {
+7: System.out.println("put turkeys in");
+8: }
+9: }
+10: }
+
+
+The AutoCloseable interface has only one method to implement:
+public void close() throws Exception;
+
+
+public class StuckTurkeyCage implements AutoCloseable {
+public void close() throws Exception {
+throw new Exception("Cage door does not close");
+}
+public static void main(String[] args) {
+try (StuckTurkeyCage t = new StuckTurkeyCage()) { // DOES NOT COMPILE
+System.out.println("put turkeys in");
+}
+}
+}
+
+
+
+
+27: try (JammedTurkeyCage t1 = new JammedTurkeyCage();
+28: JammedTurkeyCage t2 = new JammedTurkeyCage()) {
+29: System.out.println("turkeys entered cages");
+30: } catch (IllegalStateException e) {
+31: System.out.println("caught: " + e.getMessage());
+32: for (Throwable t: e.getSuppressed())
+33: System.out.println(t.getMessage());
+34: }
+
+On line 29, the turkeys enter the cages without exception. Then Java tries to close both
+cages automatically. t2 is closed first, since Java closes resources in the reverse order from
+which it created them. This throws an exception. Since it is the first exception to occur,
+it becomes the primary exception. Then t1 is closed. Since an exception has already been
+thrown, this one becomes a suppressed exception. The output is
+turkeys entered cages
+caught: Cage door does not close
+Cage door does not close
+
+Finally, keep in mind that suppressed exceptions apply only to exceptions thrown in the
+try clause. The following example does not throw a suppressed exception:
+35: try (JammedTurkeyCage t = new JammedTurkeyCage()) {
+36: throw new IllegalStateException("turkeys ran off");
+37: } finally {
+38: throw new RuntimeException("and we couldn't find them");
+39: }
+Line 36 throws an exception. Then Java tries to close the resource and adds a suppressed
+exception to it. Now we have a problem. The finally block runs after all this. Since line
+38 throws an exception, the previous exception is lost. This has always been and continues
+to be bad programming practice. We don’t want to lose exceptions.
+
+
+[] Resources are closed after the try clause ends and before any catch/finally clauses.
+[] Resources are closed in the reverse order from which they were created.
+
+
+public class Auto implements AutoCloseable {
+int num;
+Auto(int num) { this.num = num; }
+public void close() {
+System.out.println("Close: " + num);
+}
+public static void main(String[] args) {
+try (Auto a1 = new Auto(1); Auto a2 = new Auto(2)) {
+throw new RuntimeException();
+} catch (Exception e) {
+System.out.println("ex");
+} finally {
+System.out.println("finally");
+}
+}
+}
+
+
+close 2
+close 1 
+ex
+finally
+
+
+
+Rethrowing Exceptions
+
+
+
+
