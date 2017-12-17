@@ -1,0 +1,123 @@
+1-C. throws on line 5 and throw on line 6 - OK
+
+2-F. The code already compiles as is. --WRONG
+
+2. B, C. Option A is incorrect because it will move the compilation error to the close() method
+since it does throw an exception that must be handled or declared. Option B is correct
+because the unhandled exception becomes declared. Option C is correct because the exception
+becomes handled. Option D is incorrect because the exception remains unhandled.
+
+
+
+3-E. IOException | RuntimeException e - OK
+
+
+4- OK
+A. A traditional try statement without a catch block requires a finally block.
+B. A traditional try statement without a finally block requires a catch block.
+
+
+5-OK
+TWDEF
+C. TWDEF
+
+5. C. After opening both resources in the try-with-resources statement, T is printed. Then the
+try-with-resource completes and closes the resources in reverse order from which they were
+opened. After W is printed, an exception is thrown. However, the remaining resource is still
+closed and D is printed. The exception thrown is then caught and E is printed. Last, the
+finally block is run, printing F. Therefore the answer is TWDEF.
+
+
+
+6-OK
+G. The code does not compile.
+
+7-OK
+C. The code throws an ArrayIndexOutOfBoundsException.
+
+8-OK
+B. java –ea On
+C. java -da -ea:On On
+
+9-OK
+A. assert n < 0: "OhNo";
+D. assert(n < 0): "OhNo";
+
+
+10-
+A. Line 5 does not compile.
+E. Line 7 is an appropriate use of an assertion.
+
+
+11-WRONG
+B. IllegalStateException
+D. MissingResourceException
+
+11. B, D, E. You need to memorize the contents of Table 6.2 and Table 6.3 before the exam.
+
+
+
+12-WRONG
+A. // leave line blank
+C. e = new RuntimeException(); --WRONG
+D. e = new SneezeException();
+E. e = new SniffleException();
+
+12. A, D, E. Since a single exception type is caught, only the same type of exception or a subclass
+is allowed to be assigned to the variable in the catch block. Therefore D and E are
+correct. Additionally A is correct because there are no changes to the variable.
+
+
+
+13-OK
+A. // leave line blank
+
+14-OK
+F. None of the above; the code does not compile
+
+15-OK
+B. Two
+E. Five
+
+16-WRONG
+F. snow 2
+
+16. C. The exception inside the try block becomes the primary exception since it is
+thrown first. Then two suppressed exceptions are added to it when trying to close the
+AutoCloseable resources.
+
+
+
+17-OK
+A. AutoCloseable
+B. Closeable
+
+18-OK
+B. Exception, Closeable
+
+18. B. The main difference between AutoCloseable and Closeable is that AutoCloseable has
+Exception in the signature and Closeable has only IOException in the signature. Since
+IllegalStateException is a runtime exception, it can be thrown by any method.
+
+
+
+19-WRONG
+D. SQLException | IOException
+B. RuntimeException--WRONG
+
+19. D. Choice A is allowed because Java 7 and later “translates” Exception in a catch block to
+the correct one. Choices C and E are allowed because they actually catch a SQLException.
+Choice D is not allowed because there is no IOException declared. Choice B is allowed
+because a method does not have to handle an exception if it declares it.
+
+
+
+
+20-OK
+E. None of the above.
+
+20. E. You can create checked or unchecked exceptions. The default constructor is used if one is
+not supplied. There is no requirement to implement specific methods.
+
+
+15/20 = 75%

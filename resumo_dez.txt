@@ -2521,10 +2521,115 @@ close 1
 ex
 finally
 
-
+------
 
 Rethrowing Exceptions
 
+public void parseData() throws SQLException, DateTimeParseException {}
 
+When calling this method, we need to handle or declare those two exception types.
+There are few valid ways of doing this. We could have two catch blocks and duplicate the
+logic. Or we could use multi-catch:
+
+3: public void multiCatch() throws SQLException, DateTimeParseException {
+4:   try {
+5:      parseData();
+6:   } catch (SQLException | DateTimeParseException e) {
+7:      System.err.println(e);
+8:      throw e;
+9: } }
+
+
+3: public void rethrowing() throws SQLException, DateTimeParseException {
+4: try {
+5:    parseData();
+6: } catch (Exception e) {
+7:    System.err.println(e);
+8;    throw e;
+9: } }
+
+We still have one catch block on line 6. This time, Java interprets Exception as the possible
+exceptions that can be thrown in the method. As long as all of these checked exceptions
+are handled or declared, Java is happy.
+
+
+
+-----------
+
+Working with Assertions
+
+The syntax for an assert statement has two forms:
+
+assert boolean_expression;
+assert boolean_expression: error_message;
+
+That’s right. An assertion throws an AssertionError if it is false. Since programs aren’t
+supposed to catch an Error , this means that assertion failures are fatal and end the program.
+
+
+[] If assertions are disabled, Java skips the assertion and goes on in the code.
+[] If assertions are enabled and the boolean expression is true , then our assertion has
+been validated and nothing happens. The program continues to execute in its normal
+manner.
+[] If assertions are enabled and the boolean expression is false , then our assertion is
+invalid and a java.lang.AssertionError is thrown.
+
+
+java –ea Assertions:
+1: public class Assertions {
+2: public static void main(String[] args) {
+3:    int numGuests = -5;
+4:    assert numGuests > 0;
+5:    System.out.println(numGuests);
+6: }
+7: }
+
+
+The program ends with a stack trace similar to this:
+Exception in thread "main" java.lang.AssertionError
+at asserts.Assertions.main(Assertions.java:7)
+
+
+Enabling Assertions:
+
+java -enableassertions Rectangle
+You can also use the shortcut -ea flag:
+java -ea Rectangle
+
+
+the following command enables assertions only
+for classes in the com.wiley.demos package and any subpackages:
+
+java -ea:com.wiley.demos... my.programs.Main
+
+
+The three dots means any class in the specified package or subpackages. You can also
+enable assertions for a specific class:
+
+java -ea:com.wiley.demos.TestColors my.programs.Main
+
+
+You can disable assertions using the -disableassertions (or -da ) fl ag for a specifi c
+
+For example, the following command enables
+assertions for the com.wiley.demos package but disables assertions for the TestColors
+class:
+java -ea:com.wiley.demos... -da:com.wiley.demos.TestColors my.programs.Main
+'
+
+
+1: public class TestSeasons {
+2: public static void test(Seasons s) {
+3: switch (s) {
+4: case SPRING:
+5: case FALL:
+6: System.out.println("Shorter hours");
+7: break;
+8: case SUMMER:
+9: System.out.println("Longer hours");
+10: break;
+11: default:
+12: assert false: "Invalid season";
+13: }}}
 
 
