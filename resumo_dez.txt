@@ -2811,3 +2811,29 @@ never started.
 === 
 
 Submitting Tasks
+
+Method 					Name Description
+void execute(Runnable command) 		Executes a Runnable task at some point in the future
+
+Future<?> submit(Runnable task)		Executes a Runnable task at some point in the future and returns a Future
+					representing the task
+
+<T> Future<T> submit(Callable<T> task)  Executes a Callable task at some point in the future and returns a Future
+					representing the pending results of the task
+
+<T> List<Future<T>> invokeAll(		 Executes the given tasks, synchronously returning the results of all tasks
+Collection<? extends Callable<T>> tasks) as a Collection of Future objects, in the same order they were in the original
+throws InterruptedException		 collection
+		
+<T> T invokeAny(			 Executes the given tasks, synchronously returning the result of one of
+Collection<? extends Callable<T>> tasks) finished tasks, cancelling any unfinished tasks.
+throws InterruptedException,
+ExecutionException
+
+
+
+
+
+
+
+
