@@ -2832,7 +2832,127 @@ ExecutionException
 
 
 
+In practice, using the submit() method is quite similar to using the execute() method, except that the submit() method return a Future object that can be used to determine whether or not the task has completed execution.
 
+----
+
+Submitting Task Collections
+
+By synchronous, we mean that unlike the other methods used to submit tasks to a thread executor, these methods will wait
+until the results are available before returning control to the enclosing program.
+The invokeAll() method executes all tasks in a provided collection and returns a List of
+ordered Future objects, with one Future object corresponding to each submitted task, in the
+order they were in the original collection. Even though Future.isDone() returns true for each
+element in the returned List, a task could have completed normally or thrown an exception
+
+
+The invokeAny() method executes a collection of tasks and returns the result of one of
+the tasks that successfully completes execution, cancelling all unfinished tasks. While the
+first task to finish is often returned, this behavior is not guaranteed, as any completed task
+can be returned by this method
+
+
+Finally, the invokeAll() method will wait indefinitely until all tasks are complete,
+while the invokeAny() method will wait indefinitely until at least one task completes
+
+
+=================
+
+
+Waiting for Results
+
+
+Future<?> future = service.submit(() -> System.out.println("Hello Zoo"));
+
+Method 				Name Description
+
+boolean isDone()		Returns true if the task was completed, threw an exception, or was cancelled.
+
+
+boolean isCancelled() 		Returns true if the task was cancelled before it completely normally.
+
+boolean cancel() 		Attempts to cancel execution of the task.
+
+V get() 			Retrieves the result of a task, waiting endlessly if it is not yet available.
+
+V get(long timeout,		Retrieves the result of a task, waiting the specified amount of time. If the result is not
+TimeUnit unit)			ready by the time the timeout is reached, a checked TimeoutException will be thrown.
+
+
+
+
+import java.util.concurrent.*;
+public class CheckResults {
+	private static int counter = 0;
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		ExecutorService service = null;
+		try {
+			service = Executors.newSingleThreadExecutor();
+			Future<?> result = service.submit(() -> {for(int i=0; i<500; i++) CheckResults.counter++;});
+			result.get(10, TimeUnit.SECONDS);
+			System.out.println("Reached!");
+		} catch (TimeoutException e) {
+			System.out.println("Not reached in time");
+		} finally {
+			if(service != null) service.shutdown();
+		}
+	}
+}
+
+
+
+
+What is the return value of this task? As Future<V> is a generic class, the type V
+is determined by the return type of the Runnable method. Since the return type of
+Runnable.run() is void, the get() method always returns null. In the next section, you
+will see that there is another task class compatible with ExecutorService that supports
+other return types.
+
+
+
+TimeUnit.NANOSECONDS 	Time in one-billionth of a second (1/1,000,000,000)
+TimeUnit.MICROSECONDS 	Time in one-millionth of a second (1/1,000,000)
+TimeUnit.MILLISECONDS 	Time in one-thousandth of a second (1/1,000)
+TimeUnit.SECONDS 	Time in seconds
+TimeUnit.MINUTES 	Time in minutes
+TimeUnit.HOURS 		Time in hours
+TimeUnit.DAYS 		Time in days
+
+
+==========================
+
+Introducing Callable
+
+@FunctionalInterface public interface Callable<V> {
+	V call() throws Exception;
+}
+
+
+
+public class AddData {
+public static void main(String[] args) throws InterruptedException,ExecutionException {
+	ExecutorService service = null;
+	try {
+		service = Executors.newSingleThreadExecutor();
+		Future<Integer> result = service.submit(() -> 30+11);
+		System.out.println(result.get());
+	} finally {
+		if(service != null) service.shutdown();
+	}
+}
+}
+
+
+
+service.submit(() -> {Thread.sleep(1000); return null;});
+service.submit(() -> {Thread.sleep(1000);});
+The first line will compile, while the second line will not. Why? Recall that Thread.
+sleep() throws a checked InterruptedException. Since the first lambda expression
+has a return type, the compiler treats this as a Callable expression that supports
+checked exceptions. The second lambda expression does not return a value; therefore,
+the compiler treats this as a Runnable expression. Since Runnable methods do not support
+checked exceptions, the compiler will report an error trying to compile this code
+snippet.
 
 
 
