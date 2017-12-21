@@ -2980,3 +2980,219 @@ if(service != null) {
 }
 
 
+In this example, we submit a number of tasks to the thread executor and then shut down
+the thread executor and wait up to one minute for the results. Notice that we can call
+isTerminated() after the awaitTermination() method finishes to confirm that all tasks
+are actually finished.
+
+=====
+
+Scheduling Tasks
+
+The ScheduledExecutorService, which is a subinterface of ExecutorService,
+
+ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
+
+Method Name 			Description
+schedule(Callable<V> callable,	Creates and executes a Callable task after the given delay
+long delay, TimeUnit unit)
+
+schedule(Runnable command,	Creates and executes a Runnable task after the given delay
+long delay, TimeUnit unit)
+
+scheduleAtFixedRate(Runnable	Creates and executes a Runnable task after the given initial delay,	
+command, long initialDelay,     creating a new task every period value that passes.
+long period, TimeUnit unit)
+
+scheduleAtFixedDelay(Runnable   Creates and executes a Runnable task after the given initial delay and subsequently
+command, long initialDelay,     with the given delay between the termination of one execution and the commencement
+long delay, TimeUnit unit)      of the next
+
+
+The fi rst two schedule() methods in Table 7.5 take a Callable or Runnable ,
+respectively, perform the task after some delay, and return a ScheduledFuture<V>
+instance. ScheduledFuture<V> is identical to the Future<V> class, except that it includes a
+getDelay() method that returns the delay set when the process was created. The following
+uses the schedule() method with Callable and Runnable tasks:
+
+ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+Runnable task1 = () -> System.out.println("Hello Zoo");
+Callable<String> task2 = () -> "Monkey";
+Future<?> result1 = service.schedule(task1, 10, TimeUnit.SECONDS);
+Future<?> result2 = service.schedule(task2, 8, TimeUnit.MINUTES);
+
+The first task is scheduled 10 seconds in the future, whereas the second task is scheduled
+8 minutes in the future.
+
+
+The scheduleAtFixedRate() method creates a new task and submits it to the executor
+every period, regardless of whether or not the previous task finished. The following example
+executes a Runnable task every minute, following an initial five-minute delay:
+
+service.scheduleAtFixedRate(command,5,1,TimeUnit.MINUTE);
+
+
+On the other hand, the scheduleAtFixedDelay() method creates a new task after the
+previous task has fi nished. For example, if the fi rst task runs at 12:00 and takes fi ve minutes
+to fi nish, with a period of 2 minutes, then the second task will start at 12:07.
+
+service.scheduleAtFixedDelay(command,0,2,TimeUnit.MINUTE);
+
+
+===================
+
+
+Increasing Concurrency with Pools
+
+Method Name 			Return Type 		Description
+newSingleThreadExecutor() 	ExecutorService		Creates a single-threaded executor that uses a single worker thread 							operating off an unbounded queue. Results are processed 									sequentially in the order in which they are submitted.
+
+newSingleThreadScheduled	Scheduled		Creates a single-threaded executor that can schedule commands
+Executor()			ExecutorService		to run after a given delay or to execute periodically.
+
+newCachedThreadPool()		ExecutorService		Creates a thread pool that creates new threads as needed,
+							but will reuse previously constructed threads when they
+							are available. 
+
+newFixedThreadPool(int		ExecutorService		Creates a thread pool that reuses a fixed number of threads 
+nThreads)						operating off a shared unbounded queue.
+
+newScheduledThreadPool(int	Scheduled		Creates a thread pool that can schedule commands to run after
+nThreads)			ExecutorService		a given delay or to execute periodically.
+
+The difference between a single-thread and a pooled-thread executor is what happens when a task is already running. While a single-thread executor will wait for an available thread to become available before running the next task, a pooled-thread executor can execute the next task concurrently. If the pool runs out of available threads, the task will be
+queued by the thread executor and wait to be completed.
+
+
+The newCachedThreadPool() method will create a thread pool of unbounded size,
+allocating a new thread anytime one is required or all existing threads are busy. This is
+commonly used for pools that require executing many short-lived asynchronous tasks. For
+long-lived processes, usage of this executor is strongly discouraged, as it could grow to
+encompass a large number of threads over the application life cycle.
+
+
+The newFixedThreadPool() takes a number of threads and allocates them all upon
+creation. As long as our number of tasks is less than our number of threads, all tasks
+will be executed concurrently. If at any point the number of tasks exceeds the number
+of threads in the pool, they will wait in similar manner as you saw with a single-thread
+executor. In fact, calling newFixedThreadPool() with a value of 1 is equivalent to calling
+newSingleThreadExecutor().
+
+
+The newScheduledThreadPool() is identical to the newFixedThreadPool() method,
+except that it returns an instance of ScheduledExecutorService and is therefore
+compatible with scheduling tasks. This executor has subtle differences in the way that the
+scheduleAtFixedRate() performs. For example, recall our previous example in which
+tasks took five minutes to complete:
+
+ScheduledExecutorService service = Executors.newScheduledThreadPool(10);
+service.scheduleAtFixedRate(command,3,1,TimeUnit.MINUTE)
+
+================================
+
+
+Synchronizing Data Access
+
+
+java.util.concurrent.atomic
+
+Class Name 		Description
+AtomicBoolean 		A boolean value that may be updated atomically
+AtomicInteger 		An int value that may be updated atomically
+AtomicIntegerArray 	An int array in which elements may be updated atomically
+AtomicLong 		A long value that may be updated atomically
+AtomicLongArray 	A long array in which elements may be updated atomically
+AtomicReference 	A generic object reference that may be updated atomically
+AtomicReferenceArray 	An array of generic object references in which elements may be updated atomically
+
+
+
+Class Name 		Description
+get() 			Retrieve the current value
+set() 			Set the given value, equivalent to the assignment = operator
+getAndSet() 		Atomically sets the new value and returns the old value
+incrementAndGet() 	For numeric classes, atomic pre-increment operation equivalent to  ++value
+getAndIncrement() 	For numeric classes, atomic post-increment operation equivalent to value++
+decrementAndGet() 	For numeric classes, atomic pre-decrement operation equivalent to --value
+getAndDecrement() 	For numeric classes, atomic post-decrement operation equivalent to value--
+	
+
+private AtomicInteger sheepCount = new AtomicInteger(0);
+
+private void incrementAndReport() {
+   System.out.print(sheepCount.incrementAndGet()+" ");
+}
+
+
+
+Improving Access with Synchronized Blocks
+
+SheepManager manager = new SheepManager();
+synchronized(manager) {
+   // Work to be completed by one thread at a time
+}
+
+
+
+private int sheepCount = 0;
+private void incrementAndReport() {
+   synchronized(this) {
+      System.out.print((++sheepCount)+" ");
+   }
+}
+
+
+Synchronizing Methods
+
+private synchronized void incrementAndReport() {
+   System.out.print((++sheepCount)+" ");
+}
+
+
+We can also add the synchronized modifier to static methods. What object is used as
+the monitor when we synchronize on a static method? The class object, of course!
+
+public static void printDaysWork() {
+   synchronized(SheepManager.class) {
+      System.out.print("Finished work");
+   }
+}
+public static synchronized void printDaysWork() {
+   System.out.print("Finished work");
+}
+
+Understanding the Cost of Synchronization
+
+For example, let’s say that we have a highly concurrent class with numerous methods
+that synchronize on the same object. Let’s say that 50 concurrent threads access it. Let’s
+also say that, on average, each thread takes a modest 100 milliseconds to execute.
+
+50 threads x 100 milliseconds
+= 5,000 milliseconds
+= 5 seconds
+
+
+=============================================
+
+Using Concurrent Collections
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
