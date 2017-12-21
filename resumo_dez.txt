@@ -2954,6 +2954,29 @@ the compiler treats this as a Runnable expression. Since Runnable methods do not
 checked exceptions, the compiler will report an error trying to compile this code
 snippet.
 
+----------------
 
+Waiting for All Tasks to Finish
+
+If we don’t need the results of the tasks and are finished using our thread executor, there is a simpler approach.
+First, we shut down the thread executor using the shutdown() method. Next, we use the 
+awaitTermination(long timeout, TimeUnit unit) method available for all thread executors. The method waits the specified time to complete all tasks, returning sooner if all tasks finish or an InterruptedException is detected. You can see an example of this in the following code snippet:
+
+ExecutorService service = null;
+try {
+   service = Executors.newSingleThreadExecutor();
+   // Add tasks to the thread executor
+   ...
+} finally { 
+   if(service != null) service.shutdown();
+}
+if(service != null) {
+   service.awaitTermination(1, TimeUnit.MINUTES);
+   // Check whether all tasks are finished
+   if(service.isTerminated())
+      System.out.println("All tasks finished");
+   else
+      System.out.println("At least one task is still running");
+}
 
 
