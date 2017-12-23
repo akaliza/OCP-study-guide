@@ -3177,6 +3177,148 @@ also say that, on average, each thread takes a modest 100 milliseconds to execut
 
 Using Concurrent Collections
 
+private Map<String,Object> foodData = new ConcurrentHashMap<String,Object>();
+
+
+Understanding Memory Consistency Errors
+
+A memory consistency error occurs when two threads have inconsistent views of what should be the same data. Conceptually, we want writes on one thread to be available to another thread if it accesses the concurrent collection after the write has occurred.
+
+When two threads try to modify the same non-concurrent collection, the JVM may throw a ConcurrentModificationException at runtime. In fact, it can happen with a single thread. Take a look at the following code snippet:
+
+Map<String, Object> foodData = new HashMap<String, Object>();
+foodData.put("penguin", 1);
+foodData.put("flamingo", 2);
+for(String key: foodData.keySet())
+foodData.remove(key);
+
+This snippet will throw a ConcurrentModificationException at runtime, since the iterator keyset() is not properly updated after the first element is removed.
+
+Map<String, Object> foodData = new ConcurrentHashMap<String, Object>();
+foodData.put("penguin", 1);
+foodData.put("flamingo", 2);
+for(String key: foodData.keySet())
+foodData.remove(key); //ok with the concurrent
+
+
+Working with Concurrent Classes
+
+
+Class Name		Java Collections Framework Interface	Elements Ordered? 	Sorted? 	Blocking?
+ConcurrentHashMap	ConcurrentMap 				No 			No 		No
+ConcurrentLinkedDeque 	Deque 					Yes 			No 		No
+ConcurrentLinkedQueue 	Queue 					Yes 			No 		No
+ConcurrentSkipListMap 	ConcurrentMap|SortedMap|NavigableMap	Yes 			Yes 		No
+ConcurrentSkipListSet 	SortedSet|NavigableSet			Yes 			Yes 		No
+CopyOnWriteArrayList 	List 					Yes 			No 		No
+CopyOnWriteArraySet 	Set 					No 			No 		No
+LinkedBlockingDeque 	BlockingQueue|BlockingDeque		Yes 			No 		Yes
+LinkedBlockingQueue 	BlockingQueue 				Yes 			No 		Yes
+
+
+
+
+Map<String,Integer> map = new ConcurrentHashMap<>();
+map.put("zebra", 52);
+map.put("elephant", 10);
+System.out.println(map.get("elephant"));
+
+Queue<Integer> queue = new ConcurrentLinkedQueue<>();
+queue.offer(31);
+System.out.println(queue.peek());
+System.out.println(queue.poll());
+
+Deque<Integer> deque = new ConcurrentLinkedDeque<>();
+deque.offer(10);
+deque.push(4);
+System.out.println(deque.peek());
+System.out.println(deque.pop());
+
+
+
+Understanding Blocking Queues
+
+
+BlockingQueue waiting methods
+Method Name 				Description
+offer(E e, long timeout,TimeUnit unit)	Adds item to the queue waiting the specified time,returning false if time 
+					elapses before space is available
+
+poll(long timeout, TimeUnit unit)	Retrieves and removes an item from the queue, waiting the specified time, 
+					returning null if the time elapses before the item is available
+
+
+try {
+	BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>();
+	blockingQueue.offer(39);
+	blockingQueue.offer(3, 4, TimeUnit.SECONDS);
+	System.out.println(blockingQueue.poll());
+	System.out.println(blockingQueue.poll(10, TimeUnit.MILLISECONDS));
+} catch (InterruptedException e) {
+	// Handle interruption
+}
+
+ 
+
+BlockingDeque waiting methods
+Method Name 					Description
+offerFirst(E e, longtimeout, TimeUnit unit)	Adds an item to the front of the queue, waiting a specified time,
+						returning false if time elapses before space is available.
+
+offerLast(E e, long timeout,TimeUnit unit)	Adds an item to the tail of the queue, waiting a specified time,
+						returning false if time elapses before space is available	
+
+pollFirst(long timeout,TimeUnit unit)		Retrieves and removes an item from the front of the queue,
+						waiting the specified time, returning null if the 
+						time elapses before the item is available						
+pollLast(long timeout,TimeUnit unit)		Retrieves and removes an item from the tail of the queue,
+						waiting the specified time, returning null if the time elapses 
+						before the item is available
+
+
+
+try {
+	BlockingDeque<Integer> blockingDeque = new LinkedBlockingDeque<>();
+	blockingDeque.offer(91);
+	blockingDeque.offerFirst(5, 2, TimeUnit.MINUTES);
+	blockingDeque.offerLast(47, 100, TimeUnit.MICROSECONDS);
+	blockingDeque.offer(3, 4, TimeUnit.SECONDS);
+	System.out.println(blockingDeque.poll());
+	System.out.println(blockingDeque.poll(950, TimeUnit.MILLISECONDS));
+	System.out.println(blockingDeque.pollFirst(200, TimeUnit.NANOSECONDS));
+	System.out.println(blockingDeque.pollLast(1, TimeUnit.SECONDS));
+} catch (InterruptedException e) {
+	// Handle interruption
+}
+
+
+
+Understanding SkipList Collections
+
+The SkipList classes, ConcurrentSkipListSet and ConcurrentSkipListMap, are concurrent versions of their sorted counterparts, TreeSet and TreeMap, respectively. They maintain their elements or keys in the natural ordering of their elements.
+
+
+Understanding CopyOnWrite Collections
+
+List<Integer> list = new CopyOnWriteArrayList<>(Arrays.asList(4,3,52));
+for(Integer item: list) {
+System.out.print(item+" ");
+list.add(9);
+}
+System.out.println();
+System.out.println("Size: "+list.size());
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
