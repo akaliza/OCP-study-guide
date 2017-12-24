@@ -1,0 +1,308 @@
+1-OK
+D. c.parallelStream()
+F. s.parallel()
+
+2-OK
+A. Both can throw unchecked exceptions.
+C. Callable can throw a checked exception.
+D. Both can be implemented with lambda expressions.
+F. Callable returns a generic type.
+
+3-ERRADO 1/2
+ExecutorService service = Executors.newSingleThreadScheduledExecutor();
+service.scheduleWithFixedDelay(() -> { // w1
+   System.out.println("Open Zoo");
+   return null; // w2
+ }, 0, 1, TimeUnit.MINUTES);
+Future<?> result = service.submit(() -> System.out.println("Wake Staff")); // w3
+System.out.println(result.get()); // w4
+
+B. Line w1 - Reference is ExecuteService, so only had methods of ExecuteService. 
+need to be ExecuteServiceScheduleExecutor
+C. Line w2 - scheduleWithFixedDelay()supports only Runnable, not Callable **faltou
+
+
+3. B, C. The code does not compile, so A and F are incorrect. The first problem is that
+although a ScheduledExecutorService is created, it is assigned to an ExecutorService.
+Since scheduleWithFixedDelay() does not exist in ExecutorService, line w1 will not
+compile, and B is correct. The second problem is that scheduleWithFixedDelay()supports
+only Runnable, not Callable, and any attempt to return a value is invalid in a Runnable
+lambda expression; therefore line w2 will also not compile and C is correct. The rest of the
+lines compile without issue, so D and E are incorrect.
+
+
+4-OK
+AtomicLong value1 = new AtomicLong(0);
+final long[] value2 = {0};
+IntStream.iterate(1, i -> 1).limit(100).parallel().forEach(i -> value1.incrementAndGet()); 100
+IntStream.iterate(1, i -> 1).limit(100).parallel().forEach(i -> ++value2[0]);               ???
+System.out.println(value1+" "+value2[0]);
+
+C. The output cannot be determined ahead of time.
+
+
+5-OK
+
+*Livelock* occur(s) when two or more threads are blocked forever but
+both appear active. *Race conditions* occur(s) when two or more threads try to complete a related
+task at the same time.
+
+D. Livelock, Race conditions
+
+
+
+6-OK
+B. The task will be added to an internal queue and completed when there is an available
+thread.
+
+
+7-OK
+List<Integer> l1 = Arrays.asList(1,2,3);
+List<Integer> l2 = new CopyOnWriteArrayList<>(l1);
+Set<Integer>  s3 = new ConcurrentSkipListSet<>();
+s3.addAll(l1);
+
+for(Integer item: l2) l2.add(4); // x1 1 2 3 4 4 4 
+for(Integer item: s3) s3.add(5); // x2 1 2 3 5 
+System.out.println(l1.size()+" "+l2.size()+" "+s3.size());
+                   3 6 4  
+
+
+A. It outputs 3 6 4.
+
+7. A. The code compiles without issue, so D is incorrect. The CopyOnWriteArrrayList
+class is designed to preserve the original list on iteration, so the first loop will be executed
+exactly three times and E is incorrect. The ConcurrentSkipListSet class allows modifications
+while iterating, so it is possible that the second loop could generate an infinite loop.
+In this case, though, the second loop executes exactly four times, since elements in a set are
+unique and 5 can be added only once. For these reasons, F and G are also incorrect. Finally,
+despite using the elements of l1 to populate the collections, l2 and s3 are not backed by the
+original list, so the size of l1 is 3. Likewise, the size of l2 is 6 and the size of s3 is 4, so A is
+the correct answer.
+
+
+
+8-OK
+Integer i1 = Arrays.asList(1,2,3,4,5).stream().findAny().get(); 1
+synchronized(i1) { // y1
+  Integer i2 = Arrays.asList(6,7,8,9,10)
+    .parallelStream()
+    .sorted() // y2 
+    .findAny().get(); // y3
+  System.out.println(i1+" "+i2);
+}
+
+G. The output cannot be determined ahead of time.
+
+9-OK
+A. The code correctly finds the minimum value in the array. ??? 
+C. MyTask inherits RecursiveTask.
+E. The class produces single-threaded performance at runtime.
+
+9. A, C, E. The code compiles without issue, so F is incorrect. Note that the compute()
+method is protected in the parent class, although you can override it with public
+without issue since this is a more accessible modifier. Since compute() returns a value,
+RecursiveTask must be inherited instead of RecursiveAction, so C is correct and B is
+incorrect. The code does correctly find the minimum value on a non-empty array without
+entering an infinite loop, so A is correct and D is incorrect. Finally, since the code calls
+join() immediately after fork(), causing the process to wait, it does not perform any
+faster if there are 100 threads versus 1 thread, so E is also correct.
+
+
+10- ERRADO
+B. The code will not compile because of line q1.
+
+
+10. C. The code does not compile, so A and E are incorrect. The problem here is that c1 is a
+String but c2 is an int, so the code fails to combine on line q2, since calling length() on
+an int is not allowed, and C is correct. The rest of the lines compile without issue. Note
+that calling parallel() on an already parallel is allowed, and it may in fact return the
+same object.
+https://coderanch.com/t/671281/certification/Streams
+
+<U> U reduce(U identity,
+             BiFunction<U,? super T,U> accumulator,
+             BinaryOperator<U> combiner)
+BiFunction<Integer, ? super String, Integer>
+
+
+
+
+
+
+11-OK
+A. If the code does output anything, the order cannot be determined.
+F. The code may produce a deadlock at runtime
+
+
+12- ERRADO
+D. The code will not compile because of m3.
+
+12. E. The program compiles without issue, so B, C, and D are incorrect. Lines m2 and m3
+throw a compiler warning about generics but still compile. Notice that RecursiveAction,
+unlike RecursiveTask, does not return a value. However, since we used a generic Fork-
+JoinTask reference, the code still compiles. The issue here is that the base condition is not
+reached since the numbers start/end are consistently positive. This causes an infinite loop,
+although since memory is finite, Java detects this and throws a StackOverflowError, so E
+is correct. In practice, this could also generate a locking exception before the StackOverflowError
+when the program runs out of memory, but in either circumstance, the program
+will exit.
+
+
+
+
+13-ERRADO 1/2
+A. It outputs 3 4.***inverti na hora
+G. The collect() operation is always executed in a single-threaded fashion.
+
+
+13. A, G. The code compiles and runs without issue, so C, D, E, and F are incorrect. The collect()
+operation groups the animals into those that do and do not start with the letter
+p. Note that there are four animals that do not start with the letter p and three animals
+that do. The negation operator ! before the startsWith() method means that results are
+reversed, so the output is 3 4 and A is correct, making B incorrect. Finally, the stream created
+by flatMap() is a new stream that is not parallel by default, even though its elements
+are parallel streams. Therefore, the performance will be single-threaded and G is correct.
+
+
+14-OK
+3: public void addAndPrintItems(BlockingDeque<Integer> deque) {
+4: deque.offer(103); //103
+5: deque.offerFirst(20, 1, TimeUnit.SECONDS); //20,103
+6: deque.offerLast(85, 7, TimeUnit.HOURS); //20,103,85
+7: System.out.print(deque.pollFirst(200, TimeUnit.NANOSECONDS));
+8: System.out.print(" "+deque.pollLast(1, TimeUnit.MINUTES));
+9: }
+
+
+D. The code will not compile.
+
+14. D. The methods on line 5, 6, 7, and 8 each throw InterruptedException, which is a
+checked exception; therefore the method does not compile and C is the only correct answer.
+If the method signature was updated to include throws InterruptedException, then the
+answer would be F, because the deque may be blocked at runtime when the offerFirst(),
+offerLast(), pollFirst(), and pollLast() operations are called. Finally, if they were
+not blocked and there were no other operations on the deque, then the output would be 20
+85, and the answer would be A..
+
+
+
+15-OK
+
+C. () -> 5
+E. () -> "The" + "Zoo"
+G. () -> {System.out.println("Giraffe"); return 10;}
+
+
+
+16-ERRO
+D. The code will not compile because of line b3. -> callable throws a checked execption
+
+
+16. F, H. The application compiles and does not throw an exception, so B, C, D, E, and G are
+incorrect. Even though the stream is processed in sequential order, the tasks are submitted
+to a thread executor, which may complete the tasks in any order. Therefore, the output cannot
+be determined ahead of time and F is correct, making A incorrect. Finally, the thread
+executor is never shut down; therefore the code will run but it will never terminate, making
+H also correct.
+
+
+
+
+17-OK
+B. It outputs 100 100.
+
+18-OK
+
+import java.util.concurrent.*;
+import java.util.stream.*;
+public class StockRoomTracker {
+   
+   public static void await(CyclicBarrier cb) { // j1
+      try { 
+          cb.await(); //send 9, but only continuos witg 10
+      } catch (InterruptedException | BrokenBarrierException e) {
+          // Handle exception
+      }
+   }
+
+   public static void main(String[] args) {
+      CyclicBarrier cb = new CyclicBarrier(10, () -> System.out.println("Stock Room Full!")); // j2
+      IntStream.iterate(1, i -> 1)
+         .limit(9)    >>> 9 in paralel
+         .parallel()
+         .forEach(i -> await(cb)); // j3
+   }
+}
+
+F. It compiles but waits forever at runtime.
+
+18. F. The code compiles without issue, so B, C, and D are incorrect. The limit on the cyclic
+barrier is 10, but the stream can generate only up to 9 threads that reach the barrier; therefore
+the limit can never be reached, and F is the correct answer, making A and E incorrect.
+Note that even if the limit(9) statement was changed to limit(10), the program could
+still hang, since the JVM might not allocate 10 threads to the parallel stream.
+
+
+
+19-OK
+A. It compiles without issue.
+F. At most one instance of TicketManager will be created in the application
+
+19. A, F. The class compiles without issue so A is correct, and B and C are incorrect. The
+synchronized object on line k1 is TicketManager.class, while the synchronized object
+on line k4 is the instance of TicketManager. The class is not thread-safe because
+the makeTicketsAvailable() method is not synchronized, and E is incorrect. One
+thread could call sellTickets() while another thread has unblocked accessed to
+makeTicketsAvailable(), causing an invalid number of tickets to be reached as part
+of a race condition. Finally, F is correct because the class synchronizes using a static
+getInstance() method, preventing more than one instance from being created.
+
+
+20-OK
+A. By itself, concurrency does not guarantee which task will be completed first.
+D. Applications with many resource-heavy tasks tend to benefit more from concurrency
+than ones with CPU-intensive tasks.
+
+20. A, D. By itself, concurrency does not guarantee which task will be completed first, so A
+is correct. Furthermore, applications with numerous resource requests will often be stuck
+waiting for a resource, which allows other tasks to run. Therefore, they tend to benefit
+more from concurrency than CPU-intensive tasks, so D is also correct. B is incorrect
+because concurrency may in fact make an application slower if it is truly single-threaded in
+nature. Keep in mind that there is a cost associated with allocating additional memory and
+CPU time to manage the concurrent process. C is incorrect because single-processor CPUs
+have been benefiting from concurrency for decades. Finally, E is incorrect; there are numerous
+examples in this chapter of concurrent tasks sharing memory.
+
+
+
+21-ERRADO
+H. The code will not compile because of line o2.
+
+21. A, C, D, E. The code compiles and runs without issue, so G and H are incorrect. The return
+type of performCount() is Integer, so the submit() is interpreted as being applied to a
+Callable<Integer> value. In this manner, the Future<?> is really a Future<Integer>
+object. One possible implementation of performCount() is just to return the input parameter;
+therefore A is a correct answer. B is incorrect, because the return type is Integer, not
+Boolean. The performCount() method could just return null, so C is a correct choice.
+The performCount() can also throw a runtime exception; therefore D is also a correct
+answer. It is also possible for our performCount() to hang indefinitely, such as in a deadlock.
+This would cause Future.get() to hang in printResults(), making E also a correct
+answer. Finally, any exception thrown in performCount() will appear as an exception
+in the get() operation. Since the get() operations are caught in a try/catch block in
+printResults(), none of them will be unhandled, and F is incorrect.
+
+
+
+22-ERRADO
+C. It prints null null null null null
+
+22. F. The key to solving this question is to remember that the execute() method returns
+void, not a Future object. Therefore, line n1 does not compile and F is the correct answer.
+If the submit() method had been used instead of execute(), then C would have been the
+correct answer, as the output of submit(Runnable) task is a Future<?> object which can
+only return null on its get() method.
+
+404
+
+16/22=73%
