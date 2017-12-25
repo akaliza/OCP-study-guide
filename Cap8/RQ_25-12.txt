@@ -19,7 +19,7 @@ C. Console is obtained using the singleton pattern.
 D. When getting a Console object, it might be null.
 
 
-4-
+4-ok
 Console c = System.console();
 String s = ________;
 
@@ -120,7 +120,7 @@ processes.
 F. Classes that store most of their data in static fields would not be easily serialized.
 
 
-17-
+17-ok
 A. ObjectInputStream
 B. PrintStream
 D. PrintWriter
@@ -159,7 +159,7 @@ C. Automatic character encoding
 21-
 A. name
 C. age
-E. birthPlace
+E. birthPlace--WRONG
 
 21. A, C. The code compiles and runs without issue, so F and G are incorrect. Note that serialUID
 is not the same as serialVersionUID, although since serialVersionUID is recommended
@@ -202,3 +202,16 @@ XYZABC.
 XYZY
 
 H. The result cannot be determined with the information given.
+
+23. H. Not all java.io streams support the mark() operation; therefore, without calling mark-
+Supported() on the stream, the result is unknown until runtime. If the stream does support
+the mark() operation, then the result would be XYZY, because the reset() operation
+puts the stream back in the position before the mark() was called, and skip(1) will skip
+X, and E would be correct. If the stream does not support the mark() operation, a runtime
+exception would likely be thrown, and G would be correct. Since you don’t know if the
+input stream supports the mark() operation, H is the only correct choice.
+
+
+20/23= 87%
+
+
