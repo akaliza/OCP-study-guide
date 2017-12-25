@@ -1,0 +1,204 @@
+451
+
+1-OK
+
+InputStream is = new BufferedInputStream(new FileInputStream("zoo.txt"));
+InputStream wrapper = new _____________ (is);
+
+A. BufferedInputStream
+D. ObjectInputStream
+
+
+2-OK
+B. It is more secure.
+E. Because Java puts all String values in a reusable pool.
+F. So that the value can be removed from memory immediately after use.
+
+3-OK
+C. Console is obtained using the singleton pattern.
+D. When getting a Console object, it might be null.
+
+
+4-
+Console c = System.console();
+String s = ________;
+
+C. c.readLine()
+
+
+5-OK
+String line;
+Console c = System.console();
+Writer w = c.writer(); 
+if ((line = c.readLine()) != null)
+   w.append(line);
+w.flush();
+
+B. The code prints what was entered by the user.
+D. A NullPointerException might be thrown.
+E. An IOException might be thrown.
+
+If no console is available, a NullPointerException is thrown. The append() method throws an IOException.
+
+
+
+6-OK
+
+A. The process of converting serialized data back into memory is called deserialization.
+E. The readObject() method of ObjectInputStream may throw a ClassNotFoundException
+even if the return object is not explicitly cast.
+
+
+7-OK
+D. Root
+
+8-OK
+A. /home/parrot is an absolute path.
+
+9-OK
+A. The class must implement the Serializable interface.
+
+
+WRONG--Not every>>
+E. All instance members of the class must be marked transient.**
+
+
+10-OK
+
+1: public static void deleteTree(File file) {
+2:    if(!file.isFile())
+3:       for(File entry: file.listFiles())
+4:          deleteTree(entry);
+5:    else file.delete();
+6: }
+
+C. It can delete a single file
+F. It compiles but may throw an exception at runtime.
+
+
+11-OK
+C. mkdirs()
+G. mkdir()
+E. renameTo()
+
+
+12-OK
+
+c:\book\java exist
+
+B. new File("c:\\book\\java");
+C. new File("c:/book/java");**
+
+
+13-OK
+
+A. System.err
+C. System.in
+E. System.out
+
+
+14-OK
+E. PrintReader
+
+15-OK
+
+-Assuming zoo-data.txt is a multiline text file.
+
+private void echo() throws IOException {
+   try (FileReader fileReader = new FileReader("zoo-data.txt");
+        BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+       System.out.println(bufferedReader.readLine());
+   }
+}
+
+A. It prints the first line of the file to the console.
+
+
+16-OK
+D. The data of some classes cannot be easily serialized, such as those managing threads or
+processes.
+F. Classes that store most of their data in static fields would not be easily serialized.
+
+
+17-
+A. ObjectInputStream
+B. PrintStream
+D. PrintWriter
+G. ObjectOutputStream
+
+18-OK
+1: Console console = System.console();
+2: String color = console.readLine("What is your favorite color? ");
+3: console.____________("Your favorite color is " + color);
+
+
+B. printf
+D. format
+E. writer().println
+
+
+Console defines two output methods, format() and printf(), that are identical
+in function, so B and D are correct. A, C, and F are each incorrect, because there is no
+such method with that name defined in the Console class. You can also use the writer()
+method to gain access to the Console’s PrintWriter object, so E is correct.
+
+
+
+
+19-OK
+
+B. FileOutputStream
+C. BufferedOutputStream
+D. ObjectOutputStream
+
+
+20-OK
+A. More convenient code syntax when working with String data
+C. Automatic character encoding
+
+21-
+A. name
+C. age
+E. birthPlace
+
+21. A, C. The code compiles and runs without issue, so F and G are incorrect. Note that serialUID
+is not the same as serialVersionUID, although since serialVersionUID is recommended
+but not required, this does not pose any compilation issues. Just be aware that
+serialUID will not be used by the serialization process for version control. The name variable
+and age variable are both transient, which means that their values will not be saved
+upon serialization. Upon deserialization, the default initializations and constructor will be
+skipped, and they will both be null; therefore A and C are correct. B is incorrect because
+tail is not transient and could be set by a caller before being serialized. D is also incorrect
+because a serialized empty array is not the same as a null pointer. Even though these
+non-transient fields could be set to null, they are not guaranteed to be null after deserialization.
+E is incorrect because the static value will not be serialized; it will be available
+on the class after deserialization.
+
+
+
+
+
+22-
+A. Bridget
+
+22. E. First off, even though the Bird class implements Serializable, it does not define a
+static serialVersionUID variable, which is recommended but not required; therefore
+it compiles without issue and F is incorrect. The code also runs without issue, so G is
+incorrect. The key here is that Java will call the constructor for the first non-serializable
+no-argument parent class during deserialization, skipping any constructors and default initializations
+for serializable classes in between, including Eagle and Bird itself. Therefore,
+Object() is the first constructor called. All default initializations are skipped, so A, B, C,
+and D are all incorrect. Since the name is marked transient, the deserialized value is null
+and E is correct. H is also incorrect, because the caller cannot change the serialized value of
+name with setName(), since name is marked transient.
+
+
+
+
+23-
+XYZABC.
+
+
+XYZY
+
+H. The result cannot be determined with the information given.
