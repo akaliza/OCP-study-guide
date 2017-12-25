@@ -3754,3 +3754,607 @@ are each still active and trying to complete their task.Livelock is often a resu
 For the exam, you should understand that race conditions lead to invalid data if they are
 not properly handled. Even the solution where both participants fail to proceed is preferable
 to one in which invalid data is permitted to enter the system.
+
+
+
+==>>CAP9
+
+>Understanding Files and Directories
+
+java.io.File
+
+the following is an absolute path to the zoo.txt file:
+/home/smith/data/zoo.txt
+
+The following is a relative path to the same file, assuming the user’s current directory
+was set to /home/smith: 
+data/zoo.txt
+
+
+System.out.println(System.getProperty("file.separator"));
+System.out.println(java.io.File.separator);
+
+
+import java.io.File;
+public class FileSample {
+   public static void main(String[] args) {
+      File file = new File("/home/smith/data/zoo.txt");
+      System.out.println(file.exists());
+   }
+}
+
+
+File parent = new File("/home/smith");
+File child = new File(parent,"data/zoo.txt");
+
+
+Method 			Name Description
+===================	=========================================================================
+exists() 		Returns true if the file or directory exists.
+
+getName() 		Returns the name of the file or directory denoted by this path.
+
+getAbsolutePath() 	Returns the absolute pathname string of this path.
+
+isDirectory() 		Returns true if the file denoted by this path is a directory.
+
+isFile() 		Returns true if the file denoted by this path is a file.
+
+length() 		Returns the number of bytes in the file. For performance reasons, the
+			file system may allocate more bytes on disk than the file actually uses.
+
+lastModified() 		Returns the number of milliseconds since the epoch when the file
+			was last modified.
+
+delete() 		Deletes the file or directory. If this pathname denotes a directory,
+			then the directory must be empty in order to be deleted.
+
+renameTo(File) 		Renames the file denoted by this path.
+
+mkdir() 		Creates the directory named by this path.
+
+mkdirs() 		Creates the directory named by this path including any nonexistent
+			parent directories.
+
+getParent() 		Returns the abstract pathname of this abstract pathname’s parent
+			or null if this pathname does not name a parent directory.
+
+listFiles() 		Returns a File[] array denoting the files in the directory.
+
+
+
+import java.io.File;
+public class ReadFileInformation {
+   public static void main(String[] args) {
+      File file = new File("C:\\data\\zoo.txt");
+      System.out.println("File Exists: "+file.exists());
+      if(file.exists()) {
+         System.out.println("Absolute Path: "+file.getAbsolutePath());
+         System.out.println("Is Directory: "+file.isDirectory());
+         System.out.println("Parent Path: "+file.getParent());
+         if(file.isFile()) {
+            System.out.println("File size: "+file.length());
+            System.out.println("File LastModified: "+file.lastModified());
+         } else {
+            for(File subfile: file.listFiles()) {
+               System.out.println("\t"+subfile.getName());
+            }
+         }
+      }
+   }
+}
+
+
+>>Introducing Streams
+
+1. The stream classes are used for inputting and outputting all types of binary or byte
+data.
+2. The reader and writer classes are used for inputting and outputting only character and
+String data.
+
+
+>>Low-Level vs. High-Level Streams
+
+A low-level stream connects directly with the source of the data, such as a file, an array,
+or a String. Low-level streams process the raw data or resource and are accessed in a
+direct and unfiltered manner.
+
+a high-level stream is built on top of another stream using wrapping.
+Wrapping is the process by which an instance is passed to the constructor of another
+class and operations on the resulting instance are filtered and applied to the original
+instance. For example, take a look at the FileWriter and BufferedWriter objects in the
+following sample code:
+
+try (BufferedReader bufferedReader = new BufferedReader(new FileReader("zoo-data.txt"))) {
+	System.out.println(bufferedReader.readLine());
+}
+
+
+try (ObjectInputStream objectStream = 
+     new ObjectInputStream(new BufferedInputStream(new FileInputStream("zoo-data.txt")))) {
+     System.out.println(objectStream.readObject());
+}
+
+
+new BufferedInputStream(new FileReader("zoo-data.txt")); // DOES NOT COMPILE
+new BufferedWriter(new FileOutputStream("zoo-data.txt")); // DOES NOT COMPILE
+new ObjectInputStream(new FileOutputStream("zoo-data.txt")); // DOES NOT COMPILE
+new BufferedInputStream(new InputStream()); // DOES NOT COMPILE
+
+The first two examples do not compile because they mix Reader/Writer classes with
+InputStream/OutputStream classes, respectively. The third example does not compile
+because we are mixing an OutputStream with an InputStream. The last example does not compile because InputStream is an
+abstract class, and therefore you cannot instantiate an instance of it.
+
+[] A class with the word InputStream or OutputStream in its name is used for reading or
+writing binary data, respectively.
+[] A class with the word Reader or Writer in its name is used for reading or writing
+character or string data, respectively.
+[] Most, but not all, input classes have a corresponding output class.
+[] A low-level stream connects directly with the source of the data.
+[] A high-level stream is built on top of another stream using wrapping.
+[] A class with Buffered in its name reads or writes data in groups of bytes or characters
+and often improves performance in sequential file systems.
+
+
+
+Class Name 		Low/High Level 		Description
+===================	==================	==================================================================
+InputStream 		N/A 			The abstract class all InputStream classes inherit from
+
+OutputStream 		N/A 			The abstract class all OutputStream classes inherit from
+
+Reader 			N/A 			The abstract class all Reader classes inherit from
+
+Writer 			N/A 			The abstract class all Writer classes inherit from
+
+FileInputStream 	Low 			Reads file data as bytes
+
+FileOutputStream 	Low 			Writes file data as bytes
+
+FileReader 		Low 			Reads file data as characters
+
+FileWriter 		Low 			Writes file data as characters 
+
+BufferedReader 		High 			Reads character data from an existing Reader in a buffered manner,
+					 	which improves efficiency and performance
+
+BufferedWriter 		High 			Writes character data to an existing Writer in a buffered manner, 
+						which improves efficiency and performance
+
+ObjectInputStream 	High 			Deserializes primitive Java data types and graphs of Java objects 
+						from an existing InputStream
+
+ObjectOutputStream 	High 			Serializes primitive Java data types and graphs of Java objects 
+						to an existing OutputStream
+
+InputStreamReader 	High 			Reads character data from an existing InputStream
+
+OutputStreamWriter 	High 			Writes character data to an existing
+
+PrintStream 		High 			Writes formatted representations of Java objects to a binary stream
+
+PrintWriter 		High 			Writes formatted representations of Java objects to a text-based 
+						output stream OutputStream
+
+->> Common Stream Operations
+
+>>Closing the Stream
+Throughout this chapter, we will close stream resources using the try-with-resource syntax,
+since this is the preferred way of closing resources in Java.
+
+>>Flushing the Stream
+In many operating systems, the data may be cached in memory, with a write occurring only after a temporary
+cache is filled or after some amount of time has passed
+Java provides a flush() method, which requests that all accumulated data be written immediately to disk.
+You do not need to call the flush() method explicitly when you have finished writing
+to a file, since the close() method will automatically do this.
+
+>>Marking the Stream
+The InputStream and Reader classes include mark(int) and reset() methods to move the stream back to an earlier position.
+you should call the markSupported() method, which returns true only if mark() is supported.
+on a class that does not support these operations will throw an exception at runtime.
+
+Assume that we have an InputStream instance whose next values are ABCD:
+
+InputStream is = . . .
+System.out.print ((char)is.read()); //A
+if(is.markSupported()) {
+   is.mark(100); 
+   System.out.print((char)is.read()); //B
+   System.out.print((char)is.read()); //C
+   is.reset();
+}
+System.out.print((char)is.read()); //B
+System.out.print((char)is.read()); //C
+System.out.print((char)is.read()); //D
+
+
+>>Skipping over Data
+The InputStream and Reader classes also include a skip(long) method.
+It returns a long value, which indicates the number of bytes that were actually skipped. If the return value is zero or negative, such as if the end of the stream was reached, no bytes were skipped.
+
+Assume that we have an InputStream instance whose next values are TIGERS.
+
+InputStream is = . . .
+System.out.print ((char)is.read()); //T
+is.skip(2) 
+is.read(); //(E)
+System.out.print((char)is.read()); //R
+System.out.print((char)is.read()); //S
+
+
+->>Working with Streams
+
+>>The FileInputStream and FileOutputStream Classes
+The data in a FileInputStream object is commonly accessed by successive calls to the read() method until a value of -1 is returned, indicating that the end of the stream—in this case the end of the file.
+
+The FileInputStream class also contains overloaded versions of the read() method, which take a pointer to a byte array where the data is written. The method returns an integer value indicating how many bytes can be read into the byte array
+
+A FileOutputStream object is accessed by writing successive bytes using the write(int) method. Like the FileInputStream class, the FileOutputStream also contains overloaded versions of the write() method that allow a byte array to be passed and can be used by Buffered classes.
+
+public static void copy(File source, File destination) throws IOException {
+try (InputStream in = new FileInputStream(source);
+     OutputStream out = new FileOutputStream(destination)) {
+   int b;
+   while((b = in.read()) != -1) {
+      out.write(b);
+   }
+}
+}
+
+>>The BufferedInputStream and BufferedOutputStream Classes
+Instead of reading the data one byte at a time, we use the underlying read(byte[]) method
+of BufferedInputStream, which returns the number of bytes read into the provided byte
+array. The number of bytes read is important for two reasons. First, if the value returned
+is 0, then we know that we have reached the end of the file and can stop reading from the
+BufferedInputStream. Second, the last read of the file will likely only partially fill the byte
+array, since it is unlikely for the file size to be an exact multiple of our buffer array size
+
+The data is written into the BufferedOutputStream using the write(byte[],int,int)
+method, which takes as input a byte array, an offset, and a length value, respectively. The
+offset value is the number of values to skip before writing characters, and it is often set to 0.
+
+public static void copy(File source, File destination) throws IOException {
+   try (InputStream in   = new BufferedInputStream(new FileInputStream(source));
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(destination))) {
+   byte[] buffer = new byte[1024];
+   int lengthRead;
+   while ((lengthRead = in.read(buffer)) > 0) {
+      out.write(buffer,0,lengthRead);
+      out.flush();
+   }
+}
+
+>>The FileReader and FileWriter classes
+Like the FileInputStream and FileOutputStream classes, the FileReader and
+FileWriter classes contain read() and write() methods, respectively. These methods
+read/write char values instead of byte values; although similar to what you saw with
+streams, the API actually uses an int value to hold the data so that -1 can be returned if
+the end of the file is detected.
+
+The Writer class, which FileWriter inherits from, offers a write(String) method that
+allows a String object to be written directly to the stream. Using FileReader also allows
+you to pair it with BufferedReader in order to use the very convenient readLine() method,
+which you will see in the next example.
+
+
+
+>>The BufferedReader and BufferedWriter Classes
+
+public static List<String> readFile(File source) throws IOException {
+   List<String> data = new ArrayList<String>();
+   try (BufferedReader reader = new BufferedReader(new FileReader(source))) {
+      String s;
+      while((s = reader.readLine()) != null) {
+         data.add(s);
+      }
+   }
+   return data;
+}
+
+
+public static void writeFile(List<String> data, File destination) throws IOException {
+   try (BufferedWriter writer = new BufferedWriter(new FileWriter(destination))) {
+      for(String s: data) {
+         writer.write(s);
+         writer.newLine();
+      }
+   }
+}
+
+First, in the readFile() method, we use a temporary String
+reference s to hold the value of the data in loop as we read it. Unlike FileInputStream
+and FileReader, where we used -1 to check for file termination of an int value, with
+BufferedReader, we stop reading the file when readLine() returns null.
+
+Next, instead of immediately copying the data we read from the file into the output file,
+we store it in a List of String objects in the readFile() method. This allows us to both
+display and modify the data, prior to writing it to disk later.
+
+The last major difference between this code and the previous copy file example is in
+how data is written in the writeFile() method. Unlike the previous examples where we
+had to write the code one byte at a time or by using a byte array, we can write the entire
+String in a single call. The write(String) method is quite convenient in practice. We
+then use the writer.newLine() method to insert a line break into the copied file, as our
+reader.readLine() method split on line breaks.
+
+
+>>The ObjectInputStream and ObjectOutputStream Classes
+The process of converting an in-memory object to a stored data format is referred to as serialization , with the reciprocal process of converting stored data into an object, which is known as deserialization.
+
+>>>The Serializable Interface
+The Serializable interface is a marker interface, which means that it does not have any methods associated with it.
+
+A process attempting to serialize an object will throw a NotSerializableException
+if the class or one of its contained classes does not properly implement the Serializable
+interface.
+
+You can use the transient keyword on the reference to the object,
+which will instruct the process serializing the object to skip it and avoid throwing a
+NotSerializableException . The only limitation is that the data stored in the object will be
+lost during the serialization process.
+
+Besides transient instance variables, static class members will also be ignored during
+the serialization and deserialization process.
+
+public class Animal implements Serializable {
+    private static final long serialVersionUID = 1L; //not required as part of implementing Serializable
+
+If an older version of the class is encountered during deserialization, an exception may be thrown.
+
+>>>Serializing and Deserializing Objects
+
+The ObjectOutputStream class includes a method to serialize the object to the stream
+called void writeObject(Object). If the provided object is not Serializable, or
+it contains an embedded reference to a class that is not Serializable or not marked
+transient, a NotSerializableException will be thrown at runtime.
+
+the ObjectInputStream class includes a deserialization
+method that returns an object called readObject(). Notice that the return type of this
+method is the generic type java.lang.Object, indicating that the object will have to be cast
+explicitly at runtime to be used.
+
+
+public static void createAnimalsFile(List<Animal> animals, File dataFile) throws IOException {
+   try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)))) {
+   for(Animal animal: animals)
+       out.writeObject(animal);
+   }
+}
+
+public static List<Animal> getAnimals(File dataFile) throws IOException, ClassNotFoundException {
+    List<Animal> animals = new ArrayList<Animal>();
+    try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(dataFile)))) {
+        while(true) {
+           Object object = in.readObject();
+           if(object instanceof Animal)
+              animals.add((Animal)object);
+       }
+    } catch (EOFException e) {
+        // File end reached
+    }
+    return animals;
+}
+
+
+
+[Animal [name=Tommy Tiger, age=5, type=T], Animal [name=Peter Penguin, age=8,type=P]]
+
+
+The readObject() throws the checked exception, ClassNotFoundException, since the class of the deserialized object may not be available to the JRE.
+
+Finally, since we are reading objects, we can’t use a -1 integer value to determine when
+we have finished reading a file. Instead, the proper technique is to catch an EOFException,
+which marks the program encountering the end of the file. Notice that we don’t do anything
+with the exception other than finish the method. This is one of the few times when it
+is perfectly acceptable to swallow an exception.
+
+>>>Understanding Object Creation
+
+For the exam, you need be aware of how a deserialized object is created. When you deserialize
+an object, the constructor of the serialized class is not called. In fact, Java calls the first
+no-arg constructor for the first nonserializable parent class, skipping the constructors of
+any serialized class in between. Furthermore, any static variables or default initializations
+are ignored.
+
+public class Animal implements Serializable {
+   private static final long serialVersionUID = 2L;
+   private transient String name;
+   private transient int age = 10;
+   private static char type = 'C';
+
+   {this.age = 14;}
+
+   public Animal() {
+      this.name = "Unknown";
+      this.age = 12;
+      this.type = 'Q';
+   }
+
+   public Animal(String name, int age, char type) {
+     this.name = name;
+     this.age = age;
+     this.type = type;
+   }
+   
+   // Same methods as before
+   . . .
+}
+
+
+As we said earlier, transient means the value won’t be included in the serialization
+process, so it’s safe to assume name and age will be left out of the serialized file. More
+interestingly, the values of age being set to 10, 12, or 14 in the class are all ignored when
+the object is deserialized, as no class constructor or default initializations are used. The
+following is the output of the ObjectStreamSample program with the new Animal class
+definition:
+
+[Animal [name=null, age=0, type=P], Animal [name=null, age=0, type=P]]
+
+As expected, you can see that the values for name and age are lost on serialization and
+not set again during deserialization. The JVM initializes these variables with the default
+values based on the data types String and int, which are null and 0, respectively. Since
+the type variable is static, it is not serialized to disk. The sample program displays a value
+for type, as the variable is shared by all instances of the class and is the last value in our
+sample program.
+
+
+>> The PrintStream and PrintWriter Classes
+
+The PrintStream class operates on OutputStream instances and writes data as bytes, whereas the PrintWriter class operates on Writer instances and writes data as characters.
+For convenience, both of these classes include constructors that can open and write
+to files directly. Furthermore, the PrintWriter class even has a constructor that takes an
+OutputStream as input, allowing you to wrap a PrintWriter class around an OutputStream.
+
+
+These classes are primarily convenience classes in that you could write the low-level
+primitive or object directly to a stream without a PrintStream or PrintWriter class,
+although using one is helpful in a wide variety of situations.
+
+For the exam, you should be aware that System.out and System.err are actually PrintStream objects
+
+Because PrintStream inherits OutputStream and PrintWriter inherits from Writer ,
+both support the underlying write() method while providing a slew of print-based
+methods.
+
+Unlike the underlying write() method, which throws a checked
+IOException that must be caught in your application, these print-based methods do
+not throw any checked exceptions
+
+>>>print()
+In general, these methods perform String.valueOf() on the argument and call the underlying stream’s write() method
+
+PrintWriter out = new PrintWriter("zoo.log");
+out.print(5); // PrintWriter method
+out.write(String.valueOf(5)); // Writer method
+out.print(2.0); // PrintWriter method
+out.write(String.valueOf(2.0)); // Writer method
+Animal animal = new Animal();
+out.print(animal); // PrintWriter method
+out.write(animal==null ? "null": animal.toString()); // Writer method
+
+You may remember from your OCA study material that valueOf() applied to an object
+calls the object’s toString() method or returns null if the object is not set.
+
+
+>>>println()
+
+>>>format() and printf()
+public PrintWriter format(String format, Object args. . .)
+public PrintWriter printf(String format, Object args. . .)
+
+
+>>Sample PrintWriter Application
+
+import java.io.*;
+public class PrintWriterSample {
+   public static void main(String[] args) throws IOException {
+      File source = new File("zoo.log");  
+      try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(source)))) {
+         out.print("Today's weather is: ");
+         out.println("Sunny");
+         out.print("Today's temperature at the zoo is: ");
+         out.print(1/3.0);
+         out.println('C');
+         out.format("It has rained 10.12 inches this year");
+         out.println();
+         out.printf("It may rain 21.2 more inches this year");
+     }
+   }
+}
+
+
+>>Review of Stream Classes
+
+-InputStream
+|--FileInputStream[Low]
+|--ObjectInputStream
+|--FilterInputStream[OUT OF SCOPE]
+  |--BufferedInputStream
+
+-Reader
+|--BufferedReader
+|--InputStreamReader[OUT OF SCOPE] 
+  |--FileReader[Low] 
+
+-OutputStream
+|--FileOutputStream[Low]
+|--ObjectOutputStream
+|--FilterOutputStream[OUT OF SCOPE]
+  |--BufferedOutputStream
+  |--PrintStream
+
+-Writer
+|--BufferedWriter
+|--PrintWriter
+|--OutputStreamWriter[OUT OF SCOPE]
+  |--FileWriter[LOW]
+
+
+
+->>Interacting with Users  
+
+>>The Old Way
+
+import java.io.*;
+public class SystemInSample {
+   public static void main(String[] args) throws IOException {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+      String userInput = reader.readLine();
+      System.out.println("You entered the following: "+userInput);
+   }
+}
+
+
+>>The New Way
+
+import java.io.Console;
+public class ConsoleSample {
+   public static void main(String[] args) {
+      Console console = System.console();
+      if(console != null) {
+         String userInput = console.readLine();
+         console.writer().println ("You entered the following: "+userInput);
+      }
+   }
+}
+
+
+The sample code first retrieves an instance of the Console singleton and determines
+if the Console is available by checking it for a null value. If the Console is available, it
+then retrieves a line of input from the user using the readLine() method, and it outputs
+the result using the Console’s built-in PrintWriter object, accessed via the writer()
+method.
+
+We will now review the various methods available in the Console class: 
+
+-reader() and writer()
+The Console class provides access to an instance of Reader and PrintWriter using the
+methods reader() and writer(), respectively.
+
+-format() and printf()
+Note that the Console class defines only one format() method, and it does not define a
+format() method that takes a locale variable:
+
+Console console = System.console();
+console.writer().format(new Locale("fr", "CA"),"Hello World"); 
+
+-flush()
+
+-readLine()
+The basic readLine() method retrieves a single line of text from the user, and the user
+presses the Enter key to terminate it.
+
+String excitementAnswer = console.readLine();
+String name = console.readLine(“Please enter your name: “);
+
+BufferedReader reader = new BufferedReader(console.reader());
+String value = reader.readLine();
+
+
+-readPassword()
+The readPassword() method is similar to the readLine() method, except that echoing is
+disabled.
+the readLine() method, though, the readPassword() method returns an array of characters
+instead of a String.
