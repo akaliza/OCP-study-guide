@@ -81,10 +81,10 @@ public class Test {
 		//subpath(path);
 		//relativize();
 		//resolve();
-		//normalize();
+		normalize();
 		//realPath();
 		//getName();
-		moveNonEmptyDir();
+		//moveNonEmptyDir();
 		//System.out.println(Paths.get(".").toRealPath());
 	}
 }
