@@ -1,0 +1,305 @@
+1-OK
+
+F. The code does not compile.
+
+The first line should use Paths.get(), because there is no method Path.get(). The second line
+passes a String to relativize() instead of a Path object.
+
+
+2-OK
+Path path = ____________________;
+if(Files.isDirectory(path))
+   System.out.println(Files.deleteIfExists(path) ? "Success": "Try Again");
+
+B. path refers to a symbolic link in the file system.
+C. path refers to an empty directory in the file system.
+
+3-OK
+
+1: Path path = Paths.get("sloth.schedule");
+2: BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+3: if(attributes.size()>0 && attributes.creationTime().toMillis()>0) {
+4: attributes.setTimes(null,null,null);
+5: }
+
+D. The code will not compile because of line 4.
+
+The setTimes() method is available only on BasicFileAttributeView, not the readonly
+BasicFileAttributes class
+
+4-OK
+current working directory is /user/home
+
+Path path = Paths.get("/zoo/animals/bear/koala/food.txt");
+System.out.println(path.subpath(1,3).getName(1).toAbsolutePath());
+
+animals/bear = bear = /user/home/bear
+
+
+C. /user/home/bear
+
+5-WRONG 2/3
+/kang exists as a symbolic link to the directory /mammal/kangaroo
+
+Path path = Paths.get("/kang");
+if(Files.isDirectory(path) && Files.isSymbolicLink(path))
+   Files.createDirectory(path.resolve("joey"));
+
+/mammal/kangaroo/joey
+
+B. A new directory will be created only if /mammal/kangaroo exists.
+D. If the code creates a directory, it will be reachable at /mammal/kangaroo/joey.
+
+C. If the code creates a directory, it will be reachable at /kang/joey. ***MISSED
+
+If /mammal/kangaroo does exist, then the directory will be created at /mammal/kangaroo/joey, and because the symbolic link would be accessible as /kang/joey, C and D are both correct.
+
+
+
+
+
+
+
+6-OK
+
+/animals is a directory that exists and it is empty
+
+Path path = Paths.get("/animals");
+boolean myBoolean = Files.walk(path)                          
+                         .filter((p,a) -> a.isDirectory() && !path.equals(p)) // w1
+                         .findFirst().isPresent(); // w2
+System.out.println(myBoolean ? "No Sub-directory": "Has Sub-directory");
+
+
+C. The code will not compile because of line w1. - BasicFile tem o metodo isDirectory??
+
+************** WARNING **************
+6. C. The code does not compile since the stream output by Files.walk() is Stream<Path>,
+therefore we need a Predictate, not a BiPredicate, on line w1, and the answer is C. If the
+Files.find() method had been used instead, and the lambda had been passed as an argument
+to the method instead of on filter(), the output would be B, Has Sub-directory,
+since the directory is given to be empty. For fun, we reversed the expected output of the
+ternary operation to make sure that you understood the process.
+
+
+
+
+
+7-OK
+current working directory is /zoo, and the path /zoo/turkey does not exist
+            
+Path path = Paths.get("turkey");
+if(Files.isSameFile(path,Paths.get("/zoo/turkey"))) // x1    true
+   Files.createDirectory(path.resolve("info")); // x2 /zoo/turkey/info
+
+F. It compiles but throws an exception at runtime.
+
+
+The code compiles without issue, so D and E are incorrect. The method Files.isSame-
+File() first checks to see if the Path values are the same in terms of equals(). Since the
+first path is relative and the second path is absolute, this comparison will return false,
+forcing isSameFile() to check for the existence of both paths in the file system. Since we
+know /zoo/turkey does not exist, a NoSuchFileException is thrown and F is the correct
+answer. A, B, and C are incorrect since an exception is thrown at runtime.
+
+
+
+
+8-OK
+
+Path path1 = Paths.get("/pets/../cat.txt");
+Path path2 = Paths.get("./dog.txt");
+System.out.println(path1.resolve(path2)); /pets/../cat.txt/./dog.txt
+System.out.println(path2.resolve(path1)); /pets/../cat.txt
+
+
+A. /pets/../cat.txt/./dog.txt
+   /pets/../cat.txt
+
+
+9-OK
+
+B. It can be run on large files with very little memory available.
+C. It can be chained with stream methods directly.
+
+
+10-WRONG 1/2
+
+Files.move(Paths.get("monkey.txt"), Paths.get("/animals"),StandardCopyOption.ATOMIC_MOVE,LinkOption.NOFOLLOW_LINKS);
+
+
+C. If another process is monitoring the file system, it will not see an incomplete file at runtime.
+E. The metadata of the monkey.txt will be moved along with the file --MISSED
+
+10. C, E. The REPLACE_EXISTING flag was not provided, so if the target exists, it will throw
+an exception at runtime and A is incorrect. Next, the NOFOLLOW_LINKS option means that
+if the source is a symbolic link, the link itself and not the target will be copied at runtime,
+so B is also incorrect. The option ATOMIC_MOVE means that any process monitoring the file
+system will not see an incomplete file during the move, so C is correct. D is incorrect, since
+you could rename a file not to have an extension. Note that in this example, if monkey.txt
+is a file, then the resulting /animals would be a file, not a directory. Likewise, if the source
+is a directory, the result would also be a directory. E is correct, because moving always preserves
+the metadata even if the COPY_ATTRIBUTES flag is not set.
+
+
+
+
+11-OK
+Path path1 = Paths.get("./goat.txt").normalize(); // k1          goat.txt --> mule.png
+Path path2 = Paths.get("mule.png");                         
+Files.copy(path1,path2,StandardCopyOption.COPY_ATTRIBUTES); //k2 
+System.out.println(Files.isSameFile(path1, path2)); //k3 false
+
+
+A. It will output false.
+
+
+12-OK
+
+A. new Path("jaguar.txt")
+F. new FileSystem().getPath("leopard")
+
+12. A, F. For this question, you need to rule out the answers that can be used to obtain a Path
+instance. D and G both use the Paths.get() method, one with optional vararg values.
+C uses an overloaded version of Paths.get() that takes a URI. B is a longer form for getting
+a Path using a specific file system, in this case the default file system. Finally, E uses
+a method added to java.io.File to make it easily compatible with Path. The remaining
+choices A and F are the correct ones, because they call constructors on Path and FileSystem,
+respectively, instead of using the underlying factory methods. The rest are invalid since
+they do not use the factory methods to gain access to instances.
+
+
+13-WRONG
+
+/monkeys exists as a regular directory containing multiple files, symbolic links, and subdirectories
+
+Path path = Paths.get("/monkeys");
+Files.find(path, 0, (p,a) -> a.isSymbolicLink())
+     .map(p -> p.toString()) // y1
+     .collect(Collectors.toList()) // y2
+     .stream() // y3
+     .filter(x -> x.toString().endsWith(".txt")) // y4
+     .forEach(System.out::println);
+
+
+A. It will print all symbolic links in the directory tree ending in .txt. ==WRONG
+
+
+13. B. The code compiles and runs without issue, so C, D, E, F, and G are incorrect. Note that
+the sample code creates a stream, collects it as a list, and then converts it back to a stream
+before outputting the filenames. The key here is that the depth parameter specified as the
+second argument to find() is 0, meaning the only record that will be searched is the toplevel
+directory. Since we know that the top directory is regular and not a symbolic link, no
+other paths will be visited and nothing will be printed. For these reasons, B is the correct
+answer and A is incorrect.
+
+Files.find(path, 0, (p,a) -> a.isSymbolicLink())
+
+
+14-OK
+
+E. Files.list()
+
+14. E. First off, recall that the java.io.File.listFiles() method retrieves the members
+of the current directory without traversing any subdirectories. The methods Path.list-
+Files() and Files.files() do not exist, so A and D are incorrect. Files.walk() and
+Files.find() recursively traverse a directory tree rather than list the contents of the
+current directory; therefore, they are not a close match, and B and C are incorrect. Note
+that you could use these methods to perform the same operation if you set the depth limit
+to 1 and used a lambda with Files.find() that always returns true, but the question
+was about which method is most similar to java.io.File.listFiles(). In that regard,
+Files.list() is the closest match since it always reads only a single directory, and E is
+correct. Note that instead of an array, a stream of Path values is returned. Finally, F is
+incorrect because it reads the contents of a file, not a directory.
+
+
+
+15-OK
+D. It makes fewer round-trips to the file system.
+E. It can be used to access file system–dependent attributes.
+F. For reading multiple attributes, it is often more performant.
+
+views can be used to access file system–specific attributes that are not available in java.nio.Files methods;
+therefore E is correct.
+
+
+16-OK
+/squid/food-schedule.csv exists as a regular non-empty file that a program has access to read
+
+Path path = Paths.get("/squid/food-schedule.csv");
+Files.lines(path) // r1
+     .flatMap(p -> Stream.of(p.split(","))) // r2
+     .map(s -> s.toUpperCase()) // r3
+     .forEach(System.out::println);
+
+F. If it prints anything, it will not include commas.
+
+
+17-ok
+
+current directory is /animals/cute
+
+Files.walk(Paths.get("..").toRealPath().getParent()) // u1     /
+     .map(p -> p.toAbsolutePath().toString()) // u2                
+     .filter(s -> s.endsWith(".java")) // u3                  
+     .collect(Collectors.toList()) 
+     .forEach(System.out::println);
+
+A. It compiles but may throw an exception at runtime.
+G. It prints all .java files in the root directory tree.
+
+
+
+
+
+18-OK
+
+Path path1 = Paths.get("/lizard/./").resolve(Paths.get("walking.txt")); //  /lizard/./walking.txt
+                                                                            /lizard/walking.txt   
+Path path2 = new File("/lizard/././actions/../walking.txt").toPath();   //  /lizard/././actions/../walking.txt
+                                                                            /lizard/walking.txt  
+System.out.print(Files.isSameFile(path1,path2)); //true
+System.out.print(" "+path1.equals(path2)); //false
+System.out.print(" "+path1.normalize().equals(path2.normalize())); //true
+
+D. true false true
+
+
+19-WRONG 2/3
+E. NIO.2 supports symbolic links.
+A. NIO.2 supports file system–dependent attributes
+C. NIO.2 allows you to traverse a directory tree directly.-MISSED
+
+19. A, C, E. While all of the answers are applicable to the NIO.2, only A, C, and E are options
+that are not supported by the legacy java.io.File class and therefore give NIO.2 an
+advantage over java.io.File.
+
+
+20-WRONG
+
+current directory is /seals/harp/food
+
+final Path path = Paths.get(".").normalize(); // h1 // /seals/harp/food  4 
+int count = 0;
+for(int i=0; i<path.getNameCount(); ++i) {
+count++;
+}
+System.out.println(count);
+
+E. 4 WRONG
+
+B. 1
+
+20. B. The normalize() method does not convert a relative path into an absolute path; therefore,
+the path value after the first line is just the current directory symbol. The for() loop
+iterates the name values, but since there is only one entry, the loop terminates after a single
+iteration. Therefore, B is correct and the rest of the answers are incorrect.
+
+System.out.println(Paths.get(".").toRealPath());  ///seals/harp/food
+
+
+
+
+15/20 = 75%
+
+
