@@ -4664,4 +4664,274 @@ System.out.println(path3.resolve(relativePath).normalize()); E:\user\home
 
 
 
+>>Checking for File Existence with toRealPath()
+
+The toRealPath(Path) method takes a Path object that may or may not point to an
+existing file within the file system, and it returns a reference to a real path within the file
+system.
+
+It is similar to the toAbsolutePath() method in that it can convert a relative path
+to an absolute path, except that it also verifies that the file referenced by the path actually
+exists, and thus it throws a checked IOException at runtime if the file cannot be located. It
+is also the only Path method to support the NOFOLLOW_LINKS option.
+
+The toRealPath() method performs additional steps, such as removing redundant path
+elements. In other words, it implicitly calls normalize() on the resulting absolute path.
+
+
+Symbolic link:
+/zebra/food.source ? /horse/food.txt
+
+current working directory is /horse/schedule: 
+
+try {
+   System.out.println(Paths.get("/zebra/food.source").toRealPath());  // /horse/food.txt
+   System.out.println(Paths.get(".././food.txt").toRealPath()); //    // /horse/food.txt    
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+We can also use the toRealPath() method to gain access to the current working
+directory, such as shown here:
+
+System.out.println(Paths.get(".").toRealPath());
+
+
+>>Interacting with Files
+
+many of the same operations available in java.io.File are available to java.nio.file.Path via a helper
+class called java.nio.file.Files , or Files for short.
+
+most of the options within the Files class will throw an exception if the fi le to
+which the Path refers does not exist.
+
+Keep in mind that File belongs to the legacy java.io API, while Files belongs to the NIO.2 API.
+
+>>Testing a Path with exists()
+Files.exists(Path) method takes a Path object and returns true if, and only if, it
+references a fi le that exists in the fi le system.
+
+Files.exists(Paths.get("/ostrich/feathers.png"));
+Files.exists(Paths.get("/ostrich"));
+
+
+>>Testing Uniqueness with isSameFile()
+
+The Files.isSameFile(Path,Path) method is useful for determining if two Path objects
+relate to the same fi le within the fi le system. It takes two Path objects as input and follows
+symbolic links. Despite the name, the method also determines if two Path objects refer to
+the same directory.
+
+The isSameFile() method fi rst checks if the Path objects are equal in terms of equal() ,
+and if so, it automatically returns true without checking to see if either fi le exists. If the
+Path object equals() comparison returns false , then it locates each fi le to which the
+path refers in the fi le system and determines if they are the same, throwing a checked
+IOException if either fi le does not exist.
+
+Let’s assume that all of the files in the following examples exist within the file system and
+that cobra is a symbolic link to the snake file.
+
+
+try {
+   System.out.println(Files.isSameFile(Paths.get("/user/home/cobra"),
+   Paths.get("/user/home/snake"))); //true
+   
+   System.out.println(Files.isSameFile(Paths.get("/user/tree/../monkey"),
+   Paths.get("/user/monkey"))); //true
+   
+   System.out.println(Files.isSameFile(Paths.get("/leaves/./giraffe.exe"),
+   Paths.get("/leaves/giraffe.exe"))); //true
+   
+   System.out.println(Files.isSameFile(Paths.get("/flamingo/tail.data"),
+   Paths.get("/cardinal/tail.data")));  //false
+
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+>>Making Directories with createDirectory() and createDirectories()
+
+The directory-creation methods can throw the checked IOException, such as when the directory cannot be created or already exists.
+
+Both of these methods also accept an optional list of FileAttribute<?> values to set on
+the newly created directory or directories.
+
+try {
+   Files.createDirectory(Paths.get("/bison/field"));
+   Files.createDirectories(Paths.get("/bison/field/pasture/green"));
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+The first example creates a new directory, field, in the directory /bison, assuming
+/bison exists; or else an exception is thrown.
+
+Contrast this with the second example that creates the directory green along with any of the following parent directories if they do not already exist, such as /bison, /bison/field, or /bison/pasture.
+
+
+>>Duplicating File Contents with copy()
+
+Files.copy(Path,Path)
+The copy() method throws the checked IOException, such as when the file or directory does not exist or cannot be read.
+
+Directory copies are shallow rather than deep, meaning that files and subdirectories
+within the directory are not copied.
+
+try {
+   Files.copy(Paths.get("/panda"), Paths.get("/panda-save"));
+   Files.copy(Paths.get("/panda/bamboo.txt"),Paths.get("/panda-save/bamboo.txt"));
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+The first example performs a shallow copy of the panda directory, creating a new
+panda-save directory
+
+These behaviors can be altered by providing the additional options NOFOLLOW_LINKS,
+REPLACE_EXISTING, and COPY_ATTRIBUTES, respectively, as discussed earlier in the chapter.
+
+
+>>Copying Files with java.io and NIO.2
+
+The first copy() method takes a source java.io.InputStream along with a target Path object. It reads the contents from the stream and writes the output to a file represented by a Path object.
+
+The second copy() method takes a source Path object and target java.io.OutputStream.
+It reads the contents of the file and writes the output to the stream.
+
+
+try (InputStream is = new FileInputStream("source-data.txt");
+     OutputStream out = new FileOutputStream("output-data.txt")) {
+   // Copy stream data to file
+   Files.copy(is, Paths.get("c:\\mammals\\wolf.txt"));
+   // Copy file data to stream
+   Files.copy(Paths.get("c:\\fish\\clown.xsl"), out);
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+Like the first copy() method, the copy(InputStream,Path) method also supports
+optional vararg options, since the data is being written to a file represented by a Path
+object. The second method, copy(Path,OutputStream), does not support optional vararg
+values, though, since the data is being written to a stream that may not represent a file
+system resource.
+
+
+>>Changing a File Location with move()
+
+The Files.move(Path,Path) method moves or renames a file or directory within the fi le
+system. Like the copy() method, the move() method also throws the checked IOException
+in the event that the fi le or directory could not be found or moved.
+
+try {
+   Files.move(Paths.get("c:\\zoo"), Paths.get("c:\\zoo-new"));
+   Files.move(Paths.get("c:\\user\\addresses.txt"),Paths.get("c:\\zoo-new\\addresses.txt"));
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+These behaviors can be changed by providing the optional values NOFOLLOW_LINKS , REPLACE_EXISTING , or ATOMIC_MOVE.
+
+********** The Files.move() method can be applied to non-empty directories only if
+they are on the same underlying drive. While moving an empty directory
+across a drive is supported, moving a non-empty directory across a drive
+will throw an NIO.2 DirectoryNotEmptyException . ***************
+
+
+>>Removing a File with delete() and deleteIfExists()
+
+The Files.delete(Path) method deletes a file or empty directory within the file system.
+
+For example, if the path represents a non-empty directory, the operation will throw the
+runtime DirectoryNotEmptyException . If the target of the path is a symbol link, then the
+symbolic link will be deleted, not the target of the link.
+
+The deleteIfExists(Path) method is identical to the delete(Path) method, except
+that it will not throw an exception if the fi le or directory does not exist, but instead it will
+return a boolean value of false . It will still throw an exception if the file or directory does
+exist but fails, such as in the case of the directory not being empty.
+
+try {
+   Files.delete(Paths.get("/vulture/feathers.txt"));
+   Files.deleteIfExists(Paths.get("/pigeon"));
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+The first example deletes the features.txt file in the vulture directory, and it throws
+a NoSuchFileException if the file or directory does not exist. The second example deletes
+the pigeon directory assuming it is empty. If the pigeon directory does not exist, then the
+second line will not throw an exception.
+
+
+>>Reading and Writing File Data with newBufferedReader() and newBufferedWriter()
+
+
+Files.newBufferedReader(Path,Charset), reads the file specified
+at the Path location using a java.io.BufferedReader object. It also requires a Charset
+value to determine what character encoding to use to read the file.
+
+Path path = Paths.get("/animals/gopher.txt");
+try (BufferedReader reader = Files.newBufferedReader(path,Charset.forName("US-ASCII"))) {
+   // Read from the stream
+   String currentLine = null;
+   while((currentLine = reader.readLine()) != null)
+       System.out.println(currentLine);
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+The second method, Files.newBufferedWriter(Path,Charset), writes to a file specified
+at the Path location using a BufferedWriter
+
+Path path = Paths.get("/animals/gorilla.txt");
+List<String> data = new ArrayList();
+try (BufferedWriter writer = Files.newBufferedWriter(path,Charset.forName("UTF-16"))) {
+   writer.write("Hello World");
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+>>Reading Files with readAllLines()
+
+The Files.readAllLines() method reads all of the lines of a text file and returns the
+results as an ordered List of String values
+
+Path path = Paths.get("/fish/sharks.log");
+try {
+   final List<String> lines = Files.readAllLines(path);
+   for(String line: lines) {
+      System.out.println(line);
+   }
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+As you might expect, the method may throw an IOException if the file cannot be read.
+
+
+>>Understanding File Attributes
+
+>>>Reading Common Attributes with isDirectory(), isRegularFile(), and isSymbolicLink()
+
+Files.isDirectory(Path)
+Files.isRegularFile(Path) 
+Files.isSymbolicLink(Path)
+
+it is possible for isRegularFile() to return true for a symbolic link, as long as the link resolves to a regular file.
+Files.isDirectory(Paths.get("/canine/coyote/fur.jpg"));
+Files.isRegularFile(Paths.get("/canine/types.txt"));
+Files.isSymbolicLink(Paths.get("/canine/coyote"));
+
+
+The first example returns true if fur.jpg is a directory or a symbolic link to a directory
+and false otherwise.Note that directories can have extensions in many file systems, so it
+is possible for fur.jpg to be the name of a directory.
+
+
+
+
 
