@@ -4931,6 +4931,342 @@ The first example returns true if fur.jpg is a directory or a symbolic link to a
 and false otherwise.Note that directories can have extensions in many file systems, so it
 is possible for fur.jpg to be the name of a directory.
 
+You may notice when browsing the Files API that isDirectory(), isRegularFile(), and
+isSymbolicLink() do not throw an exception if the path does not exist,
+
+
+>>Checking File Visibility with isHidden()
+try {
+   System.out.println(Files.isHidden(Paths.get("/walrus.txt")));
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+If the walrus.txt file is available and hidden within the file system, this method will
+return true.
+The isHidden() method throws the checked IOException, as there may be an I/O error reading the underlying file information.
+
+
+>>Testing File Accessibility with isReadable() and isExecutable()
+
+System.out.println(Files.isReadable(Paths.get("/seal/baby.png")));
+System.out.println(Files.isExecutable(Paths.get("/seal/baby.png")));
+
+Like the isDirectory(), isRegularFile(), and isSymbolicLink() methods, the isReadable() and isExecutable() methods do not throw exceptions if the file does not exist but instead return false.
+
+>>Reading File Length with size()
+
+The Files.size(Path) method is used to determine the size of the fi le in bytes.
+The size() method throws the checked IOException if the fi le does not exist or if
+the process is unable to read the file information.
+
+try {
+   System.out.println(Files.size(Paths.get("/zoo/c/animals.txt")));
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+The Files.size() method is defined only on files. Calling Files.size() on a directory is system dependent and undefined.
+
+>>Managing File Modifications with getLastModifiedTime() and setLastModifiedTime()
+
+The Files class provides the method Files.getLastModifiedTime(Path) , which returns
+a FileTime object to accomplish this. The FileTime class is a simple container class that
+stores the date/time information about when a fi le was accessed, modifi ed, or created. For
+convenience, it has a toMillis() method that returns the epoch time.
+
+The Files class also provides a mechanism for updating the last-modifi ed date/time of
+a fi le using the Files.setLastModifiedTime(Path,FileTime) method. The FileTime class
+also has a static fromMillis() method that converts from the epoch time to a FileTime
+object.
+
+
+try {
+   final Path path = Paths.get("/rabbit/food.jpg");
+   System.out.println(Files.getLastModifiedTime(path).toMillis());
+   Files.setLastModifiedTime(path, FileTime.fromMillis(System.currentTimeMillis()));
+   System.out.println(Files.getLastModifiedTime(path).toMillis());
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+>>Managing Ownership with getOwner() and setOwner()
+Files.getOwner(Path)
+Files.setOwner(Path,UserPrincipal)
+
+Both the getOwner() and setOwner() methods can throw the checked exception IOException in
+case of any issues accessing or modifying the fi le.
+
+In order to set a fi le owner to an arbitrary user, the NIO.2 API provides a UserPrincipalLookupService helper class for fi nding a UserPrincipal.
+
+UserPrincipal owner = FileSystems.getDefault()
+                                 .getUserPrincipalLookupService()
+                                 .lookupPrincipalByName("jane");
+
+UserPrincipal owner = path.getFileSystem()
+                          .getUserPrincipalLookupService()
+                          .lookupPrincipalByName("jane");
+
+
+try {
+   // Read owner of file
+   Path path = Paths.get("/chicken/feathers.txt");
+   System.out.println(Files.getOwner(path).getName());
+   
+   // Change owner of file
+   UserPrincipal owner = path.getFileSystem()
+                             .getUserPrincipalLookupService()
+                             .lookupPrincipalByName("jane");
+   Files.setOwner(path, owner);
+   
+   // Output the updated owner information
+   System.out.println(Files.getOwner(path).getName());
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+>>Improving Access with Views
+
+A view is a group of related attributes for a particular file system type.
+
+
+>>Understanding Views
+To request a view, you need to provide both a path to the file or a directory whose information
+you want to read, as well as a class object, which tells the NIO.2 API method which
+type of view you would like returned.
+
+Attributes Class 	View Class 		Description
+=====================	=======================	===============================================
+BasicFileAttributes 	BasicFileAttributeView	Basic set of attributes supported by all 
+                                                file systems
+
+>>Reading Attributes	
+
+The NIO.2 API provides a Files.readAttributes(Path,Class<A>) method, which returns
+read-only versions of a file view. The second parameter uses generics such that the return
+type of the method will be an instance of the provided class.
+
+
+
+>>BasicFileAttributes
+
+All attributes classes extend from BasicFileAttributes; therefore it contains attributes
+common to all supported file systems. It includes many of the file attributes that you previously
+saw as single-line method calls in the Files class, such as Files.isDirectory(),
+Files.getLastModifiedTime(), and so on.
+We now present a sample application that retrieves BasicFileAttributes on a file and
+outputs various metadata about the file:
+
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+
+public class BasicFileAttributesSample {
+   public static void main(String[] args) throws IOException {
+	Path path = Paths.get("/turtles/sea.txt");
+	BasicFileAttributes data = Files.readAttributes(path,BasicFileAttributes.class);
+	System.out.println("Is path a directory? "+data.isDirectory());
+	System.out.println("Is path a regular file? "+data.isRegularFile());
+	System.out.println("Is path a symbolic link? "+data.isSymbolicLink());
+	System.out.println("Path not a file, directory, nor symbolic link? "+ data.isOther());
+	System.out.println("Size (in bytes): "+data.size());
+	System.out.println("Creation date/time: "+data.creationTime());
+	System.out.println("Last modified date/time: "+data.lastModifiedTime());
+	System.out.println("Last accessed date/time: "+data.lastAccessTime());
+	System.out.println("Unique file identifier (if available): "+ data.fileKey());
+   }
+}
+
+
+The only ones that are new are isOther(), lastAccessTime(),
+creationTime(), and fileKey(). The isOther() method is used to check for paths that are not
+files, directories, or symbolic links, such as paths that refer to resources or devices in some file
+systems. The lastAccessTime() and creationTime() methods return other date/time information
+about the file. The fileKey() method returns a file system value that represents a unique
+identifier for the file within the file system or null if it is not supported by the file system.
+
+
+>>Modifying Attributes
+The NIO.2 API provides the Files.getFileAttributeView(Path,Class<V>) method, which returns a view object that we can use to update the file system–dependent attributes. We can also use the view object
+to read the associated file system attributes by calling readAttributes() on the view object.
+
+>>BasicFileAttributeView
+BasicFileAttributeView is used to modify a file’s set of date/time values. In general, we
+cannot modify the other basic attributes directly, since this would change the property of
+the file system object.
+
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+
+public class BasicFileAttributeViewSample {
+   public static void main(String[] args) throws IOException {
+	Path path = Paths.get("/turtles/sea.txt");
+	BasicFileAttributeView view = Files.getFileAttributeView(path,BasicFileAttributeView.class);
+	BasicFileAttributes data = view.readAttributes();
+
+	FileTime lastModifiedTime = FileTime.fromMillis(data.lastModifiedTime().toMillis()+10_000);
+	view.setTimes(lastModifiedTime,null,null);
+   }
+}
+
+Since there is only one update method, setTimes(FileTime lastModifiedTime, FileTime
+lastAccessTime, FileTime createTime) in the BasicFileAttributeView class, and it
+takes three arguments, we need to pass three values to the method.
+The NIO.2 API allows us to pass null for any date/time value that we do not wish to
+modify. For example, the following line of code would change only the last-modified
+date/time, leaving the other file date/time values unaffected:
+view.setTimes(lastModifiedTime,null,null);
+
+
+=>>Presenting the New Stream Methods
+
+>>Selecting a Search Strategy
+A depth-first search traverses the structure from the root
+to an arbitrary leaf and then navigates back up toward the root, traversing fully down any
+paths it skipped along the way.
+
+a breadth-first search starts at the root and processes all elements of each
+particular depth, or distance from the root, before proceeding to the next depth level. The results
+are ordered by depth, with all nodes at depth 1 read before all nodes at depth 2, and so on
+
+
+For the exam, you don’t have to understand the details of each search strategy that Java
+employs; you just need to be aware that the Streams API uses depth-first searching with a
+default maximum depth of Integer.MAX_VALUE.
+
+
+>>Walking a Directory
+The Files.walk(path) method returns a Stream<Path> object that traverses the directory in a depth-first, lazy manner.
+
+Keep in mind that when you create a Stream<Path> object using Files.walk() , the contents of the directory have not yet been traversed.
+
+Path path = Paths.get("/bigcats");
+try {
+   Files.walk(path)
+        .filter(p -> p.toString().endsWith(".java"))
+        .forEach(System.out::println);
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+This example iterates over a directory and outputs all of the fi les that end with a java
+extension.
+
+/bigcats/version1/backup/Lion.java
+/bigcats/version1/Lion.java
+/bigcats/version1/Tiger.java
+/bigcats/Lion.java
+
+By default, the method iterates up to Integer.MAX_VALUE directories deep, although
+there is an overloaded version of walk(Path,int) that takes a maximum directory depth
+integer value as the second parameter. A value of 0 indicates the current path record itself.
+
+Unlike our earlier NIO.2 methods, the walk() method will not traverse symbolic links by
+default. Following symbolic links could result in a directory tree that includes other, seemingly
+unrelated directories in the search. For example, a symbolic link to the root directory
+in a subdirectory means that every file in the system may be traversed.
+
+If you have a situation where you need to change the default behavior and traverse
+symbolic links, NIO.2 offers the FOLLOW_LINKS option as a vararg to the walk() method.
+Also, be aware that when this option is used, the walk() method will track the paths it has visited,
+throwing a FileSystemLoopException if a cycle is detected.
+
+
+>>Searching a Directory
+
+The Files.find(Path,int,BiPredicate) method behaves in a similar manner as the
+Files.walk() method, except that it requires the depth value to be explicitly set along
+with a BiPredicate to filter the data. Like walk(), find() also supports the FOLLOW_LINK
+vararg option.
+
+Path path = Paths.get("/bigcats");
+long dateFilter = 1420070400000l;
+try {
+   Stream<Path> stream = Files.find(path, 10,(p,a) -> p.toString().endsWith(".java")
+					     && a.lastModifiedTime().toMillis() > dateFilter);
+   stream.forEach(System.out::println);
+} catch (Exception e) {
+   // Handle file I/O exception...
+}
+
+
+BiPredicate --> In this case, the two object types are Path and BasicFileAttributes.
+
+This example is similar to our previous Files.walk() example in that it will search
+a directory for files that end with the .java extension. It is more advanced, though, in
+that it applies a last-modified-time filter using the BasicFileAttributes object. Finally,
+it sets the directory depth limit for search to 10, as opposed to relying on the default
+Integer.MAX_VALUE value that the Files.walk() method uses.
+
+>>Listing Directory Contents
+
+Files.list(Path)
+
+Consider the following code snippet, assuming that the current working directory is
+/zoo:
+
+
+try {
+   Path path = Paths.get("ducks");
+   Files.list(path).filter(p -> !Files.isDirectory(p))
+                   .map(p -> p.toAbsolutePath())
+                   .forEach(System.out::println);
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+
+/zoo/ducks/food.txt
+/zoo/ducks/food-backup.txt
+/zoo/ducks/weight.txt
+
+Contrast this method with the Files.walk() method, which traverses all subdirectories.
+For the exam, you should be aware that Files.list() searches one level deep and is analogous
+to java.io.File.listFiles(), except that it relies on streams.
+
+>>Printing File Contents
+
+Files.readAllLines() and commented that using it to read a very large file could result in an OutOfMemoryError problem.
+
+Files.lines(Path) method that returns a Stream<String> object and does not suffer from this same issue.
+
+The contents of the file are read and processed lazily, which means that only a small portion of the file is stored in memory at any given time.
+
+Path path = Paths.get("/fish/sharks.log");
+try {
+   Files.lines(path).forEach(System.out::println);
+} catch (IOException e) {
+   // Handle file I/O exception...
+}
+
+Files.readAllLines(path).filter(s -> s.length()>2).forEach(System.out::println);
+Files.lines(path).filter(s -> s.length()>2).forEach(System.out::println);
+
+The first line does not compile because the filter() operation cannot be applied to a
+Collection without first converting it to a Stream using the stream() method.
+
+=>>Comparing Legacy File and NIO.2 Methods
+
+Legacy Method 			NIO.2 Method
+file.exists() 			Files.exists(path)
+file.getName() 			path.getFileName()
+file.getAbsolutePath() 		path.toAbsolutePath()
+file.isDirectory() 		Files.isDirectory(path)
+file.isFile() 			Files.isRegularFile(path)
+file.isHidden() 		Files.isHidden(path)
+file.length() 			Files.size(path)
+file.lastModified() 		Files.getLastModifiedTime(path)
+file.setLastModified(time) 	Files.setLastModifiedTime(path,fileTime)
+file.delete()			Files.delete(path)
+file.renameTo(otherFile) 	Files.move(path,otherPath)
+file.mkdir() 			Files.createDirectory(path)
+file.mkdirs() 			Files.createDirectories(path)
+file.listFiles() 		Files.list(path)
+
+
 
 
 
