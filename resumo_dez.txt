@@ -5267,6 +5267,228 @@ file.mkdirs() 			Files.createDirectories(path)
 file.listFiles() 		Files.list(path)
 
 
+>>Cap10
+
+
+>>Introducing Relational Databases and SQL
+
+A relational database is a database that is organized into tables, which consist of rows
+and columns.
+
+>>Writing Basic SQL Statements
+INSERT: Add a new row to the table
+SELECT: Retrieve data from the table
+UPDATE: Change zero or more rows in the table
+DELETE: Remove zero or more rows from the table
+
+INSERT INTO species VALUES (3, 'Asian Elephant', 7.5);
+
+SELECT * FROM SPECIES WHERE ID = 3;
+SELECT COUNT(*), SUM(num_acres) FROM SPECIES;
+
+UPDATE SPECIES SET NUM_ACRES = NUM_ACRES + .5 WHERE NAME = 'Asian Elephant';
+
+DELETE FROM SPECIES WHERE NAME = 'Asian Elephant';
+
+
+>>Introducing the Interfaces of JDBC
+
+Each database has a different JAR file with these classes.
+
+
+With JDBC, you use only the interfaces in your code and never the implementation classes directly.
+
+Interfaces in the JDK
+
+Driver: Knows how to get a connection to the database
+Connection: Knows how to communicate with the database
+Statement: Knows how to run the SQL
+ResultSet: Knows what was returned by a SELECT query
+
+package com.wiley.ocp.connection;
+import java.sql.*;
+
+public class MyFirstDatabaseConnection {
+   public static void main(String[] args) throws SQLException {
+	String url = "jdbc:derby:zoo";
+	try (Connection conn = DriverManager.getConnection(url);
+	     Statement stmt = conn.createStatement();
+	     ResultSet rs = stmt.executeQuery("select name from animal")) {
+	   while (rs.next())
+	      System.out.println(rs.getString(1));
+	}
+   }
+}
+
+
+
+>>Connecting to a Database
+
+>>>Building a JDBC URL
+
+
+jdbc: postgres: //localhost:5432/zoo
+
+
+jdbc:derby:zoo
+
+Notice the three parts. It starts with jdbc, then comes derby, and it ends with the database
+name. Other examples are shown here:
+
+jdbc:postgresql://localhost/zoo
+jdbc:oracle:thin:@123.123.123.123:1521:zoo
+jdbc:mysql://localhost:3306/zoo?profileSQL=true
+
+
+NOT OK:
+
+jdbc:postgresql://local/zoo - local INSTEAND OF localhost 
+jdbc:mysql://123456/zoo  - CANNOT BE A NUMBER 
+jdbc;oracle;thin;/localhost/zoo - semicolumn
+
+
+>>>Getting a Database Connection
+There are two main ways to get a Connection: DriverManager or DataSource(NOT IN EXAM, bUT IT IS BETTER).
+
+The DriverManager class is in the JDK, as it is an API that comes with Java. It uses the
+factory pattern, which means that you call a static method to get a Connection.
+
+import java.sql.*;
+public class TestConnect {
+   public static void main(String[] args) throws SQLException {
+      Connection conn = DriverManager.getConnection("jdbc:derby:zoo");
+      System.out.println(conn);
+   }
+}
+
+java TestConnect : 
+
+Exception in thread "main" java.sql.SQLException: No suitable driver found for
+jdbc:derby:zoo
+at java.sql.DriverManager.getConnection(DriverManager.java:689)
+at java.sql.DriverManager.getConnection(DriverManager.java:270)
+
+java -cp "<java_home>/db/lib/derby.jar:." TestConnect : 
+
+org.apache.derby.impl.jdbc.EmbedConnection40@1372082959
+(XID = 156), (SESSIONID = 1), (DATABASE = zoo), (DRDAID = null)
+
+
+Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ocp-book","username","password");
+
+FOR LEGACY CODE: 
+
+public static void main(String[] args) throws SQLException, ClassNotFoundException {
+   Class.forName("org.postgresql.Driver"); //can throw a ClassNotFoundException
+   Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ocp-book",
+		                                 "username",
+                                                  "password");
+}
+
+Class.forName() loads a class. This lets DriverManager use a Driver, even if the JAR
+doesn’t have a META-INF/service/java.sql.Driver file. There’s no harm in including
+Class.forName(), even if the newer driver does have this file.
+
+***
+Having META-INF/service/java.sql.Driver inside the JAR became mandatory with
+JDBC 4.0 in Java 6. Before that, some drivers included it and some didn’t.
+
+
+							JDBC <= 3.0 Driver	JDBC >= 4.0 Driver
+Required to contain java.sql.Driver 			No 			Yes
+Java will use java.sql.Driver file if present		Yes 			Yes
+Required to use Class.forName 				Yes 			No
+Allowed to use Class.forName 				Yes 			Yes
+
+
+>>Obtaining a Statement
+
+In order to run SQL, you need to tell a Statement about it.
+
+Statement stmt = conn.createStatement();
+
+Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+
+This signature takes two parameters. The first is the ResultSet type, and the other is
+the ResultSet concurrency mode.
+
+>>>Choosing a ResultSet Type
+
+By default, a ResultSet is in TYPE_FORWARD_ONLY mode. You can go through the data once in the order in which it was retrieved.
+Two other modes that you can request when creating a Statement are TYPE_SCROLL_INSENSITIVE and TYPE_SCROLL_SENSITIVE . Both allow you to go through the data in any order.You can go both forward and backward. You can even go to a specifi c spot in the data.
+
+With TYPE_SCROLL_INSENSITIVE , you have a static view of what the ResultSet looked like when you
+did the query. If the data changed in the table, you will see it as it was when you did the
+query. With TYPE_SCROLL_SENSITIVE , you would see the latest data when scrolling through
+the ResultSet .
+
+
+For scroll sensitive, you only have to know the name and that it isn’t well supported. You don’t need to read or write code with it.
+
+
+>>>Choosing a ResultSet Concurrency Mode
+
+By default, a ResultSet is in CONCUR_READ_ONLY mode.  It means that you can’t update the result set. Most of the time, you will use INSERT , UPDATE , or DELETE SQL statements to change the database rather than a ResultSet.
+
+CONCUR_UPDATABLE lets you modify the database through the ResultSet.
+
+You have to know read-only mode in detail for the exam. For updatable,
+you only have to know the name and that it is not universally
+supported.
+
+if the mode you request isn’t available, the driver can downgrade you. This means that if you ask for CONCUR_UPDATABLE , you will likely get a Statement that is CONCUR_READ_ONLY .
+
+
+
+>>Executing a Statement
+
+11: Statement stmt = conn.createStatement();
+12: int result = stmt.executeUpdate("insert into species values(10, 'Deer', 3)");
+14: System.out.println(result); // 1
+15: result = stmt.executeUpdate("update species set name = '' where name = 'None'");
+17: System.out.println(result); // 0
+18: result = stmt.executeUpdate("delete from species where id = 10");
+20: System.out.println(result); // 1
+
+
+ResultSet rs = stmt.executeQuery("select * from species");
+Since we are running query to get a result, the return type is ResultSet.
+
+There’s a third method called execute() that can run either a query or an update. It
+returns a boolean so that we know whether there is a ResultSet
+
+boolean isResultSet = stmt.execute(sql);
+if (isResultSet) {
+   ResultSet rs = stmt.getResultSet();
+   System.out.println("ran a query");
+} else {
+   int result = stmt.getUpdateCount();
+   System.out.println("ran an update");
+}
+
+
+--WRONG
+Connection conn = DriverManager.getConnection("jdbc:derby:zoo");
+Statement stmt  = conn.createStatement();
+int result      = stmt.executeUpdate("select * from animal");
+
+This throws a SQLException similar to the following: A result was returned when none was expected.
+
+
+
+Method 			DELETE  INSERT 	SELECT 	UPDATE
+stmt.execute() 		Yes 	Yes 	Yes 	Yes
+stmt.executeQuery() 	No 	No 	Yes	No
+stmt.executeUpdate() 	Yes 	Yes 	No 	Yes
+
+
+
+Method 			Return Type	What Is Returned for SELECT 	What Is Returned for DELETE/INSERT/UPDATE
+stmt.execute() 		boolean		true				false
+stmt.executeQuery() 	ResultSet	the rows and columns		n/a
+stmt.executeUpdate() 	int		n/a				number of rows add/changed/removed
+
+
 
 
 
