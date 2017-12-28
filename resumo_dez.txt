@@ -5489,6 +5489,280 @@ stmt.executeQuery() 	ResultSet	the rows and columns		n/a
 stmt.executeUpdate() 	int		n/a				number of rows add/changed/removed
 
 
+>>Getting Data from a ResultSet
+
+>>>Reading a ResultSet
+
+20: Map<Integer, String> idToNameMap = new HashMap<>();
+21: ResultSet rs = stmt.executeQuery("select id, name from species");
+22: while(rs.next()) {
+23: int id = rs.getInt("id");
+24: String name = rs.getString("name");
+25: idToNameMap.put(id, name);
+26: }
+27: System.out.println(idToNameMap); // {1=African Elephant, 2=Zebra}
+
+
+20: Map<Integer, String> idToNameMap = new HashMap<>();
+21: ResultSet rs = stmt. executeQuery ("select id, name from species");
+22: while(rs.next()) {
+23: int id = rs. getInt (1);
+24: String name = rs. getString (2);
+25: idToNameMap.put(id, name);
+26: }
+27: System.out.println(idToNameMap); // {1=African Elephant, 2=Zebra}
+
+
+**Remember that JDBC starts counting with one rather than zero.**
+
+
+ResultSet rs = stmt.executeQuery("select count(*) from animal");
+if(rs.next())
+   System.out.println(rs.getInt(1));
+
+
+The following code throws a SQLException :
+int id = rs. getInt (0); // BAD CODE
+
+
+ResultSet rs = stmt.executeQuery(
+"select * from animal where name= 'Not in table'");
+rs.next();
+rs.getInt(1); // throws SQLException
+
+Calling rs.next() works. It returns false. However, calling a getter afterward does
+throw a SQLException because the result set cursor does not point to a valid position
+
+
+ResultSet rs = stmt.executeQuery("select count(*) from animal");
+rs.getInt(1); // throws SQLException
+
+
+ResultSet rs = stmt.executeQuery("select id from animal");
+rs.next();
+rs.getInt("badColumn"); // throws SQLException
+
+
+[] Always use an if statement or while loop when calling rs.next().
+[] Column indexes begin with 1.
+
+
+
+>>>Getting Data for a Column
+
+Method Name	 Return Type 	
+getBoolean 	 boolean 	
+getDate 	 java.sql.Date 
+getDouble 	 double 
+getInt 		 int 
+getLong 	 long 
+getObject  	 Object 
+getString 	 String 
+getTime 	 java.sql.Time 
+getTimeStamp 	 java.sql.TimeStamp 
+
+
+
+ResultSet rs = stmt.executeQuery("select date_born from animal where name = 'Elsa'");
+if (rs.next()) {
+   java.sql.Date sqlDate = rs.getDate(1);
+   LocalDate localDate = sqlDate.toLocalDate();
+   System.out.println(localDate); // 2001?05?06
+}
+
+
+ResultSet rs = stmt.executeQuery("select date_born from animal where name = 'Elsa'");
+if (rs.next()) {
+   java.sql.Time sqlTime = rs.getTime(1);
+   LocalTime localTime = sqlTime.toLocalTime();
+   System.out.println(localTime); // 02:15
+}
+
+
+ResultSet rs = stmt.executeQuery("select date_born from animal where name = 'Elsa'");
+if (rs.next()) {
+   java.sql.Timestamp sqlTimeStamp = rs.getTimestamp(1);
+   LocalDateTime localDateTime = sqlTimeStamp.toLocalDateTime();
+   System.out.println(localDateTime); // 2001?05?06T02:15
+}
+
+
+JDBC Type 		Java 8 Type 			Contains
+java.sql.Date 		java.time.LocalDate 		Date only
+java.sql.Time 		java.time.LocalTime 		Time only
+java.sql.TimeStamp 	java.time.LocalDateTime 	Both date and time
+
+
+
+16: ResultSet rs = stmt.executeQuery("select id, name from species");
+17: while(rs.next()) {
+18:    Object idField   = rs.getObject("id");
+19:    Object nameField = rs.getObject("name");
+20:    if (idField instanceof Integer) {
+21:       int id = (Integer) idField;
+22:       System.out.println(id);
+23:     }
+24:     if (nameField instanceof String) {
+25:        String name = (String) nameField;
+26:        System.out.println(name);
+27:     }
+28: }
+
+
+>>Scrolling ResultSet
+
+
+beforeFirst() ->	id	name		num
+first() ->		1	Elephant	9.3
+last() ->		2	Zebra		1.2
+afterLast() -> 
+
+
+10: Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+13: ResultSet rs = stmt.executeQuery("select id from species order by id");
+14: rs.afterLast();
+15: System.out.println(rs.previous()); // true
+16: System.out.println(rs.getInt(1)); // 2
+17: System.out.println(rs.previous()); // true
+18: System.out.println(rs.getInt(1)); // 1
+19: System.out.println(rs.last()); // true
+20: System.out.println(rs.getInt(1)); // 2
+21: System.out.println(rs.first()); // true
+22: System.out.println(rs.getInt(1)); // 1
+23: rs.beforeFirst();
+24: System.out.println(rs.getInt(1)); // throws SQLException
+
+Make sure that the type is scrollable whenever you see methods other than next().
+
+
+Now let’s look at an example where the query doesn’t return any rows:
+Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+ResultSet rs = stmt.executeQuery("select id from species where id = -99");
+System.out.println(rs.first()); // false
+System.out.println(rs.last()); // false
+
+
+
+
+
+absolute(0) ->		id	name		num
+absolute(1) ->		1	Elephant	9.3
+absolute(2) ->		2	Zebra		1.2
+absolute(3) -> 
+
+
+A negative number means to start counting from the end of the ResultSet rather than
+from the beginning:
+
+absolute(-3) ->		id	name		num
+absolute(-2) ->		1	Elephant	9.3
+absolute(-1) ->		2	Zebra		1.2
+
+id  idS name 	date_born
+1     1 Elsa 	2001-05-06 02:15:00
+2     2 Zelda 	2002-08-15 09:12:00
+3     1 Ester 	2002-09-09 10:36:00
+4     1 Eddie 	2010-06-08 01:24:00
+5     2 Zoe 	2005-11-12 03:44:00
+
+ 
+36: Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+39: ResultSet rs = stmt.executeQuery("select id from animal order by id");
+40: System.out.println(rs.absolute(2)); // true
+41: System.out.println(rs.getString("id")); // 2
+42: System.out.println(rs.absolute(0)); // false
+43: System.out.println(rs.absolute(5)); // true
+44: System.out.println(rs.getString("id")); // 5
+45: System.out.println(rs.absolute(-2)); // true
+46: System.out.println(rs.getString("id")); // 4
+
+
+
+Finally, there is a relative() method that moves forward or backward the requested
+number of rows.
+
+51: Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+54: ResultSet rs = stmt.executeQuery("select id from animal order by id");
+55: System.out.println(rs.next()); // true
+56: System.out.println(rs.getString("id")); // 1
+57: System.out.println(rs.relative(2)); // true
+58: System.out.println(rs.getString("id")); // 3
+59: System.out.println(rs.relative(-1)); // true
+60: System.out.println(rs.getString("id")); // 2
+61: System.out.println(rs.relative(4)); // false
+
+
+>>Closing Database Resources
+
+public static void main(String[] args) throws SQLException {
+   String url = " jdbc:derby:zoo";
+   try (Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("select name from animal")) {
+        while (rs.next())
+          System.out.println(rs.getString(1));
+   }
+}
+
+[] Closing a Connection also closes the Statement and ResultSet.
+[] Closing a Statement also closes the ResultSet.
+
+There’s another way to close a ResultSet. JDBC automatically closes a ResultSet when
+you run another SQL statement from the same Statement. How many resources are closed
+in this code?
+
+
+14: String url = jdbc:derby:zoo";
+15: try (Connection conn = DriverManager.getConnection(url);
+16: Statement stmt = conn.createStatement();
+17: ResultSet rs = stmt.executeQuery("select count(*) from animal")) {
+18:
+19: if (rs.next()) System.out.println(rs.getInt(1));
+20:
+21: ResultSet rs2 = stmt.executeQuery("select count(*) from animal");
+22: int num = stmt.executeUpdate(
+23: "update animal set name = 'clear' where name = 'other'");
+24: }
+
+The correct answer is four.
+
+
+
+>>Dealing with Exceptions
+
+String url = " jdbc:derby:zoo";
+try (Connection conn = DriverManager.getConnection(url ");
+     Statement stmt = conn.createStatement();
+     ResultSet rs = stmt.executeQuery("select not_a_column from animal")) {
+     while (rs.next())
+        System.out.println(rs.getString(1));
+} catch (SQLException e) {
+   System.out.println(e.getMessage());
+   System.out.println(e.getSQLState());
+   System.out.println(e.getErrorCode());
+}
+
+
+ERROR: column "not_a_column" does not exist Position: 8
+42703
+0
+
+The getMessage() method returns a human-readable message as to what went wrong. The getSQLState()
+method returns a code as to what went wrong. You can Google the name of your database
+and the SQL state to get more information about the error. By comparison, getErrorCode()
+is a database-specifi c code. On this database, it doesn’t do anything.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

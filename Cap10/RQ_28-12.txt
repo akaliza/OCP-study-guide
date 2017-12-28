@@ -1,0 +1,199 @@
+1-WRONG
+A. Driver
+E. Statement
+
+1. B, F. The Driver, Connection, Statement, and ResultSet interfaces are part of the JDK,
+making choices A and E incorrect. The concrete DriverManager class is also part of the
+JDK, making choices C and D incorrect. Choices B and F are correct since the implementation
+of these interfaces is part of the database-specific driver JAR file.
+
+
+
+2-WRONG 2/3
+C. jdbc
+B. Database name
+D. Location of database==WRONG
+
+
+2. B, C. A JDBC URL has three parts. The first part is the string jdbc, making choice C correct.
+The second part is the vendor/product name. The third part is database specific, but it
+includes a database name, making choice B correct as well. The location, such as IP address
+and port, is optional.
+
+
+
+3-OK
+A. jdbc:sybase:localhost:1234/db
+
+A JDBC URL has three main parts separated by single colons, making choices B,
+
+
+4-OK
+E. META-INF/service/java.sql.Driver ****
+
+5-OK
+C. There is a compiler error on line 6.
+
+
+6-OK
+B. Class.forName() throws a ClassNotFoundException if the driver class is not
+found.
+E. DriverManager.getConnection() throws a SQLException if the driver class is not
+found.
+
+
+7-OK
+
+public void stmt(Connection conn, int b) throws SQLException {
+Statement stmt = conn.createStatement( , b);
+}
+
+C. ResultSet.TYPE_FORWARD_ONLY
+E. ResultSet.TYPE_SCROLL_INSENSITIVE
+F. ResultSet.TYPE_SCROLL_SENSITIVE
+
+
+
+
+8-OK
+E. The code will run without throwing an exception.
+
+
+9-OK
+boolean bool = stmt._____________ (sql); execute
+int num      = stmt._____________ (sql); executeUpdate
+ResultSet rs = stmt._____________ (sql); executeQuery
+
+B. execute, executeUpdate, executeQuery
+
+
+10-OK
+public static void main(String[] args) throws SQLException {
+   Connection conn = DriverManager.getConnection("jdbc:derby:zoo");
+   Statement stmt = conn.createStatement();
+   int result = stmt.executeUpdate("update animal set name = name");
+   System.out.println(result); //5
+}
+
+C. 5
+
+11-OK
+public static void main(String[] args) {
+   Connection conn = DriverManager.getConnection("jdbc:derby:zoo");
+   Statement stmt = conn.createStatement();
+   int result = stmt.executeUpdate("update food set amount = amount + 1");
+   System.out.println(result);
+}
+
+D. The code does not compile.
+
+12-WRONG
+B. Connection, Statement, ResultSet
+
+12. D. JDBC resources should be closed in the reverse order from that in which they were
+opened. The order for opening is Connection, Statement, and ResultSet. The order for
+closing is ResultSet, Statement, and Connection.
+
+
+
+13-OK
+
+try (Connection conn = DriverManager.getConnection("jdbc:derby:zoo");
+     Statement stmt = conn.createStatement()) {
+     ResultSet rs = stmt.executeQuery("select count(*) from species");
+   int num = stmt.executeUpdate("INSERT INTO species VALUES (3, 'Ant', .05)");
+   rs.next();
+   System.out.println(rs.getInt(1));
+}
+
+D. A SQLException is thrown.
+
+A Statement automatically closes the open ResultSet when another SQL statement is
+run. This means that rs is no longer open by the println, and a SQLException is thrown
+because the ResultSet is closed.
+
+
+14-OK
+ResultSet rs = stmt.executeQuery(sql);
+if (rs.next()) {
+___________________
+}
+
+B. String s = rs.getString(1);
+F. Object s = rs.getObject(1);
+
+
+15-OK
+print the month, date, year, hour, minute, and second
+
+F. rs.getTimeStamp("d");
+
+
+
+16-OK
+
+String sql = "select name from animal";
+try (Connection conn = DriverManager.getConnection("jdbc:derby:zoo");
+     Statement stmt = conn.createStatement();
+     ResultSet rs = stmt.executeQuery(sql)) {
+   rs.next();
+   rs.previous();
+   rs.previous();
+   rs.next();
+   rs.next();
+   rs.absolute(2);
+   System.out.println(rs.getString(1));
+}
+
+
+E. A SQLException is thrown.
+
+By default, a Statement is not scrollable. The first call to previous() throws a SQLException
+because the ResultSet type is TYPE_FORWARD_ONLY.
+
+===========================
+E. A SQLException is thrown.
+
+17-WRONG
+
+
+A. absolute()
+
+17. C, D. Choices B and E are incorrect because those methods don’t exist. Choices A and F are
+incorrect because these methods return a boolean. Choices C and D are correct.
+C. afterLast()
+D. beforeFirst()
+
+
+18-WRONG ---- 
+D. The code does not compile.
+
+18. A. The call to absolute(0) moves the cursor to a location immediately before the results,
+and then next() goes to the first row, so the answer is choice A.
+
+absolute PODE SER CHAMADO POR DEFAULT**** NAO - ACHO QUE ESTA ERRADO
+
+
+19-OK
+
+C. Three
+
+19. C. The first println outputs false because the cursor is immediately before the result.
+The second println outputs true because the cursor is pointing to the fifth row. The third
+println outputs true because the cursor is pointing to the fourth row. The fourth println
+outputs true because the cursor is pointing to the second row. The fifth println outputs
+false because the cursor is located before the beginning of the result.
+
+
+20-WRONG
+C. Three
+
+20. F. The first and last println statements do not compile. The beforeFirst() and
+afterLast() methods have a void return type. Therefore, the code does not compile and
+choice F is correct.
+
+
+545
+
+
+14/20 = 70%
