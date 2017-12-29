@@ -1,0 +1,7 @@
+1- inner class cannot have static methods
+3- we cannot overrite the Object methods with default methods
+5- s -> { return s; }
+7- The order of ENUM is the order in which the values are declared
+8- JDBC -> Create,Send queries and update statements to the database.
+10- jdbc:mysql://[host][:port]/[database][?property1][=value1]..
+11-
