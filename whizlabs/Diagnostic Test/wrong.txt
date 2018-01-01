@@ -60,4 +60,92 @@ joined thread complete and move to "Dead" state. Join method at line 9 causes th
 main thread complete and move to "Dead" state.  		
 
 
+32- it is not guaranteed that every thread will take turns in fair way and it depends on virtual machine implementation
+    Once start method is invoked on athread, it enters the "Runnable" state 
+
+33- RecursiveTask<Long> instead of RecursiveAction
+    compilation fails 
+
+
+34 - 
+   int mid = low + (high - low) /2; 
+   Sum left = new Sum(array,low,mid); 	
+   Sum righ = new Sum(array,mid,high);
+   left.fork(); //executa em outro processador a metade 
+   long rightAns = right.compute(); //chama recursivo para outra metade
+   long leftAns  = left.join(); //espera que o direito termine para continuar
+   return leftAns + rightAns;  
+  
+B- the output will be 15000 and this is the correct way of using the 
+fork and join
+
+
+35 - ??????????????????????????
+
+3,4,5,6,7,8,9
+2,1,2,1,2,1,2
+
+list.parallelStream().collect(Collectors.groupingByConcurrent(i -> i%2 == 0 ? 1: 2)); 
+
+
+36 - parallelSetAll não está no livro acredito que ttambém não no exame. 
+
+37 - public static List<String> readAllLines(Path path,Charset cs) throws IOException
+     File f = new File("t.txt");
+     D - Files.readAllLines(Paths.get(f.getAbsolutePath()));    	
+
+38 - Stream<String> stream = Files.readAllLines(Paths.get("input.txt")); // doesn't compile - return List<String>
+
+39 - 'c:\\output' -> path.getRoot() -> 'c:\\'
+     'F:\\Whizlabs\\java\\NIO' -> path.subpath(0,3) -> 'Whizlabs\\java\\NIO'
+
+41 - String s = con.readPassword("Password: "); --> return a char[]
+
+47 - double avg = stream.skip(2).mapToInt(i > i.intValue());average(); --average returns OptionalDouble()
+
+60 - andthen() default method in Consumer 
+
+63 - ToDoubleBiFunction<Double,Integer> tdf = (a,b) -> a + b; 
+     map.put(1,1.1) [1,1.1]
+     map.put(2,2.2) [1,1.1],[2,2.2]
+     map.put(1,3.3) [1,3.3],[2,2.2]
+
+65 - valid primitive variation of an inbuilt functional interface : BooleanSupplier
+
+66 - ToDoubleBiFunction -> applyAsDouble(T t, U u)
+
+67 - BiFunction<Double,Double,String> fun = (d1,d2) -> d1 + d2.toString();
+     System.out.println(fun.apply(3.5,2.5));	
+
+
+69 - double ApplyAsDouble(double left, double right) --> DoubleBinaryOperator Interface
+
+70 -  ListResourceBundle is an abstract class
+
+71 - Table-Tisch
+
+72 - SRBundel_de 
+
+73 - plusDays()
+
+76 - LocalTime.parse("10:05");
+
+78 - AdjustInto() - não cai no exame
+
+79 - withYears(N) - change the year in period to N 
+
+80 - year dont have now() method; 
+
+82 - Period due = Period.ofDays(-2).plusMonths(1);
+
+83 -truncatedTo - not in Exam
+
+84 - ZoneDateTime.of(datetime,zone)
+
+85 -UnaryOperator 
+	- extends java.util.function.Function;
+	- represents an operation on a single operand that produces a result of the 
+	  same type as its operand
+	- it has static method called identity
+
 
