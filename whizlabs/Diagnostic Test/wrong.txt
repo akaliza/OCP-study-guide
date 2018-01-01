@@ -4,4 +4,60 @@
 7- The order of ENUM is the order in which the values are declared
 8- JDBC -> Create,Send queries and update statements to the database.
 10- jdbc:mysql://[host][:port]/[database][?property1][=value1]..
-11-
+11- savepoints [NOT IN THE EXAME]
+13- assert var == nul : "No ";
+    assert boolean_expression;
+    assert boolean_expression: error_message;	
+14-public void close throws Exception
+18-
+lista.stream().forEach(s -> System.out.print(s.length()))
+	    .forEach(System.out::print); //doesn't compile
+19- (k,v) -> System.out.println(v)
+21- findFirst().orElse("") - return String instead of Optional
+22-ambigous method toString(i) and toString() method reference fails to compile
+24-stateful and intermediate operation : map
+27- new method add in interface Map java8 - getOrDefault(Object, V)
+28- map.values().forEach(System.out.print);
+29-
+
+public class ChainingComparator implements Comparator<Squirrel> {
+  public int compare(Squirrel s1, Squirrel s2) {
+     Comparator<Squirrel> c = Comparator.comparing(s -> s.getSpecies());
+     c = c.thenComparingInt(s -> s.getWeight());
+     return c.compare(s1, s2);
+  }
+}
+
+Comparator.comparing(e -> e.intValue());
+ 
+
+31-
+
+class tTest implements Runnable{
+   public static void main(String[] args){
+      Ttest a1 = new Ttest(); 
+      Thread t = new Thread(); 
+      t.setName("a1");
+      t.start();
+      System.out,print(Thread.currentThread().getName() + "" ); //main
+       try{
+         t.join(); // force a1 thread to stop and wait till the main thread complete.
+      }catch(Exception e){}
+      System.out,print(Thread.currentThread().getName());	//main
+   }  
+
+   public void run(){
+      System.out,print(Thread.currentThread().getName() + "" ); //a1
+   } 
+}   
+
+
+B- could be main a1 main
+C- could be a1 main main 
+
+The Join method cause the currently excusing thread to move to "Blocked" state and wait there until the 
+joined thread complete and move to "Dead" state. Join method at line 9 causes the a1 thread to pause and wait till
+main thread complete and move to "Dead" state.  		
+
+
+

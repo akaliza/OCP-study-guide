@@ -6,8 +6,9 @@ public class Whiz18{
 		List<String> lst = new ArrayList<>(); 
 		lst.add("a");
 		lst.add("ab");
-		lst.stream().forEach(s -> System.out.print(s.length())).forEach(System.out::print); //doesn't compile
-		//lst.forEach(System.out::print); compile
+		lst.stream().forEach(s -> System.out.print(s.length()));
+		//.forEach(System.out::print); //doesn't compile
+		lst.forEach(System.out::print); //compile
 	}
 	
 }
