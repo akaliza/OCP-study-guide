@@ -1,0 +1,5 @@
+2 - c - compilation fails due to error at line 4. 
+   
+  Inner in = new Outer.new Inner(); -> inside a static method 
+  Inner in = new Inner(); -> inside a non-static method
+
