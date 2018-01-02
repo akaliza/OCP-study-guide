@@ -1,5 +1,39 @@
+WRONG
 2 - c - compilation fails due to error at line 4. 
    
   Inner in = new Outer.new Inner(); -> inside a static method 
   Inner in = new Inner(); -> inside a non-static method
+  
+
+	
+6 - JDBC suports relational and non relational databases
+  - JDBC APO is a part of both Java standard edition and enterprise edition
+  - JDBC stands for java database connectivity
+
+7 - getConnection("jdb:mysql://localhost/whiz","root","whizlabs");
+    unreported exception SQLException; must be caught or declared to be thrown
+
+10 - Isolatioin Level (NOT IN EXAM) 
+   D - TRANSACTION_SERIALIZABLE
+
+11 - INCORRECT not CORRECT - the result is ok, only inverse 
+- java.lang.Exception class has 5 contructorss 
+- constructor Exception() don't specified a detail message.
+
+
+
+WARNINGS:
+8 - Importing JDBC Packages
+  - Registering JDBC Driver
+  - Formulating a database URL
+  - Calling the "getConnection()" method of the java.sql.DriverManager class
+
+   
+
+
+
+
+
+
+
 
