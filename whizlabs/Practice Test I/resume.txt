@@ -20,6 +20,51 @@ WRONG
 - java.lang.Exception class has 5 contructorss 
 - constructor Exception() don't specified a detail message.
 
+20- 
+numbers.stream().filter(predit) //immutable object 
+//numbers.stream().filter(predit).forEach(System.out::print); [11,13,19]
+System.out.println(numbers); //[10,11,13,19,5] 
+
+
+27 - join 
+   
+   Thread tmine = new Thread()
+   tmine.start(); 
+   tmine.join(2000); 
+ 
+    Currently running thread will move to "blocked" state after calling the join and 
+may return to the "runnable" state after 2 seconds or after the "tmine" thread finished. 
+
+The Join method cause the currently executing thread to move to "Blocked" state and wait there until joined
+thread complete and move to "Dead" state. We can also invoke the "join()" method by passing long value in 
+millisecond, in which case we are saying that to currently executing thread to wait until "tmine" finished, but 
+if I take longer than this time(here 2000ms), then stop waiting and become "Runnable" anyway. 
+
+
+29 - 
+import java.util.concurrent.atomic.*;
+public class Whiz29{
+	int val = 10; 
+	int x; 
+	Whiz29(int i){
+		val = i;
+	}
+	private AtomicInteger value = new AtomicInteger(val); //value is assigned in compile time
+	public static void main(String[] args){
+		Whiz29 at = new Whiz29(5); 
+		System.out.println(at.value.decrementAndGet()); //9 
+	}
+}
+
+33 - 
+Stream<String> stream = Stream.of("1","2","3","4").parallel();
+IntStream ins = stream.mapToInt(s -> Integer.parseInt(s));
+//All streams achieved via that stream will be parallel too.
+System.out.println(ins.isParallel());  //true
+
+
+
+
 
 
 WARNINGS:
@@ -28,12 +73,20 @@ WARNINGS:
   - Formulating a database URL
   - Calling the "getConnection()" method of the java.sql.DriverManager class
 
-   
+30 - @FunctionalInterface
+     public interface Callable<V>{
+        V call() throws Exception
+     }   
+     
+     @FunctionalInterface
+     public interface Runnable{
+        void run()
+     }	
+     
 
+31 - IF We cal the join() first and then call the compute() we would never have advantage of parallelism
+   - In some cases fork-join computation run slower.	
+	
 
-
-
-
-
-
+32 - stream.sequential()
 
