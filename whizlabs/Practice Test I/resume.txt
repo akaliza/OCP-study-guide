@@ -107,8 +107,88 @@ System.out.println(clients); // Rachel - Raj - Will
 IntStream ints = IntStream.of(3,2,1,5,3);
 ints.peek(System.out::print).allMatch(i -> i > 1); //321
 
+60 - 
+Optional<Integer> ops = Optional.of(8);
+//fails to compile : public void ifPresent(Consumer<? super T> consumer)
+int i = ops.filter(p -> p > 8).ifPresent(System.out::print).orElse(0);
+System.out.println(i);	
 
 
+61 - 
+Stream<Trade> list = Stream.of(new Trade(1,1000,"John"),
+			       new Trade(5,200,"Alice"),
+			       new Trade(4,250,"Lisa"));
+		Stream<Double> totals = list.map(Trade::getTotal);
+		/*
+		map returns a double type stream not a Double Stream:
+		DoubleStream totals = list.map(Trade::getTotal);
+		
+		mapToDouble will return a DoubleStream:
+		Stream<Double> totals = list.mapToDouble(Trade::getTotal); 
+			
+		we don't pass function when invoking map:	
+		Stream<Double> totals = list.map(); 	
+		
+		there is no such method called apply in a list class
+		DoubleStream totals = list.apply(Trade::getTotal);
+
+		*/
+		System.out.print(totals.findFirst().get());
+
+
+62 - 
+Stream<Client> clients = Stream.of(new Client("Will","vps server",200),
+				   new Client("Rachel","java program",1200),	
+				   new Client("Anthony","Configuration",1000));
+//return a double but declares a Client 								   
+DoubleFunction<Client>	func = Client::getBudget;
+DoubleStream prices = clients.mapToDouble(func);
+prices.forEach(d -> System.out.print(d + " "));	
+
+/*
+@FunctionalInterface
+public interface DoubleFunction<R>{
+   R apply(double value)
+}
+*/
+
+
+64 - There is NO method defined as compose() in the BiFunction
+
+66 - the compose() method in UnaryOperator which is inherited from Function: 
+     default <V> Function<V,R> compose(Function<? super V,? extends T> before)
+     
+     will take Function and returns Function, even if you try to typecas to UnaryOperator, you will get 
+     classCastExceotion at run time because Function(super) can't be cast to UnaryOperator(sub)
+
+
+67 - 
+
+Function<String,Double>	fun = Double::parseDouble;
+Double d = fun.compose((String s) -> s + ".01").andThen(s -> s*2).apply("1"); //2.02
+System.out.print(d);	
+
+/*
+As you can see, the difference between compose and andThen is the order they execute the functions. 
+While the compose function executes the caller last and the parameter first, 
+the andThen executes the caller first and the parameter last.
+
+Function<Integer, Integer> times2 = e -> e * 2;
+Function<Integer, Integer> squared = e -> e * e;  
+
+times2.compose(squared).apply(4);  
+// Returns 32
+
+times2.andThen(squared).apply(4);  
+// Returns 64
+
+*/
+
+
+68 - 
+Function<Integer,String> fun = s -> s.toString(); //2°
+Function<String,String> fun2 = fun.andThen((String s) -> s + "2")  //3° <String,String>
+				  .compose((String s) -> Integer.parseInt(s)); //1° <String,???? >
 
 
 
@@ -154,11 +234,21 @@ at line 8 invoking the forEach will not always print in order even the stream is
 
 53 - .average() - return OptionalDouble[]
 
-57 - codar
+57 - 
 DoubleStream dbs = DoubleStream.of(1.1,1.0,0.8,0.6,1.5);
 dbs.skip(2) // 0.8,0.6,1.5
    .peek(in -> System.out.println((int)in )) //1[0] 2[0]          0.8,0.6,1.5
    .limit(2) //1[0.8] 2[0.6]
    .allMatch(d -> d < 1); true
 
-59 - ??? 
+59 -
+if a value is presente, apply the provided Optional-bearing mapping
+to it, retur that result, and otherwise return an empty Optional
+
+Stream<String> streams = Stream.of("one","two","three");
+Optional<String> op = streams.filter(s -> s.length() > 5)
+                	     .findFirst() //Optional.empty
+			     .flatMap(s -> Optional.of("4"));	
+System.out.println(op);	//Optional.empty
+
+71 - ObjIntConsumer - void accept(T t, int value) 
