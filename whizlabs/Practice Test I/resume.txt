@@ -62,7 +62,8 @@ IntStream ins = stream.mapToInt(s -> Integer.parseInt(s));
 //All streams achieved via that stream will be parallel too.
 System.out.println(ins.isParallel());  //true
 
-
+35 - when we are trying delete a directory using delete method of Files, if directory contains any sub directories 
+of files then an "DirectoryNotEmptyException" will be thrown and we have got it covered using the try/catch. 
 
 
 
@@ -89,4 +90,14 @@ WARNINGS:
 	
 
 32 - stream.sequential()
+
+34 -
+Stream<String> sts1 = Stream.of("A","B");
+Stream<String> sts2 = Stream.of("1","2");
+Stream out = Stream.concat(sts1,sts2).parallel().sorted();
+out.forEach(System.out::print);
+
+at line 8 invoking the forEach will not always print in order even the stream is sorted because it is parallel. 
+
+ 
 
