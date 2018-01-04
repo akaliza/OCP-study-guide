@@ -191,6 +191,53 @@ Function<String,String> fun2 = fun.andThen((String s) -> s + "2")  //3° <String,
 				  .compose((String s) -> Integer.parseInt(s)); //1° <String,???? >
 
 
+72 - 
+Locale loc = new Locale.Builder().setLanguage("en").build();
+System.out.print(loc.getDisplayLanguage(new Locale("En"))); //English
+System.out.print(loc.getDisplayCountry(new Locale("En")));  //return an empty String
+
+74 - 
+Locale loc = new Locale.Builder().setRegion("CA").build();
+System.out.print(loc.getDisplayLanguage(new Locale("En"))); //return an empty String
+System.out.print(loc.getDisplayCountry(new Locale("En")));  //Canada
+
+75 - 
+-STBundel_de_CH
+-STBundel_hi_IN
+
+Local.setDefault(new Locale("IN")); 
+ResourceBundle rb = ResourceBundle.getBundle("SRBundel",Locale.getDefault()); --> MissingResourceException
+
+try to search SRBundel_IN or SRBundel;
+
+76 - I - Using the ResourceBundle.Control we can specify how to locate the ResourceBundle
+     II - it defines a set of callback methods that are invoked by the ResourceBundle.getBundle factory during the 
+          bundle loading process. 
+   III - Using ResourceBundle.Control we can specify how long resource bundle can exist in the cache. (getTimeToLive())
+
+ 
+77 - 
+Locale loc = new Locale.Builder().setLanguage("en").build();
+System.out.print(loc.getDisplayLanguage(new Locale("En"))); //English
+System.out.print(loc.getDisplayCountry(new Locale("En")));  //return an empty String
+
+80 - 
+LocalTime s = LocalTime.of(10,10);	
+LocalTime e = LocalTime.of(20,1);
+long due = Duration.between(s,e).toHours(); //PT9H51M
+System.out.print(due); //9
+
+81 - NOT IN EXAM
+Year y = Year.of(2000);
+YearMonth ym = y.atMonthDay(MonthDay.of(11,22));
+
+atMonthDay method returns LocalDate but not a YearMonth
+
+82 - 
+DateTimeFormatter format = 	DateTimeFormatter.ofPattern("y D");
+	LocalDate ld = LocalDate.parse("2015 10",format);
+	System.out.print(ld); //2015-01-10
+
 
 
 WARNINGS:
@@ -251,4 +298,8 @@ Optional<String> op = streams.filter(s -> s.length() > 5)
 			     .flatMap(s -> Optional.of("4"));	
 System.out.println(op);	//Optional.empty
 
-71 - ObjIntConsumer - void accept(T t, int value) 
+71 - ObjIntConsumer - void accept(T t, int value)
+ 
+78 - instant.plus(1,ChronoUnit.HOURS).plus(10,ChronoUnit.MINUTES);
+
+83 - LocalDate l = LocalDate.of(2014,1,31).plusMonths(1); //2014-2-28
