@@ -66,6 +66,51 @@ System.out.println(ins.isParallel());  //true
 of files then an "DirectoryNotEmptyException" will be thrown and we have got it covered using the try/catch. 
 
 
+40 - ok, some mistake in the question explanation.
+
+
+44 - System.out.write("Your password is: ");
+In this code, we tried to use the write() method of PrintStream though it has set of overloaded write methods, but 
+it hasn't got one to take string as argument. 
+
+46 - 
+
+public static void main(String[] args){
+		Stream<Client> clients = Stream.of(new Client("Will","vps server",200),
+						   new Client("Rachel","java program",1200),	
+					           new Client("Anthony","Configuration",1000));
+		Predicate<Client> func = e -> { System.out.print(e.getName() + " ");
+						return e.getBudget() > 1000.0;
+					      }; //lembrar do ;
+		clients.noneMatch(func); //[Will Rachel]								
+}
+
+
+
+51 - 
+
+From java SE 8, there is a new method in Comparator called comparing, which accepts a function that extracts a sort
+key from a type Tm and returns a Comparator<T> that compares by that sort key using the specified Comparator.
+
+
+
+List<Client> clients = new ArrayList<>();
+clients.add(new Client("Will","vps server",200));
+clients.add(new Client("Rachel","java program",1200));	
+clients.add(new Client("Raj","PHP server",750));
+		
+Collections.sort(clients,Comparator.comparing(Client::getName));
+System.out.println(clients); // Rachel - Raj - Will
+
+
+55 - 
+IntStream ints = IntStream.of(3,2,1,5,3);
+ints.peek(System.out::print).allMatch(i -> i > 1); //321
+
+
+
+
+
 
 
 WARNINGS:
@@ -100,4 +145,20 @@ out.forEach(System.out::print);
 at line 8 invoking the forEach will not always print in order even the stream is sorted because it is parallel. 
 
  
+42 - Files.lines() - returns a stream with the file content
+     Files.readAllLines - returns a List with the file content
 
+
+49 - int avg = stream.collect(Collectors.averagingInt(s -> Integer.parseInt(s))); --> NOT iN EXAM averagingInt
+ fail to try add a Double in an int 
+
+53 - .average() - return OptionalDouble[]
+
+57 - codar
+DoubleStream dbs = DoubleStream.of(1.1,1.0,0.8,0.6,1.5);
+dbs.skip(2) // 0.8,0.6,1.5
+   .peek(in -> System.out.println((int)in )) //1[0] 2[0]          0.8,0.6,1.5
+   .limit(2) //1[0.8] 2[0.6]
+   .allMatch(d -> d < 1); true
+
+59 - ??? 
