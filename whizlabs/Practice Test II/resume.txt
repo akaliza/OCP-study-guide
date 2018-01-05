@@ -87,6 +87,54 @@ public class Whiz28_B extends Whiz28_A{
 }
 
 
+32 - 
+I   - ConcurrentHashMap<Integer,String> cmap = new ConcurrentHashMap<Integer,String>();
+II  - HashMap<Integer,String> cmap = new HashMap<Integer,String>();
+III - Map<Integer,String> cmap = new ConcurrentHashMap<Integer,String>();
+IV  - ConcurrentMap<Integer,String> cmap = new ConcurrentHashMap<Integer,String>();
+
+remove(Object key,Object value);
+replace(K key,V oldValue,V newValue);
+
+defined in the java.util.concurrent.ConcurrentMap interface
+Both methods are included in the Map interface, so all given statements are correct. 
+
+33 - there are five constructors in the ConcurentHashMap class: 
+1 ConcurrentHashMap(); 
+2 ConcurrentHashMap(int intialCapacity); 
+3 ConcurrentHashMap(int intialCapacity, float loadFactor);
+4 ConcurrentHashMap(int intialCapacity, float loadFactor, int concurrencyLevel);
+5 ConcurrentHashMap(Map<? extends K, ? extends V> m);
+
+36 - when the value of the x equal to 1 both threads see that x > 0, so both threads will reduce 1 from the current value 
+of the x, so the output contain -1. 
+
+38 - codigo. - revisar futureTask
+
+39 - Understanding the happens-before relationship will help to avoid memory consistency error.
+
+40 - redunction overload revisar 
+     IntStream ints = IntStream.of(11,2,7,32,4,8,21,9);
+     int out = ints.filter(in -> in%2==0).reduce(Integer:sum); //Optional<T> reduce(BinaryOperator<T> accumulator)
+
+42 - NOT IN THE EXAM - FileVisitor
+43 - NOT IN THE EXAM - PathMatcher
+44 - NOT IN THE EXAM - FileVisitor
+45 - NOT IN THE EXAM - DosFileAttributes
+46 - NOT IN THE EXAM - DosFileAttributes
+47 OK But not int the exam
+
+48 - Stream<String> out = Files.list(path) //doesn't compile - list(path) return a Stream<Path>
+
+49 - Files.newBufferedWrite(Paths.get("file.txt")); 
+ 
+53 - the sum method is not defined in the stream class, it is defined in the primitive versions of streams such
+DoubleStream and IntStream
+
+61 - 
+Stream<Double> stream = Stream.of(12.1,12.5,12.9);
+Stream<Integer> list = stream.flatMap(d -> Stream.of(d.intValue()));
+System.out.println(list.collect(Collectors.toSet())); //12
 
 
 WARNINGS 
@@ -100,5 +148,27 @@ WARNINGS
      void close() throws Exception
      Closeable:
      void close() throws IOException
+
+
+34 - Fork/Join
+
+41 - <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner)
+ 
+
+54 - Stream<Integer> stream = Stream.of(2,0,4,1); 
+     System.out.println(stream.skip(2).limit(1).toArray()[1]); //ArrayindexOutOFBounds
+
+
+56 - opi [Optional.empty]
+     opi.get() --> exception
+
+57 - ops.ofNullable(null).ifPresent(System.out:println);
+     System.out.println(ops);
+     --> Invoking the ofNullable static method will result new optional with empty value. Since the result optional is 
+empty ifPresent will not execute. at line 9 printing the resulted optional with value OCAJP
+
+59 
+- List<String> ints = new ArrayList<>();
+  ints.stream().collect(Collectors.joining());
 
 

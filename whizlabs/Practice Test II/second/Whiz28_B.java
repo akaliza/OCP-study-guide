@@ -9,6 +9,4 @@ public class Whiz28_B extends Whiz28_A{
 		// System.out.print(a.j); doesn't compile
 		System.out.print(b.j); //0	
 	}
-	
-	
 }
