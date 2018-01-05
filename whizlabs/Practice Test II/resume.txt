@@ -1,0 +1,31 @@
+5 - adding new method in anonymous class is legal, but it is illegal to call that method  
+    from outside of anonymous class since the reference type doesn't know such a method exists
+
+14 - 
+
+try{
+   int i = Integer.parseInt(br.readLine());
+   d.setAmount(i); //here catch the NotEnoughException or Exception
+}catch(NegativeException E){
+   System.out.print(E);
+}catch(IOException E){
+   System.out.print(E);
+}
+
+18 - 
+int j = 9; 
+assert(++j > 7) : "Error";
+assert(j==12): j;
+//doesn't compile, the second expression of assert must return a value
+//assert(++j > 8) : System.out.println(j); 
+assert(j==12): new Whiz18();
+
+
+
+
+WARNINGS 
+
+2- The enum constructor must be either private or package scope(default).
+
+12 - JDBC url -> HOST DEFAULT : 127.0.0.1 - IP address of localhost
+                 PORT DEFAULT : 3306
