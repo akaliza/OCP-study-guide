@@ -20,6 +20,72 @@ assert(j==12): j;
 //assert(++j > 8) : System.out.println(j); 
 assert(j==12): new Whiz18();
 
+23 - 
+List<String> list = new ArrayList<>();
+list.add("1");
+list.add("2");
+list.add("3");
+list.add("4");
+list.add("5");
+	
+//lazy mode
+Stream<Integer> ints = list.stream().map(s -> {System.out.print(s); return Integer.parseInt(s);});	
+System.out.print("Count: ");
+//terminal operation
+System.out.print(ints.count()); //Count: 123455
+
+
+24 -             
+list -> [1,2,3,4]
+System.out.print(list.set(3,"3")); //returns 4 
+
+The set method returns the element which is removed. 
+
+25- List<String> lst = new ArrayList<>(); 
+    lst.forEachOrdered(System.out::print); //doesn't compile List dont have forEachOrdered method, only Stream have
+
+
+26 - 
+public class Manager{
+	private static Manager manager;
+	private Manager(){}
+	public static Manager getManager(){
+		if(manager == null){ 
+ 			manager = new Manager();
+		}
+ 		return manager; 
+	}
+}
+-E- add synchronized to getManager().
+
+
+27 - private int getI(){} -- method must be public in the encapsulation principals 
+
+28 - 
+protected variables can be only access through inheritance. so trying to access the variable j, using the object
+reference at line 18 causes a compile time error.
+
+
+package first; 
+public class Whiz28_A{
+	protected int j;
+	public void change(){
+		j = 12;
+	}
+}
+
+package second;
+import first.*; 
+public class Whiz28_B extends Whiz28_A{
+	public static void main(String[] args){
+		Whiz28_A a = new Whiz28_A();
+		Whiz28_B b = new Whiz28_B();
+		a.change();
+		// System.out.print(a.j); doesn't compile
+		System.out.print(b.j); //0	
+	}
+}
+
 
 
 
@@ -29,3 +95,10 @@ WARNINGS
 
 12 - JDBC url -> HOST DEFAULT : 127.0.0.1 - IP address of localhost
                  PORT DEFAULT : 3306
+
+19 - AutoCloseable: 
+     void close() throws Exception
+     Closeable:
+     void close() throws IOException
+
+
