@@ -1,0 +1,99 @@
+1- 
+Since even it is an inner class we can still consider it as static variable, so we can point to that inner classing 
+using class name and create the instance as shown in Option A 
+
+
+public class Whiz1{
+	public static void main(String[] args){
+		Outer.Inner oi = new Outer.Inner();		
+	}
+}	
+
+class Outer{
+	static class Inner{		
+	}
+}
+
+
+
+5- e - None of Above 
+
+12-
+static{
+   boolean assertEnabled = false; 
+   assert assertEnabled = true; 
+   if(!assertsEnabled) //false
+      throw new RuntimeException("stop!!!");
+
+}
+
+-- Given code fragment will stop class being initialized if assertion not enabled
+
+
+13-
+public static void main(String[] args){
+   assert args != null : "Null"; 
+   System.out.print("OK"); 
+}
+
+//A - OK 
+Here args is not null because enven though you didn't pass any command line arguments, args will refer an empty 
+array. 
+
+
+
+
+21-
+
+22-
+
+24-
+
+28- 
+
+32-
+
+33-
+
+37-
+
+39-
+
+40-
+
+41-
+
+44-
+
+55-
+
+56-
+
+58-
+
+60-
+
+62-
+
+64-
+
+76-
+
+78-
+
+79-
+
+82-
+
+84-
+
+85-
+
+WARNINGS:
+
+
+10 - "jdbc:mysql://localhost:3306/School?user=admin&password=abcd"
+      jdbc:mysql://[host][:port]/[database][?property1][=value1][&property2][=value2] 
+
+15 - When using multicatch bloc the exception variable is implicitly final, therefore we cannot assign the variable 
+to different value within the catch block.
