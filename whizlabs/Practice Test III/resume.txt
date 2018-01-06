@@ -98,15 +98,38 @@ System.out.println(strs.reduce("1",String::concat,String::concat)); //1234
 
 41-
 
-44-
+Invoke the newFixedThreadPool() method of the java.util.concurrent.Executors class by passing 10 as the parameter. 
 
-55-
+44- FileVisitor - NOT IN THE EXAM
+
+55- IntStream stream = IntStream.of(2,4,6,1,34,5,9); 
+    Predicate<Double> pre = d -> d>1; 
+    System.out.println(stream.asDoubleStream().anyMatch(pre)); --> anyMatch expected a DoublePredicate and not a Predicate<Double>   
 
 56-
+orElse(T) - return then value if presente, otherwise return other
+get() - if a value is presente returns, otherwise throws NoSuchElementException
+orElseGet(Supplier) - return the value if presente, otherwise invoke other and return the result of that invokation
+
 
 58-
+Optional<Integer> ops = Optional.of(new Integer(10));
+ops.filter(x -> Integer.compare(12,x) > 0).ifPresent(System.out::print); //10
+System.out.println(ops.get()); //10
+/*
+public static int compare(int x,int y)        
+if x == y :  0; 
+if x < y  : -1; 
+if x > y  : +1; 
+*/
+
 
 60-
+Stream<String> list = Stream.of("A","BB","CCC","AB","CCC");
+Optional<String> out = list.collect(Collectors.minBy(Comparator.comparing(String::length)));
+sout(out);
+
+
 
 62-
 
