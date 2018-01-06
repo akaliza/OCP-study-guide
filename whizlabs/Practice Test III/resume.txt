@@ -41,25 +41,60 @@ Here args is not null because enven though you didn't pass any command line argu
 array. 
 
 
+21- class Whizlab<Double>{}
 
+    Whizlab<String> my = new Whizlab<>();	
 
-21-
+22- subMap not defined in the Map interface - NOT IN THE EXAM
 
-22-
+24- 
+ArrayDeque<Integer> dq = new ArrayDeque<>();
+dq.add(10); 
+dq.add(20);
+dq.add(30);
+dq.add(40); //[10,20,30,40]
+System.out.println(dq.element() + dq.poll()); //[10] + [10]
 
-24-
 
 28- 
 
+Map<String,String> map = new HashMap<>();
+map.put("1","A");
+map.put("2","B");
+map.put("3","C");
+map.put("4","D");
+map.forEach((k,v) -> map.replace(k,"D","A")); //[4,A]
+map.values().stream().collect(Collectors.toSet()).forEach(System.out::print); //ABC
+
+
 32-
+class B extends A{
+   private B(){}
+}
 
-33-
+public class Whizlab{
+   psvm(..){
+      B b = new B(); //error, constructor of B is private
+   }	
+}
 
-37-
+33- [Pba,Cd,Znhg]
 
-39-
+37- B - Code fragment doesn't show the appropriate way of using the Fork-Join
+    As we called compute() method recursively before calling the fork() method so if we used this order then 
+    we would have no parallelism since this computes the right before starting to compute the left, So this
+    not the appropriate way of using Fork-Join
+
+39- List<Integer> list = ArrayList.asList(new Integer[]{1,2,3,4,5,6,7,8,9}); 
+    HashMap<Integer,List<Integer>> map = list.parallelStream().collect(Collectors.groupingByConcurrent(
+    i -> i%2 == 0 ? 0 : 1));  //ERROR
+    System.out.print(map.get(0));
+    E - compilation fails  --??
 
 40-
+
+Stream<String> strs = Stream.of("2","3","4");
+System.out.println(strs.reduce("1",String::concat,String::concat)); //1234
 
 41-
 
@@ -97,3 +132,13 @@ WARNINGS:
 
 15 - When using multicatch bloc the exception variable is implicitly final, therefore we cannot assign the variable 
 to different value within the catch block.
+
+23 - TreeMap sorting acording to the Key, in this case Key{} don't implements comparables, so throws an Exception
+
+34 - Member inner class - can be marked static, but if we declared with statics it become static inner class
+     static inner class - by definition, it contains static keyword
+     local inner class - CAN'T be declarede with static
+     Anonymous inner class - CAN'T be declared with static
+
+
+
