@@ -127,25 +127,68 @@ if x > y  : +1;
 60-
 Stream<String> list = Stream.of("A","BB","CCC","AB","CCC");
 Optional<String> out = list.collect(Collectors.minBy(Comparator.comparing(String::length)));
-sout(out);
-
+sout(out); //Optional[A]
 
 
 62-
+Stream<Double> stream = Stream.of(12.1,12.5,12.9); 
+//result a compile error since it doesn't return a stream 	
+//Stream<Integer> list  = stream.flatMap(d -> d.intValue()); 
+Stream<Integer> list  = stream.flatMap(d -> Stream.of(d.intValue()));
+System.out.println(list.collect(Collectors.toSet()));
+
+
+
 
 64-
+Map<Integer,Double> maps = new HashMap<>(); 
+maps.put(1,12.7);
+maps.put(2,13.5);
+maps.put(1,13.8);
+ToDOubleBiFunction<Double,Integer> tdf = (a,b) -> a + b; 
+maps.forEach((k,v) -> System.out.print(tdf.applyAsDouble(k,v))); // don't compile -> 
+
+Map<Integer,Double>
+ToDOubleBiFunction<Double,Integer>
+
+
 
 76-
+Locale locale = new Locale("de"); 
+ResourceBundle rb = ResourceBundle.getBundle("SRCBundel",locale);
+Enumeration bundleKeys = rb.getKeys();
+while(bundleKeys.hasMoreElements()){
+   String key = (String)bundleKeys.nextElement(); 
+   String value = rb.getString(key);
+   sout("key " + key + ",value " + value );
+} 
 
-78-
+key = pen, value = Feder Key key = Table, value = Tisch key = null, value=null 
+
+78- NOT IN EXAM
 
 79-
+Duration due = Duration.ofDays(-2); 
+due.abs();
+sout(due); //PT-48H
 
-82-
 
-84-
+82- HALF_DAYS - LocalTime not suported - NOT IN EXAM
+
+84- String date = "1994-2-28 11:22"; 
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-M-dd H:m"); 
+    LocalDateTime ldt = LocalDateTime.parse(date,format); 
+    System.out.println(ldt); //1992-02-28T11:22 -->MONTHS format
 
 85-
+ 
+D - day of the year 
+dd - day of the month 
+
+LocalDate ldt = LocalDate.of(2016,12,21); 
+DateTimeFormatter format = DateTimeFormatter.ofPattern("uuuu-MMM-D");
+sout(ldt); //2016-Dec-365 
+
 
 WARNINGS:
 
@@ -163,5 +206,9 @@ to different value within the catch block.
      local inner class - CAN'T be declarede with static
      Anonymous inner class - CAN'T be declared with static
 
+
+75 - Locale ENUS = new Locale.Builder().setLanguage("en").setRegion("US").build();
+     System.out.print(ENUS.getDisplayLanguage(new Locale("fr"))); //Anglais
+     //Code will print the word "English" in French language (Anglais)
 
 

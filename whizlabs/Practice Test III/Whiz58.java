@@ -5,10 +5,8 @@ public class Whiz58{
 		Optional<Integer> ops = Optional.of(new Integer(10));
 		ops.filter(x -> Integer.compare(12,x) > 0).ifPresent(System.out::print); //10
 		System.out.println(ops.get()); //10
-		
 		/*
-		public static int compare(int x,int y)
-		                             12, 10        
+		public static int compare(int x,int y)        
 		if x == y :  0; 
 		if x < y  : -1; 
 		if x > y  : +1; 
