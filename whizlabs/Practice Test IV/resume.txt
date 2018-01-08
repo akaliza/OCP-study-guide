@@ -1,0 +1,30 @@
+3 - in Enum we need to write the constants first the other member
+
+enum Month{ 
+  private int DAYS; 
+   MARCH(31),APRIL(30).....
+
+}
+
+
+7 - I We can have non static members in static inner class
+   II We need NOT to have outer class object to instantiate static inner class 
+  III static inner class can't access non static memebers 
+
+11- NOT IN EXAM - jdbcRowSet
+
+12 - NOT IN EXAM - jdbcRowSet
+
+13 - NOT IN EXAM - CachedRowSet
+
+16 - Callable/Future - code
+
+
+WARNING
+
+2 - we tried to instantiate Test using lambda expression which is illegal as the target type should be an functional 
+interface. 
+
+4 - enum.ordinal() -- begins with zero index
+
+6 - local inner class dont have access modifiers
