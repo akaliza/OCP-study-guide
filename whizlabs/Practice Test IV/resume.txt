@@ -19,6 +19,114 @@ enum Month{
 
 16 - Callable/Future - code
 
+23 - java8 method add in Map: remove(Obj,Obj)
+
+28 - 
+IntStream ints = IntStream.of(5,10,15);
+//Ambigous method reference: both toString() and toString(1) from the type Integer are elegible
+//Stream<String> stngs = ints.boxed().map(Integer::toString);
+Stream<String> stngs = ints.boxed().map(s -> s.toString()); //Optional[5]
+System.out.println(stngs.findAny()); 	
+
+29 - String out = stream.filter(s -> s.length() > 2).filter(s -> s.indexOf("C") > -1).findAny().orElse("None")
+     Compiles and print the result as STRING. 
+		
+30 - System.out.prinln(stream.peek(System.out::print).findAny().orElse("NA")); //AA
+
+32 - 
+Map<String,Integer> tmap = new TreeMap<>();
+tmap.put("ab",1);
+tmap.put("abc",2);
+tmap.put("abcd",3);
+tmap.replaceAll((k,v) -> (int)k.charAt(v)); 
+System.out.println(tmap.values()); //98,99,100
+
+
+34 - The concurrentHashMap doesn't allow null as a key. 
+
+String[]s = new String[2];
+s[1] = "B";	
+ConcurrentHashMap<String,Integer> cmap = new ConcurrentHashMap<>();
+cmap.put("A",new Integer(1));
+cmap.put(s[0],new Integer(2)); //NUllPointerException
+cmap.put("C",3);
+cmap.putIfAbsent("D",new Integer(4)); 
+System.out.println(cmap); 
+
+40 - NOT IN THE EXAME - PosixFileAttributes 
+
+41 - all methods in the java.nio.file.Files class are static. 
+
+42 -  ObjectOutputStream - we need to use the writeObject method of the ObjectOutputStream class
+to transfer content to the FileOutputStream.
+
+46 - 
+Stream<Double> stream = Stream.of(2.2,2.8,2.5);
+//MapToInt returns a IntStream
+//Stream<Integer> out = stream.mapToInt(Double::intValue);
+IntStream out = stream.mapToInt(Double::intValue);
+System.out.print(out.distinct().count());
+
+53 - 
+Stream<Integer> s = Stream.of(12,40,11,22);
+Optional<Integer> min = s.filter((Integer p) -> p%2 ==0).min(); //min expects an Comparator as argument
+System.out.println(min);
+
+
+57 - methods not inherit from Function interface to UnaryOperator
+     - identity()              andThen,apply,compose [Inherit from Function to UnaryOperator]
+
+
+
+61 - static <T> Predicate<T> isEqual(Object targetRef)
+
+String n = new String("1");
+Predicate<String> ins = Predicate.IsEqual(in); 
+sout(ins.test("2")); //false   
+
+65 - NOT IN THE EXAM 
+   DateFormat df = DateFormat.getDateInstance(DateFormat.LONG,new Locale("fr"));
+
+66 - 
+budleName + "_" + "localeLanguage" + "_" + "localeCountry" + "_" + "localVariant"
+budleName + "_" + "localeLanguage" + "_" + "localeCountry" 
+budleName + "_" + "localeLanguage"
+budleName + "_" + "defaultLanguage" + "_" + "defaultCountry" + "_" + "defaultVariant"
+budleName + "_" + "defaultLanguage" + "_" + "defaultCountry"
+budleName + "_" + "defaultLanguage"
+budleName 
+
+72 - NOT IN THE EXAME 
+use to see the days for the month in a LocalDate variable : .lengthOfMonth();
+
+
+72 - LocalDateTime date = LocalDateTime.of(2016,12,1,12,10);
+     LocalDate ld = date.format(DateTimeFormatter.BASIC_ISO_DATE); //don't compile, format returns a string: 
+
+public String format(DateTimeFormatter formatter);
+
+77 - intance --> ins.get(ChronoUnit.MONTHS)
+
+78 - not in the exam 
+79 - not in the exam
+80 - not in the exam
+81- not in the exam
+83 - not in the exam
+
+
+
+
+
+
+77%
+
+
+
+
+
+
+
+
 
 WARNING
 
@@ -28,3 +136,42 @@ interface.
 4 - enum.ordinal() -- begins with zero index
 
 6 - local inner class dont have access modifiers
+
+19 - 
+
+We re Thrown an Exception caught in the try box but it is not handled or declared to be thrownn by the method.
+
+public void method() throws RuntTimeException, ArrayIndexOutOfBoundsException{
+    try{
+         throw new Exception();
+    }catch(Exception e){
+         throw e;       
+    }
+}
+
+25 - the removeAll method expects a collection but not a predicate so code fails to compile.
+
+33 - removeLastOccurrence(Obj); 
+
+38 -  File myfile = new File(path.toString());
+      myfile.createNewFile(); //create a new file 
+
+39 - 
+Path path1 = Paths.get("F:\\Whizlabs\\java\\NIO");
+Path path2 = Paths.get("c:\\output");
+Path path = Paths.get(path2.getRoot().toString(), path1.subpath(0,3).toString()); 
+System.out.println(path.toString());	// c:|Whizlabs|java|NIO
+
+49 Stream stream = Stream.of(10,20,"30");
+   boolean out = stream.allMatch(in - in instanceof Number ); //false 
+
+51 - Optional<String> ops = Optional.empty();
+
+52 - Optional<Integer> ops = Optional.of(new Integer(20)); 
+     ops.filter(x -> Integer.compare(22,x) > 0).ifPresent(System.out::print);
+
+54 - DoubleUnaryOperator power = (val) -> Math.pow(val,2); 
+     sout(power.applyAsDouble(3)); //9.0
+
+62 - operation that accepts an object-valued and a int-valued argument, and returns no result: ObjIntConsumer<T>
+ 
