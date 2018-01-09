@@ -47,6 +47,94 @@ OuterWorld :
 Even though reason is a private member of InnerPeace, InnerPeace itself is a member of OuterWorld and so OuterWorld can access 'reason'. For example, you can have the following method defined inside OuterWorld and call it from outside OuterWorld: void m(){System.out.println(i.reason);}
 
 
+11 - computeIfPresent
+
+12 - JDBC class.forName
+
+13 - wait can thrown: 
+     - InterruptedException - is thrown if it is interrupted by another thread
+     - IlegalMonitorStateException - is thrown if it is not called in a synchronized block. 
+
+14 - 
+movies.stream()
+	.filter(mov->mov.getRating()=='R')
+	.peek(mov->System.out.println(mov.getName()))
+	.map(mov->mov.getName());  //it will printing nothing - lazy 
+
+
+18 - ConcurrentHashMap
+
+20 - List<Integer> ls = Arrays.asList(11, 11, 22, 33, 33, 55, 66);
+
+ls.stream().anyMatch(11); --> will not compile because anyMatch requires a Predicate object as an argument, not an int.
+
+ls.stream().distinct().anyMatch(x->x==11); ok 
+ls.stream().noneMatch(x->x%11>0);          ok 
+
+
+22 - assert
+
+26 - 
+Deque<Integer> d = new ArrayDeque<>();         
+d.add(1);         
+d.push(2);         
+d.pop();         
+d.offerFirst(3);                 
+d.remove();         
+System.out.println(d); 
+
+add(e) is a queue method that adds the element to the end while push() is a stack method that adds the element to the front. Therefore, the contents of d change as follows: 
+1 
+2, 1 
+Now, pop() is a stack method that removes the element from the front, so d now contains: 
+1 
+offer(e) is a queue method that adds the element to the end. But offerFirst(e), adds the element in the front. Therefore, the contents of d change to: 
+3, 1 
+remove() is a queue method that removes the element from the front. Therefore, d now contains: 
+1
+
+27 - loop: 
+counter = -4 
+for(int i=counter; i>0; i--){ }
+
+29 - 
+Period can be negative :
+
+Period p = Period.between(LocalDate.now(), LocalDate.of(2015, Month.SEPTEMBER, 1)); 
+System.out.println(p); //P-1D
+Duration d = Duration.between(LocalDateTime.now(), LocalDateTime.of(2015, Month.SEPTEMBER, 2, 10, 10)); System.out.println(d); PT9H10M
+
+ 
+31 - ciclyBarrier
+
+34 - static/non static method with polymorfism
+Since the declared type of variable off is Office, compiler will check the call to getAddress against Office interface. However, getAddress in Office is static and Java 8 requires static interface method to be invoked using the interface name instead of a reference variable. That is why, the compiler will raise the following error message:     TestClass.java:26: error: illegal static interface method call     
+   System.out.println(h.getAddress()); //2                                    
+   the receiver expression should be replaced with the type qualifier 'Office' 1 error
+
+
+
+41- It will always print String1, String2, and end, in that order
+
+public class MyThread implements Runnable {    
+	String msg = "default";    
+	public MyThread(String s){       
+		msg = s;    
+	}    
+	public void run( ){       
+		System.out.println(msg);    
+	}    
+	public static void main(String args[]){       
+		new Thread(new MyThread("String1")).run();       
+		new Thread(new MyThread("String2")).run();       
+		System.out.println("end");    
+	} 
+}
+
+
+Although two new threads are created but none of them is started.(Remember run() does not start a thread. start() does.)
+Here, run is called but NOT of MyThread class but of Thread class. Thread class's run() is an interesting method. If the thread object was constructed using a separate Runnable object, then that Runnable object's run method is called otherwise, this method does nothing and returns. Here, Thread's run calls MyThread's run() which prints the string and returns. Everything is done in one thread (the main thread) and so the order is known.
+
 
 
 
@@ -59,3 +147,24 @@ and at the same time you want to disable them for the package good.*.
 
 java -ea:bad... Main
 java -ea:bad... -da:good... Main 
+
+
+15 - 
+String[] p = {"1", "2", "3" };
+
+List<?> list2 = new ArrayList<>(Arrays.asList(p));
+
+Note that you can add null to it though i.e. list2.add(null); is valid.
+
+Object obj = list2.get(0); //Valid 
+String str = list2.get(0); //will not compile.
+ 
+
+37 - for(Card c : Card.values()) System.out.print(c+" ");
+Every enum has a values() method that returns an array of all the values in that enum in the order they are defined.
+
+
+39 -     Path p1 = Paths.get("c:\\..\\temp\\test.txt");    
+	 System.out.println(p1.normalize().toUri()); //file:///c:/temp/test.txt
+
+In this case, .. is at the top level and there is no parent directory at this level. Therefore, it is redundant and is removed from the normalized path. 
