@@ -437,6 +437,7 @@ Hashtable	—no null keys or values
 TreeSet		—no null elements
 ArrayDeque	—no null elements
 
+**ConcurrentHashMap - no null keys or values 
 
 
 String: As far as the exam is concerned, that means numbers sort before letters and uppercase letters sort before lowercase letters

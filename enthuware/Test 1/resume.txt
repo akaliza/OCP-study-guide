@@ -1,0 +1,61 @@
+2 - 1/2
+
+Map hm = new ConcurrentHashMap();         
+hm.put(null, "asdf");  //1 - will throw a NullPointerException.         
+hm.put("aaa", null);  //2  - will throw a NullPointerException.        
+
+hm = new HashMap();         
+hm.put(null, "asdf");  //3         
+hm.put("aaa", null);  //4          
+
+List list = new ArrayList();         
+list.add(null); //5         
+list.add(null); //6          
+
+list = new CopyOnWriteArrayList();         
+list.add(null); //7 
+
+Which of the above lines will throw NullPointerException?
+
+Remember that HashMap supports adding null key as well as null values but ConcurrentHashMap does not. Inserting null key or null in a ConcurrentHashMap will throw a NullPointerException. Some candidates have reported getting a question on this aspect of ConcurrentHashMap.
+
+7 -  
+int x = ai + 1: warning
+AtomicInteger is not a wrapper class and so auto unboxing will not happen here and so it will not compile.
+
+int x = ai.incrementAndGet(); -> OK
+
+int x = ai.addAndGet(1); -> not marked
+The addAndGet method atomically adds the given value to the current value and returns the new value. Here, we are passing 1. So 1 will be added to 5 and 6 will be returned.
+
+int x = ai.getAndIncrement(); : marked wrong
+getAndIncrement() is a valid method call and it will increment ai to 6 but it will return the old value i.e. 5.
+
+
+
+10 - 
+class OuterWorld {   
+    public InnerPeace i = new InnerPeace();   
+    private class InnerPeace   {      
+        private String reason = "none";   
+    } 
+}
+
+What can be the class of an object 'x' that can access 'reason'?
+
+OuterWorld : 
+Even though reason is a private member of InnerPeace, InnerPeace itself is a member of OuterWorld and so OuterWorld can access 'reason'. For example, you can have the following method defined inside OuterWorld and call it from outside OuterWorld: void m(){System.out.println(i.reason);}
+
+
+
+
+
+
+Warnings 
+
+8 -  
+You want to enable assertions for all classes of bad.* 
+and at the same time you want to disable them for the package good.*.
+
+java -ea:bad... Main
+java -ea:bad... -da:good... Main 
