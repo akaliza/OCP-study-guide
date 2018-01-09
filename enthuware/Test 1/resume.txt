@@ -136,6 +136,185 @@ Although two new threads are created but none of them is started.(Remember run()
 Here, run is called but NOT of MyThread class but of Thread class. Thread class's run() is an interesting method. If the thread object was constructed using a separate Runnable object, then that Runnable object's run method is called otherwise, this method does nothing and returns. Here, Thread's run calls MyThread's run() which prints the string and returns. Everything is done in one thread (the main thread) and so the order is known.
 
 
+51 - 
+import java.io.IOException;  
+public class Device implements AutoCloseable{     
+	String header = null;     
+	public void open() throws IOException{         
+		header = "OPENED";         
+		System.out.println("Device Opened");         
+		throw new IOException("Unknown");     
+	}      
+	public String read() throws IOException{         
+		return "";     
+	}          
+	public void close(){         
+		System.out.println("Closing device");         
+		header = null;         
+		throw new RuntimeException("rte");     
+	}          
+	public static void main(String[] args) throws Exception {         
+		try(Device d = new Device()){             
+			throw new Exception("test");         
+		}    
+	}      
+} 
+/*
+Exception in thread "main" java.lang.Exception:
+        at Device.main(Device.java:19)
+        Suppressed: java.lang.RuntimeException:
+                at Device.close(Device.java:15)
+                at Device.main(Device.java:20)
+*/
+
+
+
+53 - Multiple copies of an object may be added to a stream.
+
+The statement is a bit vague. It is trying to convey that the same object can be serialized multiple times to a stream. Thus, you may have mutliple copies of the same object in the stream and when you read the stream back, you will get multiple objects.
+
+
+54 - method references 
+
+55 - A thread exclusively ows the intrinsic lock between the time it has acquirede the lock and release the lock. 
+     A thread can acquire a lock on the class.
+
+56 - You have been given an instance of an Executor and you use that instance to execute tasks. How many threads will be created for executing these tasks by the Executor?
+RE: Number of threads created by the Executor depends on how the Executor instance was created.
+
+
+57-
+ import java.io.IOException;  
+ public class Device2 implements AutoCloseable{     
+	String header = null;     
+	public Device2(String name) throws IOException{         
+		header = name;         
+		if("D2".equals(name)) throw new IOException("Unknown");         
+		System.out.println(header + " Opened");             
+	}      
+	public String read() throws IOException{         
+		return "";     
+	}          
+	public void close(){         
+		System.out.println("Closing device "+header);         
+		throw new RuntimeException("RTE while closing "+header);     
+	}          
+	public static void main(String[] args) throws Exception {         
+		try(Device2 d1 = new Device2("D1");             
+			Device2 d2 = new Device2("D2")){             
+			throw new Exception("test");         
+		}     
+	}      
+}
+
+
+It will end up with an IOException containing message "Unknown" and a suppressed RuntimeException containing message "RTE while closing D1".
+
+/*
+D1 Opened
+Closing device D1
+Exception in thread "main" java.io.IOException: Unknown
+        at Device2.<init>(Device2.java:6)
+        at Device2.main(Device2.java:18)
+        Suppressed: java.lang.RuntimeException: RTE while closing D1
+                at Device2.close(Device2.java:14)
+                at Device2.main(Device2.java:20)
+*/				
+
+ 
+
+58 - 
+Observe that the method printNames does not take any argument. But the argument for forEach method requires a method that takes an argument. The forEach method basically invokes the passed method and gives that method an element of the list as an argument.
+
+public void printNames(){ System.out.println(getList()); }
+
+Names n = new Names();        
+n.setList(list.stream().collect(Collectors.toList()));        
+n.getList().forEach(Names::printNames);
+
+
+62 - Objects of this class are thread safe but you cannot say anything about the objects wrapped by this class.
+public class DataObjectWrapper{    
+    private final Object obj;     
+    public DataObjectWrapper(Object pObj){ obj = pObj; }     
+    public Object getObject() { return obj; } 
+}
+
+64 - 
+public class Food{  // LINE 1   
+	String name;   
+	int caloriesPerServing;   
+	public Food(String name, int calories){     
+		this.name = name; 
+		this.caloriesPerServing = calories;   
+	}   
+	//accessors not shown    
+	//LINE 2 
+}  
+This class is used in an application as follows -  
+
+ArrayList<Food> al = new ArrayList<>(); 
+//code that adds Food objects to al not shown 
+Collections.sort(al); 
+
+
+[X] Replace line 1 with : public class Food implements Comparable<Food>{
+
+[X] Add the following a line 2 : public int compareTo(Food f){ return this.name.compareTo(f.name); }
+
+
+66 - dead locks
+
+70 - It is well suited for computation intensive tasks that can be broken into smaller pieces recursively.
+     A ForkJoinPool differs from other kinds of ExecutorService mainly by virtue of employing work-stealing.	
+
+
+
+72 - daylight saving time 
+
+73 - 
+Remember the following 4 points about Path.getName() method :  
+
+1. Indices for path names start from 0. 
+2. Root (i.e. c:\) is not included in path names. 
+3. \ is NOT a part of a path name. 
+4. If you pass a negative index or a value greater than or equal to the number of elements, or this path has zero name elements, java.lang.IllegalArgumentException is thrown. It DOES NOT return null.  
+
+Thus, for example, If your Path is "c:\\code\\java\\PathTest.java",  
+
+p1.getRoot()  is c:\  ((For Unix based environments, the root is usually / ). 
+p1.getName(0)  is code 
+p1.getName(1)  is java 
+p1.getName(2)  is PathTest.java 
+p1.getName(3)  will cause IllegalArgumentException to be thrown.
+
+74 - getRoot() - returns c:\ not c:
+
+
+76 - Locale myLocale = Locale.getDefault(); [dont marked]
+     Locale myLocale = Locale.US; [ok]
+     Locale myLocale = new Locale("ru", "RU"); [OK]
+
+77-compiteIfAbsent
+
+79 - no main method 
+
+80 - It will throw an exception at run time.
+Duration d = Duration.between(LocalDate.now(), LocalDate.of(2015, Month.SEPTEMBER, 1)); System.out.println(d);
+
+The call to Duration.between will throw java.time.temporal.UnsupportedTemporalTypeException because LocalDate.now() does not have a time component, while Duration.between method needs Temporal arguments that have a time component.
+ 
+82 - construtores 
+
+83 - ALWAYS returns the same type : UnaryOperator and BinaryOperator
+
+84 - don't implemetns the AutoCloseable
+
+
+
+
+
+
 
 
 
@@ -168,3 +347,44 @@ Every enum has a values() method that returns an array of all the values in that
 	 System.out.println(p1.normalize().toUri()); //file:///c:/temp/test.txt
 
 In this case, .. is at the top level and there is no parent directory at this level. Therefore, it is redundant and is removed from the normalized path. 
+
+
+69 - 
+
+It will not compile because member variable 's' is not accessible from the inner class. This is because the inner class is created in a static method so it does not have any reference to TestFrame object. Precise message is:
+
+TestFrame.java:30: non-static variable s cannot be referenced from a static context
+System.out.println("Message is " +s);
+
+
+class TestFrame extends Frame {    
+	String s="Message";    
+	public static void main(String args[]){       
+		TestFrame t = new TestFrame();       
+		Button b = new Button("press me");       
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+                           System.out.println("Message is " +s);                      
+    			}                   
+		});       
+		t.add(b);    
+	} 
+}
+
+
+71 - There will not be any impact on the final answer but performance will be degraded.
+
+
+The order of join() and compute() is critical. Remember that fork() causes the sub-task to be submitted to the pool and another thread can execute that task in parallel to the current thread. Therefore, if you call join() on the newly created sub task, you are basically waiting until that task finishes. This means you are using up both the threads (current thread and another thread from the pool that executes the subtask) for that sub task. Instead of waiting, you should use the current thread to compute another subtask and when done, wait for another thread to finish. This means, both the threads will execute their respective tasks in parallel instead of in sequence.  Therefore, even though the final answer will be the same, the performance will not be the same
+
+
+75 - 
+List<String> names = Arrays.asList("greg", "dave", "don", "ed", "fred" ); 
+Map<Integer, Long> data = names.stream().collect(Collectors.groupingBy(String::length,Collectors.counting()) ); 
+System.out.println(data.values());         
+
+[1, 1, 3]
+
+The code first groups the elements based on their length and then counts the number of elements in each group. Therefore, data map will actually contain: {2=1, 3=1, 4=3} Since we are printing only values, it will print [1, 1, 3].
+
+
