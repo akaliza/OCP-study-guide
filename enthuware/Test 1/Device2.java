@@ -20,7 +20,6 @@
 		}     
 	}      
 }
-
 /*
 D1 Opened
 Closing device D1

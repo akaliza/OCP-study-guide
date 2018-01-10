@@ -101,6 +101,36 @@ Inner classes
 Inner classes can have the same variable names as outer classes. There is a special way of
 calling this to say which class you want to access:
 
+inner class : 
+
+[] Can extend any class and implement interfaces
+[] Can be abstract or final 
+[] Cannot declare static fields or methods except for static FINAL fields** 
+[] Can access members of the outer class including private members
+
+Local Inner Classes : 
+
+[] They do not have an access specifier.
+[] They cannot be declared static and cannot declare static fields or methods [except for static FINAL fields] .
+[] They have access to all fields and methods of the enclosing class.
+[] They do not have access to local variables of a method unless those variables are final
+or effectively final. 
+
+Anonymous Inner Classes: 
+
+Static Nested Classes: 
+
+[] The nesting creates a namespace because the enclosing class name must be used to refer to it.
+[] It can be made private or use one of the other access modifiers to encapsulate it.
+[] The enclosing class can refer to the fields and methods of the static nested class.
+
+
+
+
+
+
+
+
 1: public class A {
 2: private int x = 10;
 3: class B {

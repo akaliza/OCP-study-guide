@@ -4,7 +4,7 @@ public class Swimmer {
 			public boolean hasFins() { return true; }},
 		BIRD, REPTILE, AMPHIBIAN, INVERTEBRATE;
 		
-		public abstract boolean hasFins();
+		public /*abstract*/ boolean hasFins(){return false;}
 	}
 	
 	public static void main(String[] args) {
