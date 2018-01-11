@@ -173,6 +173,47 @@ System.out.println(lemur3.age);
 4. Even when the code compiles without issue, an exception may be thrown at runtime if
 the object being cast is not actually an instance of that class.
 
+
+Singleton: 
+-pivate static variable often with name instance
+-public static method getInstance()
+-private constructors
+-By marking the constructors private, we have implicitly marked the class final
+
+
+e can also instantiate a singleton this ways: 
+
+private static final HayStorage instance = new HayStorage();
+
+private static final StaffRegister instance;
+static {
+instance = new StaffRegister();
+// Perform additional steps
+}
+
+
+Lazy Instantiation:
+
+private static VisitorTicketTracker instance;
+
+public static synchronized VisitorTicketTracker getInstance() {
+   if(instance == null) {
+      instance = new VisitorTicketTracker(); // THREAD-SAFE!
+   }
+   return instance;
+}
+
+
+Immutable Objects: 
+ 
+1. Use a constructor to set all properties of the object.
+2. Mark all of the instance variables private and final .
+3. Don’t define any setter methods.
+4. Don’t allow referenced mutable objects to be modified or accessed directly.
+5. Prevent methods from being overridden.
+
+
+
 cap3
 
 for methods: 

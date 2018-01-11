@@ -1,0 +1,184 @@
+>>1 - A -equals(AnotherObject obj){}
+2- A OK
+3- C. s1.equals(s2) ok 
+4-C. The class compiles but has an improper hashCode() method. ok 
+5-A. If a.equals(b) is true, a.hashCode() == b.hashCode() is always true.
+  D. If a.equals(b) is false, a.hashCode() == b.hashCode() can sometimes be true.
+OK
+6-B. 1  OK 
+7-E. The code does not compile OK 
+>>8-B. The output is 10. C - final static  
+9-B. x is 24.
+10-C. The code compiles successfully, and two bytecode files are generated: Book.class and
+Book$BookReader.class.
+11 - D. import static my.sports.Football.*;
+12-E. A runtime exception is thrown.
+13-B. The output is 3.*
+14-E. l instanceof Chipmunk does not compile.
+15-B. If equals(null) is called, the method should return false.
+E. If equals() is passed the wrong type, the method should return false.
+16-E. Outer.Inner in = new Outer().new Inner();
+17-B. Compiler error on line 3.
+C. Compiler error on line 5.
+18-G. The code does not compile.
+19-A. public void toddle() {}
+C. public final void toddle() {}
+20-C. walk,toddle,
+21-A. @Override public boolean equals(Object o) { return false; }
+C. @Override public int hashCode() { return 42; }
+E. @Override public void play() { }
+18/21 86%
+
+
+cap 2 
+
+1-C,E  -OK 
+2-E - OK 
+>>3-AD
+A. Climb
+C. ArcticMountainClimb --default method missing implementing body
+D. MountainClimb
+4-OK
+A. () -> ""
+D. (Camel c) -> {return;}
+5-OK
+B. Requires constructor of singleton class to be private.
+E. Ensures that there is only one instance of an object in memory.
+F. Requires a public static method to retrieve the instance of the singleton.
+6-A. match ok 
+7- OK
+C. Mark name final and private.
+E. Replace the getFriends() method with methods that do not give the caller direct
+access to the List<Seal> friends.
+G. Make a copy of the List<Seal> friends in the constructor.
+H. Mark the Seal class final.
+8-OK
+C. They enable classes to have multiple inheritance.
+F. All members of an interface are public.
+>>9-
+D. Change the access modifier of cheetahManager from public to private.
+F. Add synchronized to getCheetahManager().
+9.  E is incorrect, as marking the instance final would prevent lazy instantiation and as the code would not compile.
+10-OK
+D. The code will not compile because of line 8.
+11-OK
+A. caller((e) -> "Poof");
+F. caller((e) -> { String f = ""; return "Poof"; });
+12-OK
+C. Compiler error on line x1.
+13-OK
+B. All of the instance variables marked private and final.
+C. They don’t define any setter methods.
+E. They prevent methods from being overridden.
+14-OK
+B. TurtleFrog
+A. Frog
+D. CanHop
+E. Object
+15-OK
+B. If a method takes a class that is the superclass of three different object references, then
+any of those objects may be passed as a parameter to the method.
+C. A reference to an object may be cast to a superclass of the object without an explicit cast.
+16-OK
+F. The code will not compile because of lines 3 and 4.
+17-OK
+B. boolean instance variables are accessed with is or get.
+C. All instance variables are marked private.
+F. The first letter of the any getter/setter, after the get, set, or is prefix, must be
+uppercase.
+18-OK
+A. Inheritance supports access to protected variables.
+B. Object composition tends to promote greater code reuse than inheritance.
+E. Object composition requires a class variable to be declared public or accessible from a
+public method to be used by a class in a different package.
+19-OK
+B. Manage a reusable cache of objects.
+D. Manage write access to a log file.
+E. Provide central access to application configuration data.
+20-OK
+A. It compiles without issue.
+
+18/20 = 90%
+
+
+
+cap 3
+
+1-OK
+B. ArrayList
+2-OK
+D. TreeMap
+3-OK
+E. Compiler error on line 7
+4-OK
+E. hihello
+5-OK
+B. HashSet<? super ClassCastException> set = new HashSet<Exception>();
+C. List<String> list = new Vector<String>();
+F. Map<String, ? extends Number> hm = new HashMap<String, Integer>();
+6-OK
+C. hithere
+7-OK
+A. The code compiles successfully
+D. The output is indeterminate.
+8-OK
+C. One
+9-OK
+E. None of the above
+10-OK
+A. Abb aab 123
+11-OK
+A. 16
+12-OK
+A. Helper.printException(new FileNotFoundException("A"));
+B. Helper.printException(new Exception("B"));
+D. Helper.<NullPointerException>printException(new NullPointerException
+("D"));
+>>>>13- 
+:::A. ArrayDeque<?> list = new ArrayDeque<String>();
+:::Option A is incorrect because it is a Queue and not a List. 
+B. ArrayList<? super Date> list = new ArrayList<Date>();
+E. Vector<? extends Number> list = new Vector<Integer>();
+14-OK
+C. [88. 55] [55, 88]
+15-OK
+D. The result is undefined.	
+16-OK
+B. Comparator is in the java.util package.
+D. compare() is in the Comparator interface.
+F. compare() takes two method parameters.
+17-OK
+B. On line 1, fill in with <T>.
+D. On line 3, fill in with <>.
+18-OK
+A. A a1 = new A();
+B. A a2 = new B();
+19-OK
+A. If we fill in the blank with List, the output is [10].
+D. If we fill in the blank with Queue, the output is [10, 12].
+20-OK
+E. Compiler error on line 7.
+21-OK
+A. On line 6, fill in the blank with hasNext().
+F. On line 7, fill in the blank with next().
+22-OK
+B. Add <T> after the static keyword.
+23-OK
+B. Comparator interface
+E. removeIf method on a Collection
+24-
+F. System.out::println
+25-
+NOT IN THE EXAM
+
+23/24=96%
+warning: 
+19. A, D. A LinkedList implements both List and Queue. The List interface has a method to
+remove by index. Since this method exists, Java does not autobox to call the other method.
+Queue has only the remove by object method, so Java does autobox there. Since the number
+1 is not in the list, Java does not remove anything for the Queue
+
+
+
+
+
