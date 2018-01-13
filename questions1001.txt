@@ -306,11 +306,157 @@ C. Day
 
 17/20 =85%
 
+cap6 
+1-OK
+C. throws on line 5 and throw on line 6
+2-OK
+B. Add throws Exception to the declaration on line 5.
+C. Change line 8 to } catch (Exception e) {}.
+3-OK
+E. IOException | RuntimeException e
+4-OK
+A. A traditional try statement without a catch block requires a finally block.
+B. A traditional try statement without a finally block requires a catch block.
+5-OK
+C. TWDEF
+6-OK
+G. The code does not compile.
+7-OK
+C. The code throws an ArrayIndexOutOfBoundsException.
+8-OK
+B. java –ea On
+C. java -da -ea:On On
+9-OK
+A. assert n < 0: "OhNo";
+D. assert(n < 0): "OhNo";
+10-OK
+A. Line 5 does not compile. 
+E. Line 7 is an appropriate use of an assertion.
+11-OK
+B. IllegalStateException
+D. MissingResourceException
+E. DateTimeParseException
+12-OK
+A. // leave line blank
+D. e = new SneezeException();
+E. e = new SniffleException();
+13-OK
+A. // leave line blank
+14-OK
+F. None of the above; the code does not compile
+15-OK
+B. Two
+E. Five
+>>>16-
+:B. rain 1
+:16. C. The exception inside the try block becomes the primary exception since it is
+:thrown first. Then two suppressed exceptions are added to it when trying to close the
+:AutoCloseable resources. Walk walk1 = new Walk(); Walk walk2 = new Walk();
 
+17-OK
+A. AutoCloseable
+B. Closeable
+18-OK
+B. Exception, Closeable
+>>19-
+B. RuntimeException
+::19.D -- Choices C and E are allowed because they actually catch a SQLException.
+::Choice D is not allowed because there is no IOException declared. Choice B is allowed
+::because a method does not have to handle an exception if it declares it.
 
+20-OK
+E. None of the above.
 
-282
+18/20=90%
 
+cap7
+1-OK
+D. c.parallelStream()
+F. s.parallel()
+2-OK
+A. Both can throw unchecked exceptions.
+C. Callable can throw a checked exception.
+D. Both can be implemented with lambda expressions.
+F. Callable returns a generic type.
+>>3-
+::C. Line w2 -  scheduleWithFixedDelay only has a Runnable with don't return nothing 
+::3. B, C.  The first problem is that
+::although a ScheduledExecutorService is created, it is assigned to an ExecutorService.
+::Since scheduleWithFixedDelay() does not exist in ExecutorService, line w1 will not
+::compile, and B is correct. The second problem is that scheduleWithFixedDelay()supports
+::only Runnable, not Callable, and any attempt to return a value is invalid in a Runnable
+::lambda expression;
+4-ok
+C. The output cannot be determined ahead of time.
+5-ok
+D. Livelock, Race conditions
+6-OK
+B. The task will be added to an internal queue and completed when there is an available
+thread.
+7-OK
+A. It outputs 3 6 4.
+The ConcurrentSkipListSet class allows modifications while iterating, so it is possible that the second loop could generate an infinite loop.
+8-OK
+G. The output cannot be determined ahead of time.
+9-OK
+A. The code correctly finds the minimum value in the array.
+C. MyTask inherits RecursiveTask.
+E. The class produces single-threaded performance at runtime.
+10-OK
+C. The code will not compile because of line q2. **revisar
+11-OK
+A. If the code does output anything, the order cannot be determined.
+F. The code may produce a deadlock at runtime.
+>>12-
+::D. The code will not compile because of m3.
+::12. E. The program compiles without issue, so B, C, and D are incorrect. Lines m2 and m3
+::throw a compiler warning about generics but still compile. Notice that RecursiveAction,
+::unlike RecursiveTask, does not return a value. However, since we used a generic Fork-
+::JoinTask reference, the code still compiles. The issue here is that the base condition is not
+::reached since the numbers start/end are consistently positive. This causes an infinite loop,
+::although since memory is finite, Java detects this and throws a StackOverflowError, so E
+::is correct. In practice, this could also generate a locking exception before the StackOverflowError
+::when the program runs out of memory, but in either circumstance, the program will exit.
+13-OK
+A. It outputs 3 4.
+G. The collect() operation is always executed in a single-threaded fashion. **flatMap() losee the parallel()
+14-OK
+D. The code will not compile.
+15-OK
+C. () -> 5
+E. () -> "The" + "Zoo" **
+G. () -> {System.out.println("Giraffe"); return 10;}
+>>16-
+>>C. The code will not compile because of line b2. - submit with runnable return null 
+::16. F, H. The application compiles and does not throw an exception, so B, C, D, E, and G are
+::incorrect. Even though the stream is processed in sequential order, the tasks are submitted
+::to a thread executor, which may complete the tasks in any order. Therefore, the output cannot
+::be determined ahead of time and F is correct, making A incorrect. Finally, the thread
+::executor is never shut down; therefore the code will run but it will never terminate, making
+::H also correct.
+17-OK
+B. It outputs 100 100.
+18-OK
+F. It compiles but waits forever at runtime.
+19-OK
+A. It compiles without issue.
+            NOT(class and this different) The lock locks acquired on k1 and k4 are on the same object.
+F. At most one instance of TicketManager will be created in the application.
+20-OK
+A. By itself, concurrency does not guarantee which task will be completed first.
+D. Applications with many resource-heavy tasks tend to benefit more from concurrency
+than ones with CPU-intensive tasks.
+21-ok
+A. It outputs a number 10 times.
+C. It outputs a null value 10 times.
+D. It outputs Exception! 10 times.
+E. It hangs indefinitely at runtime.
+22-ok
+F. The code will not compile because of line n1.
 
+400
+
+19/22 = 86%
+18/22 = 82% *q19
 
 
