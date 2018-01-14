@@ -561,7 +561,83 @@ H. The result cannot be determined with the information given.
 
 20/23=87%
 
-438
+cap9 
+
+1-OK
+F. The code does not compile.
+2-OK
+B. path refers to a symbolic link in the file system. 
+C. path refers to an empty directory in the file system.
+3-OK
+D. The code will not compile because of line 4.
+4-OK
+C. /user/home/bear
+5- OK
+B. A new directory will be created only if /mammal/kangaroo exists.
+C. If the code creates a directory, it will be reachable at /kang/joey.
+D. If the code creates a directory, it will be reachable at /mammal/kangaroo/joey.
+>6-
+::B. It prints Has Sub-directory.
+::6. C. The code does not compile since the stream output by Files.walk() is Stream<Path>,
+::therefore we need a Predictate, not a BiPredicate, on line w1, and the answer is C. If the
+::Files.find() method had been used instead, and the lambda had been passed as an argument
+::to the method instead of on filter(), the output would be B, Has Sub-directory,
+::since the directory is given to be empty. For fun, we reversed the expected output of the
+::ternary operation to make sure that you understood the process
+
+7-OK
+F. It compiles but throws an exception at runtime
+8-OK
+A. /pets/../cat.txt/./dog.txt
+/pets/../cat.txt
+9-OK
+B. It can be run on large files with very little memory available.
+C. It can be chained with stream methods directly.
+10-OK
+C. If another process is monitoring the file system, it will not see an incomplete file at
+runtime.
+E. The metadata of the monkey.txt will be moved along with the file.
+11-OK
+A. It will output false.
+12-OK
+A. new Path("jaguar.txt")
+F. new FileSystem().getPath("leopard")
+>>13-
+::A. It will print all symbolic links in the directory tree ending in .txt.
+::13. B. Note that the sample code creates a stream, collects it as a list, and then converts it back to a stream
+::before outputting the filenames. The key here is that the depth parameter specified as the
+::second argument to find() is 0, meaning the only record that will be searched is the toplevel
+::directory. Since we know that the top directory is regular and not a symbolic link, no
+::other paths will be visited and nothing will be printed. For these reasons, B is the correct
+::answer and A is incorrect.
+14-OK
+E. Files.list()
+15-OK
+D. It makes fewer round-trips to the file system.
+E. It can be used to access file system–dependent attributes. 
+F. For reading multiple attributes, it is often more performant.
+16-OK
+F. If it prints anything, it will not include commas.
+17-OK
+A. It compiles but may throw an exception at runtime.
+G. It prints all .java files in the root directory tree.
+18-OK
+D. true false true
+>>19-
+::A. NIO.2 supports file system–dependent attributes.
+::E. NIO.2 supports symbolic links.
+::19. A, C, E. While all of the answers are applicable to the NIO.2, only A, C, and E are options
+::that are not supported by the legacy java.io.File class and therefore give NIO.2 an
+::advantage over java.io.File.
+20-OK
+B. 1
+
+17/20 = 85%
+
+
+cap10
+
+
 
 
 
