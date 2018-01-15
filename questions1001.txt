@@ -636,8 +636,64 @@ B. 1
 
 
 cap10
+1-OK
+B. Driver’s implementation
+F. Statement’s implementation
+2-OK
+B. Database name
+C. jdbc
+3-OK
+A. jdbc:sybase:localhost:1234/db
+4-OK
+E. META-INF/service/java.sql.Driver
+5-OK
+C. There is a compiler error on line 6.
+6-OK
+B. Class.forName() throws a ClassNotFoundException if the driver class is not
+found.
+E. DriverManager.getConnection() throws a SQLException if the driver class is not
+found.
+7-OK
+C. ResultSet.TYPE_FORWARD_ONLY
+E. ResultSet.TYPE_SCROLL_INSENSITIVE
+F. ResultSet.TYPE_SCROLL_SENSITIVE
+8-OK
+E. The code will run without throwing an exception
+9-OK
+B. execute, executeUpdate, executeQuery
+10-OK
+C. 5
+>>11-
+::E. A SQLException is thrown.
+::11. D. JDBC code throws a SQLException, which is a checked exception. The code does not
+::handle or declare this exception, and therefore it doesn’t compile. If the exception were
+::handled or declared, the answer would be choice C.
+12-OK
+D. ResultSet, Statement, Connection
+13-OK
+D. A SQLException is thrown.
+  13. D. A Statement automatically closes the open ResultSet when another SQL statement is 
+  run. This means that rs is no longer open by the println, and a SQLException is thrown
+  because the ResultSet is closed.
+14-OK
+B. String s = rs.getString(1);
+F. Object s = rs.getObject(1);
+15-OK
+F. rs.getTimeStamp("d");
+16-OK
+E. A SQLException is thrown.
+   The first call to previous() throws a SQLException because the ResultSet type is TYPE_FORWARD_ONLY.
+17-OK
+C. afterLast()
+D. beforeFirst()
+18-OK
+A. Anna ***absolute
+19-OK
+C. Three
+>>20-
+::C. Three
+::20. F. The first and last println statements do not compile. The beforeFirst() and
+::afterLast() methods have a void return type. Therefore, the code does not compile and
+::choice F is correct.
 
-
-
-
-
+18/20 = 90%
